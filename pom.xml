@@ -4,7 +4,7 @@
     <artifactId>sipp-report</artifactId>
     <packaging>jar</packaging>
     <name>sipp-report</name>
-    <version>0.0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <parent>
         <artifactId>mobicents</artifactId>
         <groupId>org.mobicents</groupId>
@@ -131,10 +131,4 @@
             </snapshots>
         </repository>
     </repositories>
-
-  <scm>
-    <connection>scm:svn:https://mobicents.googlecode.com/svn/tags/parent/sip-report-0.1</connection>
-    <developerConnection>scm:svn:https://mobicents.googlecode.com/svn/tags/parent/sip-report-0.1</developerConnection>
-    <url>http://mobicents.googlecode.com/svn/tags/parent/sip-report-0.1</url>
-  </scm>
 </project>

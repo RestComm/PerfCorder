@@ -67,6 +67,8 @@ public class Report {
 
     private static boolean bigCharts = false;
 
+    private static String defaultOutputFileName = "sipp-report.pdf";
+
     private static void printInfo() {
 	logger.info("Usage: java -jar 'thisFile' [options] [file1 ... fileN]");
 	logger.info("Usage: If no files are specified, all .csv files in current directory are used");
@@ -75,6 +77,7 @@ public class Report {
 	logger.info("Option: -d - DEBUG  - Extra information during program execution");
 	logger.info("Option: -h - HELP   - Shows this info and exits");
 	logger.info("Option: -p - PRINT  - Print chart images in a subfolder");
+    logger.info("Option: -o - OUTPUT - Chooses the filename of the output (in single file mode only)");
     }
 
     public static void main(String[] args) {
@@ -106,10 +109,20 @@ public class Report {
 
 	// Get filenames
 	Set<String> filenames = new HashSet<String>();
+	boolean inOutput = false;
 	for (String string : args) {
+	    if (inOutput) {
+            defaultOutputFileName = string;
+            logger.debug("Output file name set: " + string);
+            inOutput = false;
+            continue;
+	    }
 	    if (string.charAt(0) != '-') {
 		filenames.add(string);
 		logger.debug("File to open: " + string);
+	    } else if (string.charAt(1) == '-') {
+	        filenames.add(string.substring(1));
+	        logger.debug("File to open: " + string.substring(1));
 	    } else {
 		if ("-a".equals(string)) {
 		    allCharts = true;
@@ -126,11 +139,20 @@ public class Report {
 		    logger.info("Big chart set");
 		    continue;
 		}
-		if (("-h".equals(string)) || ("--help".equals(string))) {
+        if ("-o".equals(string)) {
+            inOutput = true;
+            logger.info("Using alternate filename");
+            continue;
+        }
+		if (("-h".equals(string)) || ("-help".equals(string))) {
 		    printInfo();
 		    return;
 		}
 	    }
+	}
+	if (inOutput){
+        printInfo();
+        return;
 	}
 
 	if (filenames.isEmpty()) {
@@ -303,7 +325,7 @@ public class Report {
 	    if (logger.isDebugEnabled()) {
 		logger.debug("Writting categories: " + Arrays.toString(categoryValues.keySet().toArray()));
 	    }
-	    logger.info("Writting report '" + (singleFile ? "report.pdf" : filename.replaceAll(".csv", ".pdf")) + "'  ...");
+	    logger.info("Writting report '" + (singleFile ? defaultOutputFileName : filename.replaceAll(".csv", ".pdf")) + "'  ...");
 
 	    // Write files (1600 is the default value because it looks prettier in my display)
 	    int referenceSize = bigCharts ? new Double(referenceData[referenceData.length - 1]).intValue() : 1600;
@@ -313,7 +335,7 @@ public class Report {
 	    Document document = new Document();
 	    document.setPageSize(new Rectangle(imageSizeX, imageSizeY));
 	    document.setMargins(0, 0, 0, 0);
-	    PdfWriter.getInstance(document, new FileOutputStream(singleFile ? "report.pdf" : filename.replaceAll(".csv", ".pdf")));
+	    PdfWriter.getInstance(document, new FileOutputStream(singleFile ? defaultOutputFileName : filename.replaceAll(".csv", ".pdf")));
 	    document.open();
 
 	    for (String category : categoryValues.keySet()) {
@@ -348,7 +370,7 @@ public class Report {
 		logger.debug("Wrote category chart " + category);
 
 		if (printCharts) {
-		    String newDirName = singleFile ? "charts" : filename.split("_")[1];
+		    String newDirName = singleFile ? "sipp-charts" : filename.split("_")[1];
 		    ImageEncoder encoder = new KeypointPNGEncoderAdapter();
 		    new File(newDirName).mkdir();
 		    String chartFile = newDirName + File.separator + category + "Chart.png";

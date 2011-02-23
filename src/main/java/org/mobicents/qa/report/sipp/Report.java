@@ -41,40 +41,40 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class Report {
-    
+
     private static Logger logger = Logger.getLogger(Report.class.getName());
-    
+
     private enum FieldType {
         DOUBLE, TIME, DATE, INVALID
     };
-    
+
     private static Set<String> selectedCategories = new HashSet<String>();
-    
+
     static {
         String[] selected = new String[] { "TargetRate", "CallRate", "IncomingCall", "CurrentCall", "SuccessfulCall", "FailedCall", "FailedMaxUDPRetrans",
                 "FailedUnexpectedMessage", "DeadCallMsgs", "Retransmissions", "ResponseTime1", "ResponseTime1StDev", "CallLength", "CallLengthStDev" };
-        
+
         for (String category : selected) {
             selectedCategories.add(category);
             selectedCategories.add(category.concat("(C)"));
             selectedCategories.add(category.concat("(P)"));
         }
     }
-    
+
     private static String referenceCategory = "ElapsedTime(C)";
-    
+
     private static boolean allCharts = false;
-    
+
     private static boolean singleFile = false;
-    
+
     private static boolean printCharts = false;
-    
+
     private static boolean bigCharts = false;
-    
+
     private static boolean statsFile = false;
-    
+
     private static String defaultOutputFileName = "sipp-report.pdf";
-    
+
     private static void printInfo() {
         logger.info("Usage: java -jar 'thisFile' [options] [file1 ... fileN]");
         logger.info("Usage: If no files are specified, all .csv files in current directory are used");
@@ -86,14 +86,14 @@ public class Report {
         logger.info("Option: -o - OUTPUT - Chooses the filename of the output (in single file mode only)");
         logger.info("Option: -s - STATS  - Writes a txt file with the statistical properties of the categories");
     }
-    
+
     public static void main(String[] args) {
-        
+
         // Setup Log4j
         Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n")));
         logger.setLevel(Level.INFO);
         logger.info("Sipp Report Tool starting ... ");
-        
+
         // Search for -d flag
         for (String string : args) {
             if ("-d".equals(string)) {
@@ -102,18 +102,18 @@ public class Report {
                 break;
             }
         }
-        
+
         // Pring arguments
         if (logger.isDebugEnabled()) {
             logger.debug(Arrays.toString(selectedCategories.toArray()));
-            
+
             String s = "Arguments:_";
             for (String string : args) {
                 s += string + "_|_";
             }
             logger.debug(s);
         }
-        
+
         // Get filenames
         Set<String> filenames = new HashSet<String>();
         boolean inOutput = false;
@@ -166,13 +166,13 @@ public class Report {
             printInfo();
             return;
         }
-        
+
         if (filenames.isEmpty()) {
             try {
                 URL url = Report.class.getProtectionDomain().getCodeSource().getLocation();
                 File myDir = new File(URLDecoder.decode(url.getFile(), "UTF-8")).getAbsoluteFile().getParentFile();
                 File[] files = myDir.listFiles(new FilenameFilter() {
-                    
+
                     public boolean accept(File file, String s) {
                         if (s.endsWith(".csv")) {
                             return true;
@@ -181,16 +181,16 @@ public class Report {
                         }
                     }
                 });
-                
+
                 for (File file : files) {
                     filenames.add(file.getAbsolutePath());
                 }
-                
+
             } catch (UnsupportedEncodingException e) { // should not happen
                 logger.warn("Could not get current dir");
             }
         }
-        
+
         if (filenames.isEmpty()) {
             printInfo();
         } else {
@@ -198,7 +198,7 @@ public class Report {
                 singleFile = true;
                 logger.debug("Single file mode - set");
             }
-            
+
             // Create the report
             for (String string : filenames) {
                 createReports(string);
@@ -206,32 +206,32 @@ public class Report {
             logger.info("Done. Oh yeah!");
         }
     }
-    
+
     public static void createReports(String filename) {
         try {
-            
+
             // Create a CSV reader
             OpenCsvReader csv = new OpenCsvReader(new FileReader(filename), ';', '\"');
-            
+
             // Get categories
             String[] categories = csv.readNext();
             if (logger.isDebugEnabled()) {
                 logger.debug("Categories read from CSV: " + Arrays.toString(categories));
             }
-            
+
             // Get values
             List<String[]> values = csv.readAll();
             int rows = values.size();
-            
+
             csv.close();
-            
+
             // Get reference categories (elapsed time)
             double[] referenceData = null;
             for (int i = 0; i < categories.length; i++) {
                 if (referenceCategory.equals(categories[i])) {
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                     double timeReference = timeFormat.parse(values.get(0)[i]).getTime();
-                    
+
                     int n = 0;
                     referenceData = new double[rows];
                     for (String[] value : values) {
@@ -243,32 +243,32 @@ public class Report {
                     }
                 }
             }
-            
+
             if (referenceData == null) {
                 logger.error("Invalid reference category: " + referenceCategory);
                 return;
             }
-            
+
             // convert to categories
             Map<String, XYDataset> categoryValues = new LinkedHashMap<String, XYDataset>();
             Map<String, FieldType> categoryTypes = new LinkedHashMap<String, FieldType>();
-            
+
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss:SSS");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-            
+
             FileOutputStream statsFOS = null;
             if (statsFile) {
                 String statsFileName = singleFile ? defaultOutputFileName.replaceAll(".pdf", ".txt") : filename.replaceAll(".csv", ".txt");
                 statsFOS = new FileOutputStream(statsFileName);
                 logger.info("Writting stats file '" + statsFileName + "'  ...");
             }
-            
+
             for (int i = 0; i < categories.length; i++) {
                 if (!selectedCategories.contains(categories[i]) && !allCharts) {
                     logger.debug("Category " + categories[i] + " does not belong to selected categories. Dropping.");
                     continue;
                 }
-                
+
                 // check for usable colums
                 try {
                     Double.parseDouble(values.get(0)[i]);
@@ -292,17 +292,17 @@ public class Report {
                         }
                     }
                 }
-                
+
                 // convert values
                 DefaultXYDataset dataset = new DefaultXYDataset();
                 double timeReference = 0;
                 if (categoryTypes.get(categories[i]) == FieldType.TIME) {
                     timeReference = timeFormat.parse(values.get(0)[i]).getTime();
                 }
-                
+
                 int n = 0;
                 double[] valueData = new double[rows];
-                
+
                 switch (categoryTypes.get(categories[i])) {
                 case DOUBLE:
                     for (String[] value : values) {
@@ -317,7 +317,7 @@ public class Report {
                     for (String[] value : values) {
                         try {
                             double myTimeValue = (timeFormat.parse(value[i]).getTime() - timeReference) / 1000;
-                            
+
                             if (isStDev && (myTimeValue < 0)) {
                                 valueData[n++] = Double.NaN;
                             } else {
@@ -336,33 +336,33 @@ public class Report {
                 default:
                     break;
                 }
-                
+
                 dataset.addSeries(categories[i], new double[][] { referenceData, valueData });
                 categoryValues.put(categories[i], dataset);
             }
-            
+
             if (categoryValues.isEmpty()) {
                 logger.warn("No categories to be written to file.");
                 return;
             }
-            
+
             // print available columns
             if (logger.isDebugEnabled()) {
                 logger.debug("Writting categories: " + Arrays.toString(categoryValues.keySet().toArray()));
             }
             logger.info("Writting report '" + (singleFile ? defaultOutputFileName : filename.replaceAll(".csv", ".pdf")) + "'  ...");
-            
+
             // Write files (1600 is the default value because it looks prettier in my display)
             int referenceSize = bigCharts ? new Double(referenceData[referenceData.length - 1]).intValue() : 1600;
             int imageSizeX = referenceSize;
             int imageSizeY = 800;
-            
+
             Document document = new Document();
             document.setPageSize(new Rectangle(imageSizeX, imageSizeY));
             document.setMargins(0, 0, 0, 0);
             PdfWriter.getInstance(document, new FileOutputStream(singleFile ? defaultOutputFileName : filename.replaceAll(".csv", ".pdf")));
             document.open();
-            
+
             for (String category : categoryValues.keySet()) {
                 String title = category.replace("(P)", " (Periodic)").replace("(C)", " (Cumulative)");
                 String xLabel = referenceCategory.replace("(P)", "").replace("(C)", "") + " (seconds)";
@@ -387,14 +387,14 @@ public class Report {
                 default:
                     break;
                 }
-                
+
                 JFreeChart chart = ChartFactory.createXYLineChart(title, xLabel, yLabel, categoryValues.get(category), PlotOrientation.VERTICAL, false, false,
                         false);
                 BufferedImage image = chart.createBufferedImage(imageSizeX, imageSizeY);
-                
+
                 document.add(Image.getInstance(image, null));
                 logger.debug("Wrote category chart " + category);
-                
+
                 if (printCharts) {
                     String newDirName = singleFile ? "sipp-charts" : filename.split("_")[1];
                     ImageEncoder encoder = new KeypointPNGEncoderAdapter();
@@ -404,9 +404,9 @@ public class Report {
                     logger.debug("Wrote category chart to file " + category);
                 }
             }
-            
+
             document.close();
-            
+
         } catch (FileNotFoundException e) {
             logger.error("Unable to open file: " + filename, e);
         } catch (IOException e) {
@@ -416,9 +416,9 @@ public class Report {
         } catch (ParseException e) {
             logger.warn("ParseException: " + e.getMessage(), e);
         }
-        
+
     }
-    
+
     private static void writeStatsToFile(String category, String unit, double[] values, FileOutputStream statsFOS) {
         if (values.length == 0) {
             logger.warn("Cannot write stat file: No values.");
@@ -428,14 +428,14 @@ public class Report {
             logger.warn("Cannot write stat file: No file to write to.");
             return;
         }
-        
+
         double min = values[0];
         double max = values[0];
         double average = values[0];
         double stdev = 0;
         double sum = 0;
         int samples = 1;
-        
+
         for (double d; samples < values.length; samples++) {
             if ((d = values[samples]) == Double.NaN) {
                 continue;
@@ -450,7 +450,7 @@ public class Report {
             double oldAverage = average;
             average = (oldAverage * (samples - 1) + d) / samples;
             // average = oldAverage + (d - oldAverage) / (samples + 1);
-            
+
             double diffAvg = average - oldAverage;
             if (samples == 1) {
                 stdev = 2 * diffAvg * diffAvg;
@@ -458,48 +458,48 @@ public class Report {
                 stdev = ((1.0 - 1.0 / (samples - 1)) * stdev) + samples * diffAvg * diffAvg;
             }
         }
-        
+
         try {
             category = category.replaceAll("[^a-zA-Z0-9]", ""); // Remove non alphanum chars and invalid symbols
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setInfinity("0");
             dfs.setNaN("0");
-            NumberFormat formatter = new DecimalFormat("#0.00", dfs); // Format doubles so there is no exponent
-            
+            NumberFormat formatter = new DecimalFormat("#0.000", dfs); // Format doubles so there is no exponent
+
             StringBuilder sb = new StringBuilder();
             sb.append(category).append(" SAMPLES IS ").append(formatter.format(samples - 1)).append(" ").append("samples").append(";\n");
             statsFOS.write(sb.toString().getBytes());
             logger.debug("Wrote to stat file: \"" + sb.substring(0, sb.length() - 1) + "\"");
-            
+
             sb = new StringBuilder();
             sb.append(category).append(" SUM IS ").append(formatter.format(sum)).append(" ").append(unit).append(";\n");
             statsFOS.write(sb.toString().getBytes());
             logger.debug("Wrote to stat file: \"" + sb.substring(0, sb.length() - 1) + "\"");
-            
+
             sb = new StringBuilder();
             sb.append(category).append(" MIN IS ").append(formatter.format(min)).append(" ").append(unit).append(";\n");
             statsFOS.write(sb.toString().getBytes());
             logger.debug("Wrote to stat file: \"" + sb.substring(0, sb.length() - 1) + "\"");
-            
+
             sb = new StringBuilder();
             sb.append(category).append(" MAX IS ").append(formatter.format(max)).append(" ").append(unit).append(";\n");
             statsFOS.write(sb.toString().getBytes());
             logger.debug("Wrote to stat file: \"" + sb.substring(0, sb.length() - 1) + "\"");
-            
+
             sb = new StringBuilder();
             sb.append(category).append(" AVG IS ").append(formatter.format(average)).append(" ").append(unit).append(";\n");
             statsFOS.write(sb.toString().getBytes());
             logger.debug("Wrote to stat file: \"" + sb.substring(0, sb.length() - 1) + "\"");
-            
+
             sb = new StringBuilder();
             sb.append(category).append(" STD IS ").append(formatter.format(stdev)).append(" ").append(unit).append(";\n");
             statsFOS.write(sb.toString().getBytes());
             logger.debug("Wrote to stat file: \"" + sb.substring(0, sb.length() - 1) + "\"");
-            
+
             statsFOS.flush();
         } catch (IOException e) {
             logger.warn("Cannot write stat file: IO Excetion while writing to file: " + e.getMessage());
         }
     }
-    
+
 }

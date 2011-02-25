@@ -432,6 +432,7 @@ public class Report {
         double min = values[0];
         double max = values[0];
         double average = values[0];
+        double stdev2 = 0;
         double stdev = 0;
         double sum = 0;
         int samples = 1;
@@ -453,11 +454,12 @@ public class Report {
 
             double diffAvg = average - oldAverage;
             if (samples == 1) {
-                stdev = 2 * diffAvg * diffAvg;
+                stdev2 = 2 * diffAvg * diffAvg;
             } else {
-                stdev = ((1.0 - 1.0 / (samples - 1)) * stdev) + samples * diffAvg * diffAvg;
+                stdev2 = ((1.0 - 1.0 / (samples - 1)) * stdev2) + samples * diffAvg * diffAvg;
             }
         }
+        stdev = Math.sqrt(stdev2);
 
         try {
             category = category.replaceAll("[^a-zA-Z0-9]", ""); // Remove non alphanum chars and invalid symbols

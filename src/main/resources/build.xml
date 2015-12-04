@@ -1,0 +1,80 @@
+<project name="Perf Testing Tools" basedir="." default="execPerfTest">
+    <loadproperties srcFile="perfTools.properties"/>        
+        
+
+    <fileset id="CONF_FILESET" dir="${CONF_DIR}">
+        <include name="**/*.properties"/>
+        <include name="**/*.xml"/>            
+    </fileset>        
+
+
+    <target name="execPerfTest" depends="cleanCollection,prepareCollectionOutputDirs,collectConfUsed,collectJavaProcessInfo,startSystemMeasCollection,startJavaMeasCollection,savePERF_TEST_SCRIPT">
+        <tstamp prefix="start"/>
+        <exec executable="./${PERF_TEST_SCRIPT}" spawn="false"></exec>
+        <tstamp prefix="end"/>
+        
+        <antcall target="saveSIPPStats">
+        </antcall>
+        
+        <zip destfile="./perfTest-${start.TSTAMP}.zip"
+             basedir="${DATA_COLLECTION_DIR}"/>
+    </target>
+
+    <target name="startSystemMeasCollection">
+        <!--
+iostat -x -d $MEAS_INTERVAL_SECONDS | grep -v "Device" > $DATA_COLLECTION_DIR/iostat.txt &
+netstat -s > $DATA_COLLECTION_DIR/netstatPre.txt
+        -->
+    </target>
+
+    <target name="startJavaMeasCollection">
+
+        <exec executable="jstat -gccause -t $JAVA_PID ${MEAS_INTERVAL_SECONDS}s" output="$JAVA_COLLECTION_DIR/jstat.txt">
+        </exec>
+                
+        <java classpath="com.jvmtop.JvmTop" output="$JAVA_COLLECTION_DIR/jvmtop.txt">
+            <arg value="--delay $MEAS_INTERVAL_SECONDS --stat $JAVA_PID"/>
+            <classpath>
+                <pathelement location="$JAVA_HOME/lib/tools.jar"/>
+                <pathelement location="./jvmtop.jar"/>
+            </classpath>            
+        </java>
+    </target>
+
+    <target name="collectConfUsed">
+        <copy todir="${CONF_COLLECTION_DIR}">
+            <fileset refid="CONF_FILESET"/>
+        </copy>        
+    </target>
+    
+    <target name="collectJavaProcessInfo">
+        <exec executable="ps -f -p ${JAVA_PID}" output="${META_COLLECTION_DIR}\jvmoptions.txt">
+        </exec>
+        
+        <exec executable="lsof -p ${JAVA_PID} | grep '.jar'" output="${META_COLLECTION_DIR}\jarList.txt">
+        </exec>
+    </target>
+    
+    
+    <target name="savePERF_TEST_SCRIPT">
+        <move file="${PERF_TEST_SCRIPT}" todir="${META_COLLECTION_DIR}"/>
+    </target>    
+    
+    <target name="saveSIPPStats">
+        <move file="${PERF_TEST_SCRIPT}_*_.csv" todir="${SIP_COLLECTION_DIR}"/>
+    </target>
+    
+    <target name="prepareCollectionOutputDirs">
+        <mkdir dir="${CONF_COLLECTION_DIR}"/>
+        <mkdir dir="${META_COLLECTION_DIR}"/>
+        <mkdir dir="${JAVA_COLLECTION_DIR}"/>
+        <mkdir dir="${SYS_COLLECTION_DIR}"/>
+        <mkdir dir="${SIP_COLLECTION_DIR}"/>
+    </target>
+
+    <target name="cleanCollection" description="clean previous collected data">
+        <delete dir="${DATA_COLLECTION_DIR}"/>
+    </target>
+
+
+</project>

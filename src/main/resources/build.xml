@@ -1,5 +1,19 @@
 <project name="Perf Testing Tools" basedir="." default="execPerfTest">
     <loadproperties srcFile="perfTools.properties"/>        
+    
+    <property name="DATA_COLLECTION_DIR" value="${OUTPUT_DIR}/data"></property>
+    <property name="META_COLLECTION_DIR" value="${DATA_COLLECTION_DIR}/meta"></property>
+    <property name="CONF_COLLECTION_DIR" value="${DATA_COLLECTION_DIR}/conf"></property>
+    <property name="PERIODIC_COLLECTION_DIR" value="${DATA_COLLECTION_DIR}/periodic"></property>
+    <property name="JAVA_COLLECTION_DIR" value="${PERIODIC_COLLECTION_DIR}/java"></property>
+    <property name="SYS_COLLECTION_DIR" value="${PERIODIC_COLLECTION_DIR}/sys"></property>
+    <property name="SIP_COLLECTION_DIR" value="${PERIODIC_COLLECTION_DIR}/sip"></property>
+    
+    <property name="ANALYSIS_GENERATION_DIR" value="${OUTPUT_DIR}/analysis"></property>
+    <property name="GRAPHS_DIR" value="${ANALYSIS_GENERATION_DIR}/graphs"></property>
+    <property name="STATS_DIR" value="${ANALYSIS_GENERATION_DIR}/stats"></property>
+
+   
         
 
     <fileset id="CONF_FILESET" dir="${CONF_DIR}">
@@ -8,37 +22,51 @@
     </fileset>        
 
 
-    <target name="execPerfTest" depends="cleanCollection,prepareCollectionOutputDirs,collectConfUsed,collectJavaProcessInfo,startSystemMeasCollection,startJavaMeasCollection,savePERF_TEST_SCRIPT">
+    <target name="execPerfTest" depends="killBackgroundProcesses,cleanCollection,prepareCollectionOutputDirs,collectConfUsed,collectJavaProcessInfo,savePERF_TEST_SCRIPT,startSystemMeasCollection,startJavaMeasCollection,savePERF_TEST_SCRIPT">
         <tstamp prefix="start"/>
+        <touch file="${META_COLLECTION_DIR}/startTimestamp"/>        
         <exec executable="./${PERF_TEST_SCRIPT}" spawn="false"></exec>
         <tstamp prefix="end"/>
+        <touch file="${META_COLLECTION_DIR}/endTimestamp"/>        
         
-        <antcall target="saveSIPPStats">
+
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value="netstat -s &gt; ${SYS_COLLECTION_DIR}/netstatPost.txt"/>
+        </exec>          
+        
+        <antcall target="killBackgroundProcesses">
         </antcall>
-        
+                
         <zip destfile="./perfTest-${start.TSTAMP}.zip"
              basedir="${DATA_COLLECTION_DIR}"/>
+
     </target>
 
     <target name="startSystemMeasCollection">
-        <!--
-iostat -x -d $MEAS_INTERVAL_SECONDS | grep -v "Device" > $DATA_COLLECTION_DIR/iostat.txt &
-netstat -s > $DATA_COLLECTION_DIR/netstatPre.txt
-        -->
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value="iostat -x -d ${MEAS_INTERVAL_SECONDS}  &gt; ${SYS_COLLECTION_DIR}/iostat.txt &amp;"/>
+        </exec>
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value="netstat -s &gt; ${SYS_COLLECTION_DIR}/netstatPre.txt"/>
+        </exec>                
     </target>
 
     <target name="startJavaMeasCollection">
 
-        <exec executable="jstat -gccause -t $JAVA_PID ${MEAS_INTERVAL_SECONDS}s" output="$JAVA_COLLECTION_DIR/jstat.txt">
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value="jstat -gccause -t ${JAVA_PID} ${MEAS_INTERVAL_SECONDS}s &gt; ${JAVA_COLLECTION_DIR}/jstat.txt &amp;"/>
         </exec>
+        
                 
-        <java classpath="com.jvmtop.JvmTop" output="$JAVA_COLLECTION_DIR/jvmtop.txt">
-            <arg value="--delay $MEAS_INTERVAL_SECONDS --stat $JAVA_PID"/>
-            <classpath>
-                <pathelement location="$JAVA_HOME/lib/tools.jar"/>
-                <pathelement location="./jvmtop.jar"/>
-            </classpath>            
-        </java>
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='java -cp "./jvmtop.jar:$JAVA_HOME/lib/tools.jar" com.jvmtop.JvmTop --delay ${MEAS_INTERVAL_SECONDS} --stat ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jvmtop.txt &amp;'/>
+        </exec>                                
+
     </target>
 
     <target name="collectConfUsed">
@@ -48,16 +76,22 @@ netstat -s > $DATA_COLLECTION_DIR/netstatPre.txt
     </target>
     
     <target name="collectJavaProcessInfo">
-        <exec executable="ps -f -p ${JAVA_PID}" output="${META_COLLECTION_DIR}\jvmoptions.txt">
+        <exec executable="ps" output="${META_COLLECTION_DIR}\jvmoptions.txt">
+            <arg value="-f"/>
+            <arg value="-p"/>
+            <arg value="${JAVA_PID}"/>
+            
         </exec>
         
-        <exec executable="lsof -p ${JAVA_PID} | grep '.jar'" output="${META_COLLECTION_DIR}\jarList.txt">
+        <exec executable="bash" output="${META_COLLECTION_DIR}\jarList.txt">
+            <arg value="-c"/>
+            <arg value='lsof -p ${JAVA_PID} | grep ".jar"'/>
         </exec>
     </target>
     
     
     <target name="savePERF_TEST_SCRIPT">
-        <move file="${PERF_TEST_SCRIPT}" todir="${META_COLLECTION_DIR}"/>
+        <copy file="${PERF_TEST_SCRIPT}" todir="${META_COLLECTION_DIR}"/>
     </target>    
     
     <target name="saveSIPPStats">
@@ -72,6 +106,21 @@ netstat -s > $DATA_COLLECTION_DIR/netstatPre.txt
         <mkdir dir="${SIP_COLLECTION_DIR}"/>
     </target>
 
+    <target name="killBackgroundProcesses">
+        <exec executable="killall">
+            <arg value="vmstat"/>
+        </exec>
+        <exec executable="killall">
+            <arg value="iostat"/>
+        </exec>
+        <exec executable="killall">
+            <arg value="jstat"/>
+        </exec>
+        <exec executable="killall">
+            <arg value="jvmtop"/>
+        </exec>                           
+    </target>
+    
     <target name="cleanCollection" description="clean previous collected data">
         <delete dir="${DATA_COLLECTION_DIR}"/>
     </target>

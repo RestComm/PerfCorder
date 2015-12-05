@@ -116,8 +116,10 @@
         <exec executable="killall">
             <arg value="jstat"/>
         </exec>
-        <exec executable="killall">
-            <arg value="jvmtop"/>
+        <exec executable="bash">
+            <arg value="-c"/>
+            <!-- kill all java process but the monitored one, neither ant of course -->
+            <arg value="ps -fa | grep java | grep -v ant | awk '{ print $2 }' | grep -v ${JAVA_PID} | head -n1 | xargs kill"/>
         </exec>                           
     </target>
     

@@ -14,13 +14,6 @@
     <property name="STATS_DIR" value="${ANALYSIS_GENERATION_DIR}/stats"></property>
 
    
-        
-
-    <fileset id="CONF_FILESET" dir="${CONF_DIR}">
-        <include name="**/*.properties"/>
-        <include name="**/*.xml"/>            
-    </fileset>        
-
 
     <target name="analyzeData" depends="killBackgroundProcesses,clean,prepareOutputDirs">      
         <exec executable="gnuplot">
@@ -47,7 +40,7 @@
         </exec>
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <arg value='java -jar sipp-report-0.2-SNAPSHOT-with-dependencies.jar  -a -p -o ${GRAPHS_DIR}/sippGraphs.pdf ${SIP_COLLECTION_DIR}/caller_*.csv'/>
+            <arg value='java -jar sipp-report-0.2-SNAPSHOT-with-dependencies.jar  -a -p -o ${GRAPHS_DIR}/sippGraphs.pdf ${SIP_COLLECTION_DIR}/sipstat'/>
         </exec>                                                      
     </target>
 

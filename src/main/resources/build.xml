@@ -42,11 +42,11 @@
              basedir="${DATA_COLLECTION_DIR}"/>
 
     </target>
-
+    
     <target name="startSystemMeasCollection">
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <arg value="iostat -x -d ${MEAS_INTERVAL_SECONDS}  &gt; ${SYS_COLLECTION_DIR}/iostat.txt &amp;"/>
+            <arg value="iostat -x -d ${MEAS_INTERVAL_SECONDS} | grep -v 'Device' &gt; ${SYS_COLLECTION_DIR}/iostat.txt &amp;"/>
         </exec>
         <exec executable="bash" spawn="true">
             <arg value="-c"/>

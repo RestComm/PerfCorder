@@ -35,7 +35,7 @@
         <antcall target="killBackgroundProcesses">
         </antcall>
                 
-        <zip destfile="./perfTest-${start.TSTAMP}.zip"
+        <zip destfile="./perfTest-${end.TSTAMP}.zip"
              basedir="${DATA_COLLECTION_DIR}"/>
 
     </target>

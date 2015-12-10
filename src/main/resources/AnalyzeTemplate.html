@@ -5,7 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <img src="target/analysis/graphs/memGraph.png" alt="Memory usage graph"/>
-        <img src="target/analysis/graphs/cpuGraph.png" alt="CPU usage graph"/>
+        <div id="memDiv">
+            <iframe  src="target/analysis/stats/mem.stats"></iframe>
+            <img src="target/analysis/graphs/memGraph.png" alt="Memory usage graph"/>
+        </div>
+        <div id="cpuDiv">
+            <iframe  src="target/analysis/stats/cpu.stats"></iframe>
+            <iframe  src="target/analysis/stats/gc.stats"></iframe>
+            <img src="target/analysis/graphs/cpuGraph.png" alt="CPU usage graph"/>
+        </div>
     </body>
 </html>

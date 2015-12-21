@@ -15,7 +15,7 @@
 
    
 
-    <target name="analyzeData" depends="killBackgroundProcesses,clean,prepareOutputDirs">
+    <target name="analyzeData" depends="killAnalysisProcesses, cleanAnalysis, preparecleanAnalysisOutputDirs">
         
         <!--
         cat targetDialogTimer/data/periodic/java/jvmtop.txt | awk '{print $3}' | awk -F "%" '{print $1}'
@@ -68,18 +68,18 @@
     </target>
 
     
-    <target name="prepareOutputDirs">
+    <target name="preparecleanAnalysisOutputDirs">
         <mkdir dir="${GRAPHS_DIR}"/>
         <mkdir dir="${STATS_DIR}"/>
     </target>
 
-    <target name="killBackgroundProcesses">
+    <target name="killAnalysisProcesses">
         <exec executable="killall">
             <arg value="gnuplot"/>
         </exec>
     </target>
     
-    <target name="clean" description="clean previous analysis">
+    <target name="cleanAnalysis" description="clean previous analysis">
         <delete dir="${ANALYSIS_GENERATION_DIR}"/>
     </target>
 

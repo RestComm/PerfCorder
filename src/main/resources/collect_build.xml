@@ -28,16 +28,16 @@
     </target>
     
     <target name="stop">
-
-        <tstamp prefix="end"/>
         <touch file="${META_COLLECTION_DIR}/endTimestamp"/> 
                 
         <antcall target="killBackgroundProcesses">
         </antcall>
+        
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value="netstat -s &gt; ${SYS_COLLECTION_DIR}/netstatPost.txt"/>
+        </exec>           
                 
-        <zip destfile="./perfTest-${end.TSTAMP}.zip"
-             basedir="${DATA_COLLECTION_DIR}"/>
-
     </target>
     
     <target name="startSystemMeasCollection">

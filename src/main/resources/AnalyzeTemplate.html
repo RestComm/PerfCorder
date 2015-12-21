@@ -5,7 +5,46 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <img src="target/analysis/graphs/memGraph.png" alt="Memory usage graph"/>
-        <img src="target/analysis/graphs/cpuGraph.png" alt="CPU usage graph"/>
+
+        <table border="1">
+
+            <thead>
+                <tr>
+                    <th>Meas Name</th><th>Meas Stats(sum, count,avg,median,min,max,stdDev)</th><th>Meas Graph (sum, count,avg,median,min,max,stdDev)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mem</td>
+                    <td><iframe  src="target/analysis/stats/mem.stats"></iframe></td>
+                    <td><img src="target/analysis/graphs/memGraph.png" alt="Memory usage graph"/></td>
+                </tr>
+                <tr>
+                    <td>Cpu</td>
+                    <td><iframe  src="target/analysis/stats/cpu.stats"></iframe></td>
+                    <td><img src="target/analysis/graphs/cpuGraph.png" alt="CPU usage graph"/></td>
+                </tr>
+                <tr>
+                    <td>GCCount</td>
+                    <td></td>
+                    <td><img src="target/analysis/graphs/gcCountGraph.png" alt="GC Count usage graph"/></td>
+                </tr>                 
+                <tr>
+                    <td>GCTime</td>
+                    <td></td>
+                    <td><img src="target/analysis/graphs/gcTimeGraph.png" alt="GC Time usage graph"/></td>
+                </tr>                
+                <tr>
+                    <td>IoStat</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>NetStat</td>
+                    <td></td>
+                    <td></td>
+                </tr>                    
+            </tbody>
+        </table>
     </body>
 </html>

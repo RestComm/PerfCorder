@@ -15,14 +15,35 @@
 
    
 
-    <target name="analyzeData" depends="killBackgroundProcesses,clean,prepareOutputDirs">      
+    <target name="analyzeData" depends="killAnalysisProcesses, cleanAnalysis, preparecleanAnalysisOutputDirs">
+        
+        <!--
+        cat targetDialogTimer/data/periodic/java/jvmtop.txt | awk '{print $3}' | awk -F "%" '{print $1}'
+        -->
+        <exec executable="bash">
+            <arg value="-c"/>
+            <arg value="cat ${JAVA_COLLECTION_DIR}/jvmtop.txt | awk '{print $2}' | awk -F '%' '{print $1}' | sort -n | awk -f stats.awk &gt; ${STATS_DIR}/mem.stats"/>
+        </exec>
+        <loadfile property="memStats" srcFile="${STATS_DIR}/mem.stats"/>             
+        <exec executable="bash">
+            <arg value="-c"/>
+            <arg value="cat ${JAVA_COLLECTION_DIR}/jvmtop.txt | awk '{print $3}' | awk -F '%' '{print $1}' | sort -n | awk -f stats.awk &gt; ${STATS_DIR}/cpu.stats"/>
+        </exec> 
+        <loadfile property="cpuStats" srcFile="${STATS_DIR}/cpu.stats"/>            
+        <exec executable="bash">
+            <arg value="-c"/>
+            <arg value="cat ${JAVA_COLLECTION_DIR}/jvmtop.txt | awk '{print $4}' | awk -F '%' '{print $1}' | sort -n | awk -f stats.awk &gt; ${STATS_DIR}/gc.stats"/>
+        </exec>             
+        <loadfile property="gcStats" srcFile="${STATS_DIR}/gc.stats"/>            
+        
+                      
         <exec executable="gnuplot">
             <arg value="-e"/>
-            <arg value="set output '${GRAPHS_DIR}/memGraph.png' ;set terminal png; plot '${JAVA_COLLECTION_DIR}/jvmtop.txt' using 2 title 'Heap Mem' with lines;"/>
+            <arg value="set output '${GRAPHS_DIR}/memGraph.png' ;set title '${memStats}'; set terminal png; plot '${JAVA_COLLECTION_DIR}/jvmtop.txt' using 2 title 'Heap Mem' with lines;"/>
         </exec>
         <exec executable="gnuplot">
             <arg value="-e"/>
-            <arg value="set output '${GRAPHS_DIR}/cpuGraph.png' ;set terminal png; plot '${JAVA_COLLECTION_DIR}/jvmtop.txt' using 3 title 'CPU Usage' with lines, '${JAVA_COLLECTION_DIR}/jvmtop.txt' using 4 title 'GC Usage' with lines;"/>
+            <arg value="set output '${GRAPHS_DIR}/cpuGraph.png' ;set title '${cpuStats}'; set terminal png; plot '${JAVA_COLLECTION_DIR}/jvmtop.txt' using 3 title 'CPU Usage' with lines, '${JAVA_COLLECTION_DIR}/jvmtop.txt' using 4 title 'GC Usage' with lines;"/>
         </exec>
         <!-- TODO
         <exec executable="gnuplot">
@@ -41,22 +62,24 @@
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
             <arg value='java -jar sipp-report-0.2-SNAPSHOT-with-dependencies.jar  -a -p -o ${GRAPHS_DIR}/sippGraphs.pdf ${SIP_COLLECTION_DIR}/sipstat'/>
-        </exec>                                                      
+        </exec>      
+        
+                                            
     </target>
 
     
-    <target name="prepareOutputDirs">
+    <target name="preparecleanAnalysisOutputDirs">
         <mkdir dir="${GRAPHS_DIR}"/>
         <mkdir dir="${STATS_DIR}"/>
     </target>
 
-    <target name="killBackgroundProcesses">
+    <target name="killAnalysisProcesses">
         <exec executable="killall">
             <arg value="gnuplot"/>
         </exec>
     </target>
     
-    <target name="clean" description="clean previous analysis">
+    <target name="cleanAnalysis" description="clean previous analysis">
         <delete dir="${ANALYSIS_GENERATION_DIR}"/>
     </target>
 

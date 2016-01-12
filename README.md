@@ -16,33 +16,34 @@ Finally the tool will package all the collected and analysed data into a single 
 
 The tool encourages a default directory layout following Maven convention over configuration principles. 
 This is the current dir layout:
-*target
 
-    *--->data
+target
 
-        *--->meta (decicated to save information about the performance test itself)
+    --->data
 
-            *---><start/endTime>
+        --->meta (decicated to save information about the performance test itself)
 
-            *---><copyOfsippScript>
+            ---><start/endTime>
 
-            *---><jar files mounted by java process>
+            ---><copyOfsippScript>
 
-            *---><JVM options used to start the java process>
+            ---><jar files mounted by java process>
 
-        *--->conf (save files that change java process behavior)
+            ---><JVM options used to start the java process>
 
-        *--->periodic (save perf data every N seconds)
+        --->conf (save files that change java process behavior)
 
-            *--->sys
+        --->periodic (save perf data every N seconds)
 
-            *--->java
+            --->sys
 
-            *--->sip
+            --->java
 
-    *--->analysis
+            --->sip
 
-        *--->stats (deliver basic stats over periodic data collected, min/max/avg/stdDev/median)
+    --->analysis
+
+        --->stats (deliver basic stats over periodic data collected, min/max/avg/stdDev/median)
 
         *--->graphs (deliver combined graphs to visualize periodic data, includes stats as title)
 

@@ -138,8 +138,8 @@
         <exec executable="killall">
             <arg value="jstat"/>
         </exec>
-        <exec executable="tshark">
-            <arg value="jstat"/>
+        <exec executable="killall">
+            <arg value="tshark"/>
         </exec>
 
         <exec executable="bash">

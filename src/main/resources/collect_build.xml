@@ -67,7 +67,7 @@
         </exec>           
     </target>   
     
-    <target name="savePostNetstat" if="HEAP_DUMP_ENABLED">
+    <target name="savePostNetstat">
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
             <arg value="netstat -s &gt; ${SYS_COLLECTION_DIR}/netstatPost.txt"/>

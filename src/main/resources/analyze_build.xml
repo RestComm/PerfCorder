@@ -1,4 +1,4 @@
-<project name="Perf Testing Tools" basedir="." default="analyzeData">
+<project name="AnalyzeTool" basedir="." default="analyzeData">
     <loadproperties srcFile="perfTools.properties"/>        
     
     <property name="DATA_COLLECTION_DIR" value="${OUTPUT_DIR}/data"></property>
@@ -16,7 +16,11 @@
    
 
     <target name="analyzeData" depends="killAnalysisProcesses, cleanAnalysis, preparecleanAnalysisOutputDirs">
-        
+        <antcall target="generateGraphs"></antcall>
+          
+    </target>
+    
+    <target name="generateStats">
         <!--
         cat targetDialogTimer/data/periodic/java/jvmtop.txt | awk '{print $3}' | awk -F "%" '{print $1}'
         -->
@@ -34,9 +38,10 @@
             <arg value="-c"/>
             <arg value="cat ${JAVA_COLLECTION_DIR}/jvmtop.txt | awk '{print $4}' | awk -F '%' '{print $1}' | sort -n | awk -f stats.awk &gt; ${STATS_DIR}/gc.stats"/>
         </exec>             
-        <loadfile property="gcStats" srcFile="${STATS_DIR}/gc.stats"/>            
-        
-                      
+        <loadfile property="gcStats" srcFile="${STATS_DIR}/gc.stats"/>          
+    </target>
+    
+    <target name="generateGraphs" depends="generateStats" >
         <exec executable="gnuplot">
             <arg value="-e"/>
             <arg value="set output '${GRAPHS_DIR}/memGraph.png' ;set title '${memStats}'; set terminal png; plot '${JAVA_COLLECTION_DIR}/jvmtop.txt' using 2 title 'Heap Mem' with lines;"/>
@@ -62,10 +67,8 @@
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
             <arg value='java -jar sipp-report-0.2-SNAPSHOT-with-dependencies.jar  -a -p -o ${GRAPHS_DIR}/sippGraphs.pdf ${SIP_COLLECTION_DIR}/sipstat'/>
-        </exec>      
-        
-                                            
-    </target>
+        </exec>          
+    </target>    
 
     
     <target name="preparecleanAnalysisOutputDirs">

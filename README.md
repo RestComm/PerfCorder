@@ -14,6 +14,24 @@ Analyse target will create stats and graphs about the recorded data to help you 
 
 Finally the tool will package all the collected and analysed data into a single zip file.
 
+The tool encourages a default directory layout following Maven convention over configuration principles. 
+This is the current dir layout:
+target
+--->data
+    --->meta (decicated to save information about the performance test itself)
+        ---><start/endTime>
+        ---><copyOfsippScript>
+        ---><jar files mounted by java process>
+        ---><JVM options used to start the java process>
+    --->conf (save files that change java process behavior)
+    --->periodic (save perf data every N seconds)
+        --->sys
+        --->java
+        --->sip
+--->analysis
+    --->stats (deliver basic stats over periodic data collected, min/max/avg/stdDev/median)
+    --->graphs (deliver combined graphs to visualize periodic data, includes stats as title)
+
 Documentation
 ========
 How to run:
@@ -33,6 +51,7 @@ How to make SIPP produce statistics files
 2 - This will produce a .csv file that can be used by this tool
 
 How to run collect/analysis tool:
+
 1 - Install prerequesites (sysstat, jmvtop, gnuplot)
 2 - Copy resources folder to where your sipp script is located
 3 - Modify perfTools.properties ans set (Java PID, sipp script filename, folder where java conf is saved...).

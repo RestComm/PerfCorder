@@ -1,4 +1,4 @@
-<project name="Perf Testing Tools" basedir="." default="analyzeData">
+<project name="AnalyzeTool" basedir="." default="analyzeData">
     <loadproperties srcFile="perfTools.properties"/>        
     
     <property name="DATA_COLLECTION_DIR" value="${OUTPUT_DIR}/data"></property>

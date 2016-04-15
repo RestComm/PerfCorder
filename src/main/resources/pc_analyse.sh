@@ -13,6 +13,6 @@ if [ ! -f "$TOOLSJAR" ] ; then
         exit 1
 fi
 
-"$JAVA_HOME"/bin/java $JAVA_OPTS -cp "$DIR/sipp-report*.jar:$TOOLSJAR" \
-org.restcomm.perfcorder.analyzer.PerfCorderTesterApp "$@"
+"$JAVA_HOME"/bin/java $JAVA_OPTS -cp "$DIR/sipp-report-0.2-SNAPSHOT-with-dependencies.jar.jar:$TOOLSJAR" \
+org.restcomm.perfcorder.analyzer.PerfCorderAnalyzeApp "$@"
 exit $?

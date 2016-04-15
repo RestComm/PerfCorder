@@ -79,12 +79,12 @@
                 
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <arg value='./jvmstat.sh --delay ${MEAS_INTERVAL_SECONDS} --stat ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jvmtop.txt &amp;'/>
+            <arg value='./jvmstat.sh -d ${MEAS_INTERVAL_SECONDS} ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jvmtop.txt &amp;'/>
         </exec>
         
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <arg value='./jgcstat.sh --delay ${MEAS_INTERVAL_SECONDS} --stat ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jgcstat.txt &amp;'/>
+            <arg value='./jgcstat.sh -d ${MEAS_INTERVAL_SECONDS} ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jgcstat.txt &amp;'/>
         </exec>                                                                          
 
     </target>
@@ -100,9 +100,13 @@
             <arg value="-f"/>
             <arg value="-p"/>
             <arg value="${JAVA_PID}"/>
-            
         </exec>
-        
+
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='./jvmdump.sh ${JAVA_PID} &gt; ${META_COLLECTION_DIR}/jvmdump.txt'/>
+        </exec> 
+                
         <exec executable="bash" output="${META_COLLECTION_DIR}\jarList.txt">
             <arg value="-c"/>
             <arg value='lsof -p ${JAVA_PID} | grep ".jar"'/>
@@ -111,11 +115,11 @@
     
     
     <target name="savePERF_TEST_SCRIPT">
-        <copy file="${PERF_TEST_SCRIPT}" todir="${META_COLLECTION_DIR}"/>
+        <copy file="${PERF_TEST_SCRIPT}" todir="${META_COLLECTION_DIR}" failonerror="false"/>
     </target>    
     
     <target name="saveSIPPStats">
-        <move file="${PERF_TEST_SCRIPT}_*_.csv" todir="${SIP_COLLECTION_DIR}"/>
+        <move file="${PERF_TEST_SCRIPT}_*_.csv" todir="${SIP_COLLECTION_DIR}" failonerror="false"/>
     </target>
     
     <target name="prepareCollectionOutputDirs">
@@ -140,17 +144,18 @@
             <arg value="tshark"/>
         </exec>
         <exec executable="killall">
-            <arg value="jgcstat.sh"/>
-        </exec>
-        <exec executable="killall">
-            <arg value="jvmstat.sh"/>
-        </exec>
-        <exec executable="killall">
             <arg value="netstat"/>
-        </exec>         
-              
-
-                          
+        </exec>   
+        
+                
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='cat ./jgcstat.pid | xargs kill'/>
+        </exec> 
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='cat ./jvmstat.pid | xargs kill'/>
+        </exec>                                          
     </target>
     
     <target name="cleanCollection" description="clean previous collected data">

@@ -14,5 +14,6 @@ if [ ! -f "$TOOLSJAR" ] ; then
 fi
 
 "$JAVA_HOME"/bin/java $JAVA_OPTS -cp "$DIR/sipp-report-0.2-SNAPSHOT-with-dependencies.jar:$TOOLSJAR" \
-org.restcomm.perfcorder.collector.GCPausePrinter "$@"
+org.restcomm.perfcorder.collector.GCPausePrinter "$@" &
+echo $! > jgcstat.pid
 exit $?

@@ -6,10 +6,16 @@
         <xsl:param name = "thresholdValue" />
         <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
             <xsl:if test="text()>$thresholdValue">
-                <failure message="{$caseName} lessThan violated.">
+                <failure message="{$caseName} lessThan {$thresholdValue} violated.">
                     <xsl:value-of select="."/>
                 </failure>          
             </xsl:if>
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;&lt;xsl:value-of select="$caseName"/&gt;&lt;/name&gt;
+                    &lt;value&gt;&lt;xsl:value-of select="."/&gt;&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
         </testcase>
     </xsl:template>
     
@@ -18,7 +24,7 @@
         <xsl:param name = "thresholdValue" />
         <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
             <xsl:if test="text() &lt; $thresholdValue">
-                <failure message="{$caseName} biggerThan violated.">
+                <failure message="{$caseName} biggerThan {$thresholdValue} violated.">
                     <xsl:value-of select="."/>
                 </failure>          
             </xsl:if>

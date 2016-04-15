@@ -11,10 +11,10 @@
                 </failure>          
             </xsl:if>
             <system-out>
-                <measurement>
-                    <name><xsl:value-of select="$caseName"/></name>
-                    <value><xsl:value-of select="."/></value>
-                </measurement>
+                &lt;measurement&gt;
+                    &lt;name&gt;&lt;xsl:value-of select="$caseName"/&gt;&lt;/name&gt;
+                    &lt;value&gt;&lt;xsl:value-of select="."/&gt;&lt;/value&gt;
+                &lt;/measurement&gt;
             </system-out>
         </testcase>
     </xsl:template>

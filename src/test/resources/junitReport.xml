@@ -1,6 +1,11 @@
-<testsuite>
-    <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="CPUMedian">
-        <failure message="CPUMedian lessThan violated.">1.78</failure>
-    </testcase>
-    <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="MemMin"/>
-</testsuite>
+<testsuite><testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="CPUMedian"><failure message="CPUMedian lessThan 1 violated.">1.78</failure><system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;&lt;xsl:value-of select="$caseName"/&gt;&lt;/name&gt;
+                    &lt;value&gt;&lt;xsl:value-of select="."/&gt;&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out></testcase><testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="MemMin"><system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;&lt;xsl:value-of select="$caseName"/&gt;&lt;/name&gt;
+                    &lt;value&gt;&lt;xsl:value-of select="."/&gt;&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out></testcase></testsuite>

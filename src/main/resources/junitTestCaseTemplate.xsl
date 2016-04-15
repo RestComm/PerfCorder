@@ -10,6 +10,12 @@
                     <xsl:value-of select="."/>
                 </failure>          
             </xsl:if>
+            <system-out>
+                <measurement>
+                    <name><xsl:value-of select="$caseName"/></name>
+                    <value><xsl:value-of select="."/></value>
+                </measurement>
+            </system-out>
         </testcase>
     </xsl:template>
     

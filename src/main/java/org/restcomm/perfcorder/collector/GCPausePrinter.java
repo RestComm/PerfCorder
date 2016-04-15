@@ -8,13 +8,16 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 import javax.management.Notification;
 import javax.management.NotificationEmitter;
 import javax.management.NotificationListener;
 import javax.management.openmbean.CompositeData;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.restcomm.perfcorder.analyzer.PerfCorderTesterApp;
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
 
 /**
@@ -24,7 +27,7 @@ import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
  */
 public class GCPausePrinter {
 
-    private static Logger logger;
+    private static Logger logger =org.apache.log4j.Logger.getLogger(GCPausePrinter.class.getName());
 
     private static OptionParser createOptionParser() {
         OptionParser parser = new OptionParser();
@@ -95,7 +98,8 @@ public class GCPausePrinter {
 
     public static void main(String[] args) throws Exception {
         Locale.setDefault(Locale.US);
-
+        org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
+        logger.setLevel(org.apache.log4j.Level.INFO);
         logger = Logger.getLogger("perfcorder");
 
         OptionParser parser = createOptionParser();

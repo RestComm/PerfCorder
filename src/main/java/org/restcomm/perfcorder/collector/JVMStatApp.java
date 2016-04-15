@@ -17,7 +17,7 @@ import joptsimple.OptionSet;
  *
  *
  */
-public class PerfCorderCollector
+public class JVMStatApp
 {
 
   private Double                                     delay_                  = 1.0;
@@ -51,7 +51,7 @@ public class PerfCorderCollector
   {
     Locale.setDefault(Locale.US);
 
-    logger = Logger.getLogger("perfcorder");
+    logger = Logger.getLogger("JVMStatApp");
 
     OptionParser parser = createOptionParser();
     OptionSet a = parser.parse(args);
@@ -96,7 +96,7 @@ public class PerfCorderCollector
       pid = (Integer) a.valueOf("pid");
     }
     
-    PerfCorderCollector collector = new PerfCorderCollector();
+    JVMStatApp collector = new JVMStatApp();
     collector.setDelay(delay);
     collector.setMaxIterations(iterations);
     collector.run(new VMDetailStatView(pid, null));
@@ -142,7 +142,7 @@ public class PerfCorderCollector
       System.err.println("");
     }
   }
-  public PerfCorderCollector()
+  public JVMStatApp()
   {
   }
 

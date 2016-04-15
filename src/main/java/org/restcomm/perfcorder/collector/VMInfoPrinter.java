@@ -1,9 +1,5 @@
 package org.restcomm.perfcorder.collector;
 
-import java.io.BufferedOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Logger;

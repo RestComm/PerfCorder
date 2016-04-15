@@ -147,7 +147,7 @@ public class GCPausePrinter {
         }
 
         //register a shutdown hook so process is stopped gracefully
-        Runtime.getRuntime().addShutdownHook(new Thread() {
+        Runtime.getRuntime().addShutdownHook(new Thread("StopPrinterHook") {
             @Override
             public void run() {
                 shutdown = true;

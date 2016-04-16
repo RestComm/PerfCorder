@@ -12,8 +12,8 @@
             </xsl:if>
             <system-out>
                 &lt;measurement&gt;
-                    &lt;name&gt;&lt;xsl:value-of select="$caseName"/&gt;&lt;/name&gt;
-                    &lt;value&gt;&lt;xsl:value-of select="."/&gt;&lt;/value&gt;
+                    &lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;
+                    &lt;value&gt;<xsl:value-of select="."/>&lt;/value&gt;
                 &lt;/measurement&gt;
             </system-out>
         </testcase>
@@ -28,6 +28,12 @@
                     <xsl:value-of select="."/>
                 </failure>          
             </xsl:if>
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;
+                    &lt;value&gt;<xsl:value-of select="."/>&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>            
         </testcase>
     </xsl:template> 
 </xsl:stylesheet>

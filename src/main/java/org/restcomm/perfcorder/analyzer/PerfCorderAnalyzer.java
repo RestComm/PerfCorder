@@ -19,7 +19,7 @@ import org.mobicents.qa.report.sipp.OpenCsvReader;
 public final class PerfCorderAnalyzer {
 
     private final Map<String, InputStream> uncompressZip;
-    private static final List<String> FILES = new ArrayList();
+    private static final List<AnalysisFileTarget> FILES = new ArrayList();
     private static final Map<String, List<AnalysisMeasTarget>> TARGETS = new HashMap();
 
     /**
@@ -29,19 +29,27 @@ public final class PerfCorderAnalyzer {
     private final int linesToStrip;
 
     static {
-        FILES.add("data/periodic/java/jvmtop.txt");
+        FILES.add(new AnalysisFileTarget("data/periodic/java/jvmtop.txt", ' ', false));
         List<AnalysisMeasTarget> jvmTargets = new ArrayList<>();
         jvmTargets.add(new AnalysisMeasTarget("Mem", 3));
         jvmTargets.add(new AnalysisMeasTarget("Cpu", 5));
         TARGETS.put("data/periodic/java/jvmtop.txt", jvmTargets);
-        
-        FILES.add("data/periodic/sip/sipp.csv");        
+
+        FILES.add(new AnalysisFileTarget("data/periodic/sip/sipp.csv",';',true));
         List<AnalysisMeasTarget> sipTargets = new ArrayList<>();
         sipTargets.add(new AnalysisMeasTarget("SIPSuccessCalls", 14));
         sipTargets.add(new AnalysisMeasTarget("SIPFailedCalls", 16));
         sipTargets.add(new AnalysisMeasTarget("SIPRetransmissions", 44));
         TARGETS.put("data/periodic/sip/sipp.csv", sipTargets);
-        
+
+        FILES.add(new AnalysisFileTarget("data/periodic/java/jgcstat.txt", ',', false));
+        List<AnalysisMeasTarget> jgcTargets = new ArrayList<>();
+        jgcTargets.add(new AnalysisMeasTarget("GcPauseDuration", 0));
+        jgcTargets.add(new AnalysisMeasTarget("GcMemBefore", 1));
+        jgcTargets.add(new AnalysisMeasTarget("GcMemAfter", 2));
+
+        TARGETS.put("data/periodic/java/jgcstat.txt", jgcTargets);
+
     }
 
     public PerfCorderAnalyzer(InputStream zipFile, int linesToStrip) throws FileNotFoundException, IOException {
@@ -51,8 +59,8 @@ public final class PerfCorderAnalyzer {
 
     public PerfCorderAnalysis analyze() throws IOException {
         PerfCorderAnalysis perfCorderAnalysis = new PerfCorderAnalysis();
-        for (String file : FILES) {
-            Map<AnalysisMeasTarget, DescriptiveStatistics> results = analyzeTarget(file, TARGETS.get(file));
+        for (AnalysisFileTarget file : FILES) {
+            Map<AnalysisMeasTarget, DescriptiveStatistics> results = analyzeTarget(file, TARGETS.get(file.getPath()));
             for (AnalysisMeasTarget key : results.keySet()) {
                 AnalysisMeasResults measResults = transformIntoResults(results.get(key));
                 perfCorderAnalysis.addMeas(key, measResults);
@@ -83,29 +91,35 @@ public final class PerfCorderAnalyzer {
         return results;
     }
 
-    private Map<AnalysisMeasTarget, DescriptiveStatistics> analyzeTarget(String fileName, List<AnalysisMeasTarget> targets) throws IOException {
+    private Map<AnalysisMeasTarget, DescriptiveStatistics> analyzeTarget(AnalysisFileTarget file, List<AnalysisMeasTarget> targets) throws IOException {
         Map<AnalysisMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
-        InputStream in = uncompressZip.get(fileName);
-        InputStreamReader reader = new InputStreamReader(in);
-        OpenCsvReader csvReader = new OpenCsvReader(reader, ' ', '"', linesToStrip);
-        for (AnalysisMeasTarget target : targets) {
-            statsMap.put(target, new DescriptiveStatistics());
-        }
-        List<String[]> readAll = csvReader.readAll();
-
-        for (int i = 0; i < readAll.size() - linesToStrip; i++) {
-            String[] readNext = readAll.get(i);
-            for (int j = 0; j < targets.size(); j++) {
-                AnalysisMeasTarget target = targets.get(j);
-                int column = target.getColumn();
-                String nextCol = readNext[column];
-                double nexValue = target.transformIntoDouble(nextCol);
-                if (nexValue != AnalysisMeasTarget.INVALID_STRING) {
-                    DescriptiveStatistics stats = statsMap.get(target);
-                    stats.addValue(nexValue);
-                }
+        InputStream in = uncompressZip.get(file.getPath());
+        if (in != null) {
+            InputStreamReader reader = new InputStreamReader(in);
+            int stripWithHeader = linesToStrip;
+            if (file.isHeaderIncluded()) {
+                stripWithHeader = stripWithHeader + 1;
             }
-        };
+            OpenCsvReader csvReader = new OpenCsvReader(reader, file.getSeparator(), '"' , stripWithHeader);
+            for (AnalysisMeasTarget target : targets) {
+                statsMap.put(target, new DescriptiveStatistics());
+            }
+            List<String[]> readAll = csvReader.readAll();
+
+            for (int i = 0; i < readAll.size() - linesToStrip; i++) {
+                String[] readNext = readAll.get(i);
+                for (int j = 0; j < targets.size(); j++) {
+                    AnalysisMeasTarget target = targets.get(j);
+                    int column = target.getColumn();
+                    String nextCol = readNext[column];
+                    double nexValue = target.transformIntoDouble(nextCol);
+                    if (nexValue != AnalysisMeasTarget.INVALID_STRING) {
+                        DescriptiveStatistics stats = statsMap.get(target);
+                        stats.addValue(nexValue);
+                    }
+                }
+            };
+        }
         return statsMap;
     }
 }

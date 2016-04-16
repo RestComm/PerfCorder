@@ -42,7 +42,7 @@
         </exec>
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <arg value="netstat -s ${MEAS_INTERVAL_SECONDS} &gt; ${SYS_COLLECTION_DIR}/netstat.txt"/>
+            <arg value="netstat -s ${MEAS_INTERVAL_SECONDS} &gt; ${SYS_COLLECTION_DIR}/netstat.txt &amp;"/>
         </exec>                
     </target>
 

@@ -55,7 +55,7 @@
     </target>
     
     <target name="saveServerLogs" if="SERVER_LOG_DIR">
-        <copy todir="${CONF_COLLECTION_DIR}">
+        <copy todir="${CONF_COLLECTION_DIR}" failonerror="false">
             <fileset refid="SERVER_LOG_FILESET"/>
         </copy>             
     </target>
@@ -90,7 +90,7 @@
     </target>
 
     <target name="collectConfUsed">
-        <copy todir="${CONF_COLLECTION_DIR}">
+        <copy todir="${CONF_COLLECTION_DIR}" failonerror="false">
             <fileset refid="CONF_FILESET"/>
         </copy>        
     </target>

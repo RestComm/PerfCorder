@@ -17,7 +17,6 @@ import joptsimple.OptionSet;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
-import org.restcomm.perfcorder.analyzer.PerfCorderTesterApp;
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
 
 /**
@@ -27,7 +26,7 @@ import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
  */
 public class GCPausePrinter {
 
-    private static Logger logger =org.apache.log4j.Logger.getLogger(GCPausePrinter.class.getName());
+    private static Logger logger = org.apache.log4j.Logger.getLogger(GCPausePrinter.class.getName());
 
     private static OptionParser createOptionParser() {
         OptionParser parser = new OptionParser();
@@ -47,6 +46,8 @@ public class GCPausePrinter {
 
         return parser;
     }
+    
+    private static final int BYTES_PER_MEGA = 1000000;
 
     static class GCListener implements NotificationListener {
         //implement the notifier callback handler
@@ -79,6 +80,10 @@ public class GCPausePrinter {
                     memUsedBefore = memUsedBefore + before.getUsed();
                     memUsedAfter = memUsedAfter + memdetail.getUsed();
                 }
+
+                //convert mem from bytes into M
+                memUsedBefore = memUsedBefore / BYTES_PER_MEGA;
+                memUsedAfter = memUsedAfter / BYTES_PER_MEGA;
 
                 String format = String.format("%d,%d,%d,%s,%d,%s,%s,%d, %d", duration,
                         memUsedBefore,
@@ -118,7 +123,7 @@ public class GCPausePrinter {
         Integer iterations = Integer.MAX_VALUE;
 
         if (a.hasArgument("delay")) {
-            delay =  (Integer) (a.valueOf("delay"));
+            delay = (Integer) (a.valueOf("delay"));
             if (delay < 1) {
                 throw new IllegalArgumentException("Delay cannot be set below 1");
             }

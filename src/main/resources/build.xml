@@ -14,4 +14,13 @@
         <zip destfile="./perfTest-${end.TSTAMP}.zip"
              basedir="${OUTPUT_DIR}"/>                    
     </target>
+    
+    <target name="stopAndCompress">
+        <tstamp prefix="end"/>
+        
+        <antcall target="stop"></antcall>
+        
+        <zip destfile="./perfTest-${end.TSTAMP}.zip"
+             basedir="${OUTPUT_DIR}"/>                    
+    </target>    
 </project>

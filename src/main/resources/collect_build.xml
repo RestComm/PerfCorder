@@ -31,7 +31,7 @@
         <touch file="${META_COLLECTION_DIR}/startTimestamp"/>
     </target>
     
-    <target name="stop" depends="killBackgroundProcesses, saveServerLogs, saveHeapDump, savePostNetstat">
+    <target name="stop" depends="killBackgroundProcesses, saveServerLogs, saveHeapDump">
         <touch file="${META_COLLECTION_DIR}/endTimestamp"/> 
     </target>
     
@@ -42,7 +42,7 @@
         </exec>
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <arg value="netstat -s &gt; ${SYS_COLLECTION_DIR}/netstatPre.txt"/>
+            <arg value="netstat -s ${MEAS_INTERVAL_SECONDS} &gt; ${SYS_COLLECTION_DIR}/netstat.txt"/>
         </exec>                
     </target>
 
@@ -67,13 +67,6 @@
         </exec>           
     </target>   
     
-    <target name="savePostNetstat">
-        <exec executable="bash" spawn="true">
-            <arg value="-c"/>
-            <arg value="netstat -s &gt; ${SYS_COLLECTION_DIR}/netstatPost.txt"/>
-        </exec>          
-    </target>        
-    
     
 
     <target name="startJavaMeasCollection">
@@ -86,8 +79,13 @@
                 
         <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <arg value='java -cp "./jvmtop.jar:$JAVA_HOME/lib/tools.jar" com.jvmtop.JvmTop --delay ${MEAS_INTERVAL_SECONDS} --stat ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jvmtop.txt &amp;'/>
-        </exec>                                
+            <arg value='./jvmstat.sh -d ${MEAS_INTERVAL_SECONDS} ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jvmtop.txt &amp;'/>
+        </exec>
+        
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='./jgcstat.sh -d ${MEAS_INTERVAL_SECONDS} ${JAVA_PID} &gt; ${JAVA_COLLECTION_DIR}/jgcstat.txt &amp;'/>
+        </exec>                                                                          
 
     </target>
 
@@ -102,9 +100,13 @@
             <arg value="-f"/>
             <arg value="-p"/>
             <arg value="${JAVA_PID}"/>
-            
         </exec>
-        
+
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='./jvmdump.sh ${JAVA_PID} &gt; ${META_COLLECTION_DIR}/jvmdump.txt'/>
+        </exec> 
+                
         <exec executable="bash" output="${META_COLLECTION_DIR}\jarList.txt">
             <arg value="-c"/>
             <arg value='lsof -p ${JAVA_PID} | grep ".jar"'/>
@@ -113,11 +115,11 @@
     
     
     <target name="savePERF_TEST_SCRIPT">
-        <copy file="${PERF_TEST_SCRIPT}" todir="${META_COLLECTION_DIR}"/>
+        <copy file="${PERF_TEST_SCRIPT}" todir="${META_COLLECTION_DIR}" failonerror="false"/>
     </target>    
     
     <target name="saveSIPPStats">
-        <move file="${PERF_TEST_SCRIPT}_*_.csv" todir="${SIP_COLLECTION_DIR}"/>
+        <move file="${PERF_TEST_SCRIPT}_*_.csv" todir="${SIP_COLLECTION_DIR}" failonerror="false"/>
     </target>
     
     <target name="prepareCollectionOutputDirs">
@@ -141,12 +143,19 @@
         <exec executable="killall">
             <arg value="tshark"/>
         </exec>
-
-        <exec executable="bash">
+        <exec executable="killall">
+            <arg value="netstat"/>
+        </exec>   
+        
+                
+        <exec executable="bash" spawn="true">
             <arg value="-c"/>
-            <!-- kill all java process but the monitored one, neither ant of course -->
-            <arg value="ps -fa | grep java | grep -v ant | awk '{ print $2 }' | grep -v ${JAVA_PID} | head -n1 | xargs kill"/>
-        </exec>                           
+            <arg value='cat ./jgcstat.pid | xargs kill'/>
+        </exec> 
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='cat ./jvmstat.pid | xargs kill'/>
+        </exec>                                          
     </target>
     
     <target name="cleanCollection" description="clean previous collected data">

@@ -34,6 +34,14 @@ public final class PerfCorderAnalyzer {
         jvmTargets.add(new AnalysisMeasTarget("Mem", 3));
         jvmTargets.add(new AnalysisMeasTarget("Cpu", 5));
         TARGETS.put("data/periodic/java/jvmtop.txt", jvmTargets);
+        
+        FILES.add("data/periodic/sip/sipp.csv");        
+        List<AnalysisMeasTarget> sipTargets = new ArrayList<>();
+        sipTargets.add(new AnalysisMeasTarget("SIPSuccessCalls", 14));
+        sipTargets.add(new AnalysisMeasTarget("SIPFailedCalls", 16));
+        sipTargets.add(new AnalysisMeasTarget("SIPRetransmissions", 44));
+        TARGETS.put("data/periodic/sip/sipp.csv", sipTargets);
+        
     }
 
     public PerfCorderAnalyzer(InputStream zipFile, int linesToStrip) throws FileNotFoundException, IOException {
@@ -60,8 +68,18 @@ public final class PerfCorderAnalyzer {
         results.setPercentile5(stats.getPercentile(5));
         results.setPercentile25(stats.getPercentile(25));
         results.setMedian(stats.getPercentile(50));
-        results.setPercentile75(stats.getPercentile(70));
-        results.setPercentile95(stats.getPercentile(90));
+        results.setPercentile75(stats.getPercentile(75));
+        results.setPercentile95(stats.getPercentile(95));
+        results.setSum(stats.getSum());
+        results.setSumSquares(stats.getSumsq());
+        results.setMean(stats.getMean());
+        results.setCount(stats.getN());
+        results.setStdDev(stats.getStandardDeviation());
+        results.setVariance(stats.getVariance());
+        results.setKurtosis(stats.getKurtosis());
+        results.setSkewness(stats.getSkewness());
+        results.setGeometricMean(stats.getGeometricMean());
+        results.setQuadraticMean(stats.getQuadraticMean());
         return results;
     }
 

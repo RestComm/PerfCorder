@@ -37,6 +37,8 @@ public final class PerfCorderAnalyzer {
 
         FILES.add(new AnalysisFileTarget("data/periodic/sip/sipp.csv",';',true));
         List<AnalysisMeasTarget> sipTargets = new ArrayList<>();
+        sipTargets.add(new AnalysisMeasTarget("SIPTotalCallCreated", 12));
+        sipTargets.add(new AnalysisMeasTarget("SIPCurrentCall", 13));
         sipTargets.add(new AnalysisMeasTarget("SIPSuccessCalls", 14));
         sipTargets.add(new AnalysisMeasTarget("SIPFailedCalls", 16));
         sipTargets.add(new AnalysisMeasTarget("SIPRetransmissions", 44));

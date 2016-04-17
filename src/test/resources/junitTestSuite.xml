@@ -1,9 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.restcomm.perfcorder.PerfCorderAnalyzerTest" time="1" errors="0" failures="1" skips="0" tests="2">
+<?xml version="1.0" encoding="UTF-8"?><testsuite name="org.restcomm.perfcorder.PerfCorderAnalyzerTest" errors="0" failures="2" skips="0" tests="7">
     <testsuite>
         <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="CPUMedian">
-            <failure message="CPUMedian lessThan violated.">1.78</failure>
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;CPUMedian&lt;/name&gt;
+                    &lt;value&gt;0.62&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
         </testcase>
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="MemMin"/>
+        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="MemMin">
+            <failure message="MemMin lessThan 500 violated.">1787.0</failure>
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;MemMin&lt;/name&gt;
+                    &lt;value&gt;1787.0&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
+        </testcase>
+        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="GcMemAfterMin">
+            <failure message="GcMemAfterMin lessThan 500 violated.">1.30524824E8</failure>
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;GcMemAfterMin&lt;/name&gt;
+                    &lt;value&gt;1.30524824E8&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
+        </testcase>
+        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="GcPauseDurationMedian">
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;GcPauseDurationMedian&lt;/name&gt;
+                    &lt;value&gt;203.0&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
+        </testcase>
+        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="SIPTotalCallCreatedSum">
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;SIPTotalCallCreatedSum&lt;/name&gt;
+                    &lt;value&gt;36459.0&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
+        </testcase>
+        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="SIPFailedCallsSum">
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;SIPFailedCallsSum&lt;/name&gt;
+                    &lt;value&gt;0.0&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
+        </testcase>
+        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="SIPRetransmissionsSum">
+            <system-out>
+                &lt;measurement&gt;
+                    &lt;name&gt;SIPRetransmissionsSum&lt;/name&gt;
+                    &lt;value&gt;0.0&lt;/value&gt;
+                &lt;/measurement&gt;
+            </system-out>
+        </testcase>
     </testsuite>
 </testsuite>

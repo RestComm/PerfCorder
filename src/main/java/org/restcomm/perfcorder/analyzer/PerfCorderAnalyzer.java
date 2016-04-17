@@ -43,6 +43,11 @@ public final class PerfCorderAnalyzer {
         sipTargets.add(new AnalysisMeasTarget("SIPFailedCalls", 16));
         sipTargets.add(new AnalysisMeasTarget("SIPRetransmissions", 44));
         TARGETS.put("data/periodic/sip/sipp.csv", sipTargets);
+        
+        FILES.add(new AnalysisFileTarget("data/periodic/sip/sipp_rtt.csv",';',true));
+        List<AnalysisMeasTarget> sipResTargets = new ArrayList<>();
+        sipResTargets.add(new AnalysisMeasTarget("SIPResponseTime", 2));
+        TARGETS.put("data/periodic/sip/sipp_rtt.csv", sipResTargets);        
 
         FILES.add(new AnalysisFileTarget("data/periodic/java/jgcstat.txt", ',', false));
         List<AnalysisMeasTarget> jgcTargets = new ArrayList<>();

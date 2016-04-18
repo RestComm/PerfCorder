@@ -99,11 +99,11 @@ How to run test tool:
 
 Coming Soon
 ========
--Diff script to compare different collection files.
+- Diff script to compare different collection files.
 
--HTML summary view generation from analysis file.
+- HTML summary view generation from analysis file.
 
--Publish REST API for cloud deployment.
+- Publish REST API for cloud deployment.
 
 Want to Contribute ? 
 ========

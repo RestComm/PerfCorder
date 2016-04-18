@@ -66,9 +66,9 @@ How to make SIPP produce statistics files
 
 2. This will produce a .csv file that can be used by this tool
 
-How to run collect/analysis tool:
+How to run collect tool:
 
-1. Install prerequesites (sysstat, jmvtop, gnuplot)
+1. Install prerequesites (sysstat, java, ant)
 
 2. Copy resources folder to where your sipp script is located
 
@@ -78,9 +78,26 @@ How to run collect/analysis tool:
 
 5. Run your sipp script
 
-6. When the test is finished, Run 'ant analyzeAndStop'
+6. When the test is finished, Run 'ant stopAndCompress'
 
-7. All collected data can be found at target/..., a compressed file has been created.
+How to run analysis tool:
+
+1. Run "pc_analyse.sh <zipfile> <linesToStripFromCSVs>"
+
+2. An XML file with all the stats will be printed to std out
+
+How to run test tool:
+
+1. Run "cat <analysis_xml_file> | pc_analyse <goals_xsl_file>"
+
+2. A JUnit XML report file is printed in standard output with test results.
+
+
+Coming Soon
+========
+-Diff script to compare different collection files.
+-HTML summary view generation from analysis file.
+-Publish REST API for cloud deployment.
 
 Want to Contribute ? 
 ========

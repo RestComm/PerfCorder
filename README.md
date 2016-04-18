@@ -1,6 +1,8 @@
 PerfCorder
 ============
 
+[![Join the chat at https://gitter.im/RestComm/PerfCorder](https://badges.gitter.im/RestComm/PerfCorder.svg)](https://gitter.im/RestComm/PerfCorder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 PerfCorder allows you to record and analyse data during performance testing using Sipp tool.
 It is specifically oriented to monitor a Java process that is processing the SIP signalling.
 

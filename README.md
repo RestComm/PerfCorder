@@ -36,21 +36,25 @@ target
         --->periodic (save perf data every N seconds)
 
             --->sys
+                
+                --->iostat/vmstat/netstat
 
             --->java
+                ---> GCCollection
 
+                ---> jstat
+
+                ---> CPU/Mem/GC CPU
             --->sip
 
-    --->analysis
+                ---> sipp_stat.csv
 
-        --->stats (deliver basic stats over periodic data collected, min/max/avg/stdDev/median)
-
-        *--->graphs (deliver combined graphs to visualize periodic data, includes stats as title)
+                ---> sipp_rtt.csv
 
 
 Documentation
 ========
-How to run:
+How to run SIPP Report tool:
 
 1. Compile with 'mvn install'
 
@@ -96,7 +100,9 @@ How to run test tool:
 Coming Soon
 ========
 -Diff script to compare different collection files.
+
 -HTML summary view generation from analysis file.
+
 -Publish REST API for cloud deployment.
 
 Want to Contribute ? 

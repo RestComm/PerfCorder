@@ -1,5 +1,7 @@
 package org.restcomm.perfcorder.analyzer;
 
+import java.util.Objects;
+
 
 public final class AnalysisFileTarget {
     private final String path;
@@ -23,6 +25,33 @@ public final class AnalysisFileTarget {
     public boolean isHeaderIncluded() {
         return headerIncluded;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.path);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AnalysisFileTarget other = (AnalysisFileTarget) obj;
+        if (!Objects.equals(this.path, other.path)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 
     

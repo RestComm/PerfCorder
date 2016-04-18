@@ -19,6 +19,7 @@ public class AnalysisMeasResults {
     private double kurtosis;
     private double skewness;
     private double quadraticMean;
+    private String graph;
     
     
 
@@ -157,5 +158,15 @@ public class AnalysisMeasResults {
     public void setQuadraticMean(double quadraticMean) {
         this.quadraticMean = quadraticMean;
     }
+
+    public String getGraph() {
+        return graph;
+    }
+
+    public void setGraph(String graph) {
+        this.graph = graph;
+    }
+    
+    
     
 }

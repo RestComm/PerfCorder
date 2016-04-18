@@ -47,6 +47,7 @@ public class GCPausePrinter {
         return parser;
     }
     
+    //using this as opposed to byte version to have JConsole compatible data
     private static final int BYTES_PER_MEGA = 1000000;
 
     static class GCListener implements NotificationListener {

@@ -7,9 +7,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class PerfCorderAnalysis {
+    private long startTimeStamp;
+    private long endTimeStamp;
     
     private Map<String, AnalysisMeasResults> measMap = new HashMap();
-    private List graphs;
 
     public Map<String, AnalysisMeasResults> getMeasMap() {
         return measMap;
@@ -24,4 +25,22 @@ public class PerfCorderAnalysis {
     public void addMeas(AnalysisMeasTarget target, AnalysisMeasResults stats) {
         measMap.put(target.getLabel(), stats);
     }
+
+    public long getStartTimeStamp() {
+        return startTimeStamp;
+    }
+
+    public void setStartTimeStamp(long startTimeStamp) {
+        this.startTimeStamp = startTimeStamp;
+    }
+
+    public long getEndTimeStamp() {
+        return endTimeStamp;
+    }
+
+    public void setEndTimeStamp(long endTimeStamp) {
+        this.endTimeStamp = endTimeStamp;
+    }
+    
+    
 }

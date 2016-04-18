@@ -88,9 +88,9 @@ target
 
 #Coming Soon
 ========
-- Diff script to compare different collection files.
-- HTML summary view generation from analysis file.
-- Publish REST API for cloud deployment.
+- [ ] Diff script to compare different collection files.
+- [ ] HTML summary view generation from analysis file.
+- [ ] Publish REST API for cloud deployment.
 
 #Want to Contribute ? 
 ========

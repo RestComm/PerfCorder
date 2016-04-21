@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class StatsCalculator {
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
     public static Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<AnalysisMeasTarget> targets, int linesToStrip) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
@@ -21,11 +22,15 @@ public class StatsCalculator {
             for (int j = 0; j < targets.size(); j++) {
                 AnalysisMeasTarget target = targets.get(j);
                 int column = target.getColumn();
-                String nextCol = readNext[column];
-                double nexValue = target.transformIntoDouble(nextCol);
-                if (nexValue != AnalysisMeasTarget.INVALID_STRING) {
-                    DescriptiveStatistics stats = statsMap.get(target);
-                    stats.addValue(nexValue);
+                if (column < readNext.length) {
+                    String nextCol = readNext[column];
+                    double nexValue = target.transformIntoDouble(nextCol);
+                    if (nexValue != AnalysisMeasTarget.INVALID_STRING) {
+                        DescriptiveStatistics stats = statsMap.get(target);
+                        stats.addValue(nexValue);
+                    }
+                } else {
+                    LOGGER.warn("Attempted invalid column:" + target.getLabel());
                 }
             }
         }

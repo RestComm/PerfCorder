@@ -55,7 +55,11 @@ public final class AnalysisMeasTarget {
         if (transStr.isEmpty()) {
             return INVALID_STRING;
         } else {
+            try {
             return Double.valueOf(transStr);
+            } catch (NumberFormatException  nExp) {
+                return 0.0;
+            }
         }
     }
     

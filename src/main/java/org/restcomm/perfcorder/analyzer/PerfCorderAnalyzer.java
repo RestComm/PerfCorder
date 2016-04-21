@@ -28,8 +28,8 @@ public final class PerfCorderAnalyzer {
     static {
         FILES.add(new AnalysisFileTarget("data/periodic/java/jvmtop.txt", ',', false));
         List<AnalysisMeasTarget> jvmTargets = new ArrayList<>();
-        jvmTargets.add(new AnalysisMeasTarget("Mem", 1));
-        jvmTargets.add(new AnalysisMeasTarget("Cpu", 2));
+        jvmTargets.add(new AnalysisMeasTarget("Mem", 0));
+        jvmTargets.add(new AnalysisMeasTarget("Cpu", 1));
         TARGETS.put("data/periodic/java/jvmtop.txt", jvmTargets);
 
         FILES.add(new AnalysisFileTarget("data/periodic/sip/sipp.csv", ';', true));

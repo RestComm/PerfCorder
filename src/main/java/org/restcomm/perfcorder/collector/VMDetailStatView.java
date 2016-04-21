@@ -62,15 +62,14 @@ public class VMDetailStatView extends AbstractConsoleView {
 
     private void printVM(VMInfo vmInfo) throws Exception {
 
-        String deadlockState = "";
+        String deadlockState = "C";
         if (vmInfo.hasDeadlockThreads()) {
             deadlockState = "!D";
         }
 
         System.out
                 .printf(
-                        "%5d %5s %5.2f%% %5.2f%% %4d %2.2s%n",
-                        vmInfo.getId(),
+                        "%5s,%5.2f%%,%5.2f%%,%4d,%2.2s%n",
                         toMB(vmInfo.getHeapUsed()),
                         vmInfo.getCpuLoad() * 100,
                         vmInfo.getGcLoad() * 100,

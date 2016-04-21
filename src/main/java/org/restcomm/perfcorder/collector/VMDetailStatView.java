@@ -69,7 +69,7 @@ public class VMDetailStatView extends AbstractConsoleView {
 
         System.out
                 .printf(
-                        "%5s,%5.2f%%,%5.2f%%,%4d,%2.2s%n",
+                        "%s,%.2f,%.2f,%d,%s%n",
                         toMB(vmInfo.getHeapUsed()),
                         vmInfo.getCpuLoad() * 100,
                         vmInfo.getGcLoad() * 100,

@@ -4,12 +4,14 @@
     <xsl:template name="measRowTemplate" priority="0">
         <tr>
             <td>
-                <xsl:value-of select="./entry/key/text()"/>
+                <xsl:value-of select="./key/text()"/>
             </td>
             <td>
                 <xsl:for-each select="./value/node()[name()!='graph']">
-                    <xsl:value-of select="name()"/>=<xsl:value-of select="text()"/>
-                    <br/>
+                    <xsl:if test="string(text())">
+                        <xsl:value-of select="name()"/>=<xsl:value-of select="text()"/>
+                        <br/>
+                    </xsl:if>
                 </xsl:for-each>                
             </td>
             <td>
@@ -26,8 +28,9 @@
             <head>
                 <title>Analisys Summary</title>
             </head>
-            <body>                
-                <table>
+            <body>
+                Test Duration(seconds)= <xsl:value-of select="(//endTimeStamp - //startTimeStamp) div 1000"/>            
+                <table border="1">
                     <thead>
                         <tr>
                             <th>Meas</th>

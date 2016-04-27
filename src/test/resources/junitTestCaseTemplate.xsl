@@ -5,17 +5,15 @@
         <xsl:param name = "caseName" />
         <xsl:param name = "thresholdValue" />
         <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+            <xsl:attribute name="time">
+                <xsl:value-of select="." />
+            </xsl:attribute>            
             <xsl:if test="text()>$thresholdValue">
                 <failure message="{$caseName} lessThan {$thresholdValue} violated.">
                     <xsl:value-of select="."/>
                 </failure>          
             </xsl:if>
-            <system-out>
-                &lt;measurement&gt;
-                    &lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;
-                    &lt;value&gt;<xsl:value-of select="."/>&lt;/value&gt;
-                &lt;/measurement&gt;
-            </system-out>
+            <system-out>&lt;measurement&gt;&lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;&lt;value&gt;<xsl:value-of select="."/>&lt;/value&gt;&lt;/measurement&gt;</system-out>
         </testcase>
     </xsl:template>
     
@@ -23,17 +21,15 @@
         <xsl:param name = "caseName" />
         <xsl:param name = "thresholdValue" />
         <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+            <xsl:attribute name="time">
+                <xsl:value-of select="." />
+            </xsl:attribute>                
             <xsl:if test="text() &lt; $thresholdValue">
                 <failure message="{$caseName} biggerThan {$thresholdValue} violated.">
                     <xsl:value-of select="."/>
                 </failure>          
             </xsl:if>
-            <system-out>
-                &lt;measurement&gt;
-                    &lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;
-                    &lt;value&gt;<xsl:value-of select="."/>&lt;/value&gt;
-                &lt;/measurement&gt;
-            </system-out>            
+            <system-out>&lt;measurement&gt;&lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;&lt;value&gt;<xsl:value-of select="."/>&lt;/value&gt;&lt;/measurement&gt;</system-out>
         </testcase>
     </xsl:template> 
 </xsl:stylesheet>

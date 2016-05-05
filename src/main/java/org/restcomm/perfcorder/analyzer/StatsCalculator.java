@@ -7,9 +7,10 @@ import java.util.Map;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class StatsCalculator {
+
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
-    public static Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<AnalysisMeasTarget> targets, int linesToStrip) throws IOException {
+    public static Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<AnalysisMeasTarget> targets, int linesToStripRatio) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
         Map<AnalysisMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
         //init empty stats to add values later
@@ -17,7 +18,10 @@ public class StatsCalculator {
             statsMap.put(target, new DescriptiveStatistics());
         }
 
-        for (int i = 0; i < readAll.size() - linesToStrip; i++) {
+        int thresholdRows = (readAll.size() * linesToStripRatio) / 100;
+        int lastRowRow = readAll.size() - thresholdRows;
+
+        for (int i = thresholdRows; i < lastRowRow; i++) {
             String[] readNext = readAll.get(i);
             for (int j = 0; j < targets.size(); j++) {
                 AnalysisMeasTarget target = targets.get(j);
@@ -36,7 +40,7 @@ public class StatsCalculator {
         }
 
         for (AnalysisMeasTarget target : statsMap.keySet()) {
-            String graph = GraphGenerator.generateGraph(target, readAll, linesToStrip);
+            String graph = GraphGenerator.generateGraph(target, readAll);
             AnalysisMeasResults measResults = transformIntoResults(statsMap.get(target), graph);
             measMap.put(target, measResults);
         }

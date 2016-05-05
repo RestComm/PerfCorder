@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import static java.lang.System.exit;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.transform.TransformerException;
@@ -21,7 +19,7 @@ public class PerfCorderTesterApp {
     private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(PerfCorderTesterApp.class.getName());
 
     private static void printInfo() {
-        System.out.println("Usage: java -jar 'thisFile' perfCorderFile|URL linesToStrip");
+        System.out.println("Usage: java -jar 'thisFile' perfCorderFile linesToStrip");
     }
 
     /**
@@ -37,15 +35,7 @@ public class PerfCorderTesterApp {
         }
         try {
             InputStream iStream = null;
-            try {
-                URL url = new URL(args[0]);
-                iStream = url.openStream();
-            } catch (MalformedURLException mExp ) {
-                logger.info("args0 is not URL, try with FS.");
-            }
-            if (iStream == null) {
-                iStream = new FileInputStream(args[0]);
-            }
+            iStream = new FileInputStream(args[0]);
 
          
             PerfCorderTester tester = new PerfCorderTester();

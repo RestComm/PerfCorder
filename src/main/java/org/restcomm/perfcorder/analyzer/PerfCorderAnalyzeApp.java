@@ -9,8 +9,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import static java.lang.System.exit;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
@@ -27,7 +25,7 @@ public class PerfCorderAnalyzeApp {
     private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
     private static void printInfo() {
-        System.out.println("Usage: java -jar 'thisFile' perfCorderFile|URL linesToStrip");
+        System.out.println("Usage: java -jar 'thisFile' perfCorderFile linesToStripRatio");
     }
 
     /**
@@ -43,17 +41,9 @@ public class PerfCorderAnalyzeApp {
         }
         try {
             InputStream iStream = null;
-            try {
-                URL url = new URL(args[0]);
-                iStream = url.openStream();
-            } catch (MalformedURLException mExp ) {
-                logger.info("args0 is not URL, try with FS.");
-            }
-            if (iStream == null) {
-                iStream = new FileInputStream(args[0]);
-            }
-            int linesToStrip = Integer.valueOf(args[1]);
-            PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(iStream, linesToStrip);
+            iStream = new FileInputStream(args[0]);
+            int linesToStripRatio = Integer.valueOf(args[1]);
+            PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(iStream, linesToStripRatio);
             PerfCorderAnalysis analysis = analyzer.analyze();
             JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();

@@ -20,10 +20,10 @@ public final class PerfCorderAnalyzer {
     private static final Map<String, List<AnalysisMeasTarget>> TARGETS = new HashMap();
 
     /**
-     * Nmber of lines to strip at the beginning and end of CSV file. These rows
+     * Percentage of lines to strip at the beginning and end of CSV file. These rows
      * will not be cover in the generated stats
      */
-    private final int linesToStrip;
+    private final int linesToStripRatio;
 
     static {
         FILES.add(new AnalysisFileTarget("data/periodic/java/jvmtop.txt", ',', false));
@@ -56,9 +56,10 @@ public final class PerfCorderAnalyzer {
 
     }
 
-    public PerfCorderAnalyzer(InputStream zipFile, int linesToStrip) throws FileNotFoundException, IOException {
+    public PerfCorderAnalyzer(InputStream zipFile, int linesToStripRatio) throws FileNotFoundException, IOException {
+        assert linesToStripRatio >= 0 && linesToStripRatio <= 100 : "ratio must be a [0,100] percentage";
         uncompressZip = ZipExtractor.uncompressZip(zipFile);
-        this.linesToStrip = linesToStrip;
+        this.linesToStripRatio = linesToStripRatio;
     }
 
     public PerfCorderAnalysis analyze() throws IOException {
@@ -69,7 +70,7 @@ public final class PerfCorderAnalyzer {
         Map<AnalysisFileTarget, List<String[]>> dataFiles = extractDataFiles();
         for (AnalysisFileTarget file : dataFiles.keySet()) {
             List<String[]> dataFile = dataFiles.get(file);
-            Map<AnalysisMeasTarget, AnalysisMeasResults> results = StatsCalculator.analyzeTarget(dataFile, TARGETS.get(file.getPath()), linesToStrip);
+            Map<AnalysisMeasTarget, AnalysisMeasResults> results = StatsCalculator.analyzeTarget(dataFile, TARGETS.get(file.getPath()), linesToStripRatio);
             for (AnalysisMeasTarget key : results.keySet()) {
                 AnalysisMeasResults measResults = results.get(key);
                 perfCorderAnalysis.addMeas(key, measResults);
@@ -94,7 +95,7 @@ public final class PerfCorderAnalyzer {
         for (AnalysisFileTarget file : FILES) {
             DataFile dFile = uncompressZip.get(file.getPath());
             if (dFile != null) {
-                List<String[]> extractFile = CSVExtractor.extractFile(dFile, file, linesToStrip);
+                List<String[]> extractFile = CSVExtractor.extractFile(dFile, file);
                 if (extractFile != null) {
                     dataFiles.put(file, extractFile);
                 }

@@ -29,7 +29,7 @@ public class PerfCorderAnalyzerTest {
     @Test
     public void testAnalyze() throws IOException, JAXBException {
         InputStream resourceAsStream = PerfCorderAnalyzeApp.class.getResourceAsStream("/perfTest.zip");
-        PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(resourceAsStream, 0);
+        PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(resourceAsStream, 5);
         PerfCorderAnalysis analysis = analyzer.analyze();
         Assert.assertNotNull(analysis);
         JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);

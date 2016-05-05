@@ -14,11 +14,11 @@ public class CSVExtractor {
      * @return csv file in the form of a list of String array.
      * @throws IOException
      */
-    public static List<String[]> extractFile(DataFile dFile, AnalysisFileTarget file, int linesToStrip) throws IOException {
+    public static List<String[]> extractFile(DataFile dFile, AnalysisFileTarget file) throws IOException {
         InputStream in = dFile.getContent();
         if (in != null) {
             InputStreamReader reader = new InputStreamReader(in);
-            int stripWithHeader = linesToStrip;
+            int stripWithHeader = 0;
             if (file.isHeaderIncluded()) {
                 stripWithHeader = stripWithHeader + 1;
             }

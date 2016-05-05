@@ -1,11 +1,7 @@
 package org.restcomm.perfcorder.analyzer;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import static java.lang.System.exit;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.transform.TransformerException;

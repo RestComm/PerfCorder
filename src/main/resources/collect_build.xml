@@ -96,6 +96,10 @@
     </target>
     
     <target name="collectJavaProcessInfo">
+        <exec executable="bash" spawn="true">
+            <arg value="-c"/>
+            <arg value='set &gt; ${META_COLLECTION_DIR}/envVars.txt'/>
+        </exec>        
         <exec executable="ps" output="${META_COLLECTION_DIR}\jvmoptions.txt">
             <arg value="-f"/>
             <arg value="-p"/>

@@ -14,7 +14,7 @@ Analyse target will create stats and graphs about the recorded data to help you 
 
 Finally the tool will package all the collected and analysed data into a single zip file.
 
-The tool encourages a default directory layout following Maven convention over configuration principles. 
+The tool encourages a default directory layout following Maven convention over configuration principles.
 This is the current dir layout:
 
 target
@@ -36,7 +36,7 @@ target
         --->periodic (save perf data every N seconds)
 
             --->sys
-                
+
                 --->iostat/vmstat/netstat
 
             --->java
@@ -77,12 +77,12 @@ target
 
 ##How to run analysis tool:
 
-1. Run "pc_analyse.sh <zipfile> <linesToStripFromCSVs>"
+1. Run "`pc_analyse.sh <zipfile> <linesToStripFromCSVs>`"
 2. An XML file with all the stats will be printed to std out
 
 ##How to run test tool:
 
-1. Run "cat <analysis_xml_file> | pc_analyse <goals_xsl_file>"
+1. Run "`cat <analysis_xml_file> | pc_analyse <goals_xsl_file>`"
 2. A JUnit XML report file is printed in standard output with test results.
 
 
@@ -92,7 +92,7 @@ target
 - [ ] HTML summary view generation from analysis file.
 - [ ] Publish REST API for cloud deployment.
 
-#Want to Contribute ? 
+#Want to Contribute ?
 ========
 [See our Contributors Guide](https://github.com/Mobicents/sip-servlets/wiki/Contribute-to-Mobicents-SIP-Servlets)
 

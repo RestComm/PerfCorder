@@ -77,7 +77,7 @@ target
 
 ##How to run analysis tool:
 
-1. Run "`pc_analyse.sh <zipfile> <linesToStripFromCSVs>`"
+1. Run "`pc_analyse.sh <zipfile> <percentageToStripFromCSVs>`"
 2. An XML file with all the stats will be printed to std out
 
 ##How to run test tool:

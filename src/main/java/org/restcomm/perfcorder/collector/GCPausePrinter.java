@@ -99,6 +99,10 @@ public class GCPausePrinter {
             }
         }
     }
+    
+    private static void printHeaderLine() {
+        System.out.println("Dur,MemBefore,MemAfter,gcType,gcId,gcName,gcCause,startTime, endTime");
+    }
 
     private static volatile boolean shutdown = false;
 
@@ -149,6 +153,7 @@ public class GCPausePrinter {
                 .getLocalVirtualMachine(pid);
         VMInfo vmInfo_ = VMInfo.processNewVM(localVirtualMachine, pid);
         Collection<GarbageCollectorMXBean> gcbeans = vmInfo_.getGcMXBeans();
+        printHeaderLine();
         //Install a notifcation handler for each bean
         for (GarbageCollectorMXBean gcbean : gcbeans) {
             NotificationEmitter emitter = (NotificationEmitter) gcbean;

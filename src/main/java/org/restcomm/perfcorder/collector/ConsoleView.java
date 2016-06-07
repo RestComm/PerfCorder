@@ -29,6 +29,9 @@ package org.restcomm.perfcorder.collector;
  */
 public interface ConsoleView
 {
+    
+  public void printHeader() throws Exception;
+  
   /**
    * Prints the view to STDOUT.
    *

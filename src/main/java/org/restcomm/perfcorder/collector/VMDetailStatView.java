@@ -87,4 +87,10 @@ public class VMDetailStatView extends AbstractConsoleView {
     public boolean isClearingRequired() {
         return false;
     }
+
+    @Override
+    public void printHeader() throws Exception {
+            System.out
+            .println("mem,cpu,gcCpu,threads,deadLock");
+    }
 }

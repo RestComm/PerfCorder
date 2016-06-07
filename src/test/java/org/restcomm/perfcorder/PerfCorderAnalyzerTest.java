@@ -5,6 +5,7 @@
  */
 package org.restcomm.perfcorder;
 
+import java.io.ByteArrayOutputStream;
 import org.restcomm.perfcorder.analyzer.PerfCorderAnalyzer;
 import org.restcomm.perfcorder.analyzer.PerfCorderAnalysis;
 import org.restcomm.perfcorder.analyzer.PerfCorderAnalyzeApp;
@@ -34,7 +35,8 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis);
         JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-        jaxbMarshaller.marshal(analysis, System.out);
+        ByteArrayOutputStream oStream = new ByteArrayOutputStream(51200); 
+        jaxbMarshaller.marshal(analysis, oStream);
     }
 
 }

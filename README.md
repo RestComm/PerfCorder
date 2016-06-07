@@ -69,11 +69,12 @@ target
 ##How to run collect tool:
 
 1. Install prerequesites (sysstat, java, ant)
-2. Copy resources folder to where your sipp script is located
-3. Modify perfTools.properties ans set (Java PID, sipp script filename, folder where java conf is saved...).
-4. Run 'ant start'
-5. Run your sipp script
-6. When the test is finished, Run 'ant stopAndCompress'
+2. Download precompiled PerfCorder binaries from (both jar files) [PerfCorder CI](https://mobicents.ci.cloudbees.com/job/PerfCorder/lastSuccessfulBuild/artifact/target/)
+3. Extract contents of small jar into current dir, so you get access to CLI tools.
+4. Modify perfTools.properties ans set (Java PID, sipp script filename, folder where java conf is saved...).
+5. Run 'ant start', from the download directory
+6. Run your sipp script
+7. When the test is finished, Run 'ant stopAndCompress'
 
 ##How to run analysis tool:
 
@@ -113,6 +114,7 @@ PerfCorder is licensed under dual license policy. The default license is the Fre
 
 #Continuous Integration and Delivery
 ========
+[PerfCorder CI](https://mobicents.ci.cloudbees.com/job/PerfCorder/lastSuccessfulBuild/artifact/target/)
 
 #Acknowledgements
 ========

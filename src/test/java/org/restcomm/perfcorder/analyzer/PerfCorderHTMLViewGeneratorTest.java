@@ -31,7 +31,7 @@ public class PerfCorderHTMLViewGeneratorTest {
         byte[] toByteArray = oStream.toByteArray();
         Assert.assertTrue(toByteArray.length > 0);
         String result = new String(toByteArray);
-        System.out.println(result);        
+        assertNotNull(result);
     }
     
 }

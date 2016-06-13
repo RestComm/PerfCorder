@@ -26,7 +26,7 @@ public final class PerfCorderAnalyzer {
     private final int linesToStripRatio;
 
     static {
-        FILES.add(new AnalysisFileTarget("data/periodic/java/jvmtop.txt", ',', false));
+        FILES.add(new AnalysisFileTarget("data/periodic/java/jvmtop.txt", ',', true));
         List<AnalysisMeasTarget> jvmTargets = new ArrayList<>();
         jvmTargets.add(new AnalysisMeasTarget("Mem", 0));
         jvmTargets.add(new AnalysisMeasTarget("Cpu", 1));
@@ -46,12 +46,11 @@ public final class PerfCorderAnalyzer {
         sipResTargets.add(new AnalysisMeasTarget("SIPResponseTime", 2));
         TARGETS.put("data/periodic/sip/sipp_rtt.csv", sipResTargets);
 
-        FILES.add(new AnalysisFileTarget("data/periodic/java/jgcstat.txt", ',', false));
+        FILES.add(new AnalysisFileTarget("data/periodic/java/jgcstat.txt", ',', true));
         List<AnalysisMeasTarget> jgcTargets = new ArrayList<>();
         jgcTargets.add(new AnalysisMeasTarget("GcPauseDuration", 0));
         jgcTargets.add(new AnalysisMeasTarget("GcMemBefore", 1));
         jgcTargets.add(new AnalysisMeasTarget("GcMemAfter", 2));
-
         TARGETS.put("data/periodic/java/jgcstat.txt", jgcTargets);
 
     }

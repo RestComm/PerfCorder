@@ -2,18 +2,6 @@
     <loadproperties srcFile="perfTools.properties"/>  
         
     <import file="collect_build.xml"/>
-    <import file="analyze_build.xml"/>
-    
-    
-    <target name="analyzeAndStop">
-        <tstamp prefix="end"/>
-                
-        <antcall target="analyzeData"></antcall>
-        <antcall target="stop"></antcall>
-        
-        <zip destfile="./perfTest-${end.TSTAMP}.zip"
-             basedir="${OUTPUT_DIR}"/>                    
-    </target>
     
     <target name="stopAndCompress">
         <tstamp prefix="end"/>

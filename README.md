@@ -84,10 +84,76 @@ target
 1. Run "`pc_analyse.sh <zipfile> <percentageToStripFromCSVs>`"
 2. An XML file with all the stats will be printed to std out
 
+The format of this XML file is:
+```
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<perfCorderAnalysis>
+    <startTimeStamp>1460927104000</startTimeStamp>
+    <endTimeStamp>1460928976000</endTimeStamp>
+    <measMap>
+        <entry>
+            <key>SIPResponseTime</key>
+            <value>
+                <count>180000.0</count>
+                <geometricMean>1.0</geometricMean>
+                <graph></graph>
+                <kurtosis>NaN</kurtosis>
+                <max>1.0</max>
+                <mean>1.0</mean>
+                <median>1.0</median>
+                <min>1.0</min>
+                <percentile25>1.0</percentile25>
+                <percentile5>1.0</percentile5>
+                <percentile75>1.0</percentile75>
+                <percentile95>1.0</percentile95>
+                <quadraticMean>1.0</quadraticMean>
+                <skewness>NaN</skewness>
+                <stdDev>0.0</stdDev>
+                <sum>180000.0</sum>
+                <sumSquares>180000.0</sumSquares>
+                <variance>0.0</variance>
+            </value>
+        </entry>
+</measMap>
+</perfCorderAnalysis>        
+```
+
 ##How to run test tool:
 
 1. Run "`cat <analysis_xml_file> | pc_analyse <goals_xsl_file>`"
 2. A JUnit XML report file is printed in standard output with test results.
+
+Since the output of the analysis phase is an XML file, your performance goals at
+ testing level has to be expressed through an XSL transformation stylesheet. Your
+ stylesheet needs to include the base one <xsl:include href="junitTestCaseTemplate.xsl"/>
+so basic functionality is provided ("biggerThanTemplate" and "lessThanTemplate"). The base stylesheet will be included through classloader when invoking the test tool.
+Find an example below:
+```
+<?xml version="1.0" encoding="windows-1252"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	<xsl:output method="xml" indent="false" omit-xml-declaration="yes"/>
+	<xsl:include href="junitTestCaseTemplate.xsl"/>
+
+	<xsl:template match="/" priority="9">
+		<testsuite>
+			<xsl:for-each select="//key[text()='Cpu']/parent::entry/value/median">
+				<xsl:call-template name="lessThanTemplate">
+					<xsl:with-param name="caseName" select="'CPUMedian'" />
+					<xsl:with-param name="thresholdValue"  select="'67'" />   
+				</xsl:call-template>
+			</xsl:for-each>
+		</testsuite>   
+	</xsl:template>
+</xsl:stylesheet>
+```
+In this case, a measurement called "Cpu" will be searched on the input XML analysis file.
+And the "median" of that measurement will be used to create a less than test case. The test case
+will be named "CPUMedian" in the output JUnit report file. And the value "67" will be used to
+set the less than threshold.
+
+As you can see, this simple yet powerful means of declaring your performance goals, allows
+ you to create endless possibilities for your performance goals. Of course, you are
+the one making sense of it all. For example, a CPU measurement may be more focused towards mean/median stats, while a ResponseTime measurement goal may be centered around high percentiles like percentile95 stat.
 
 
 #Coming Soon

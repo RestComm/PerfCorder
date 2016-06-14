@@ -51,6 +51,8 @@ function collectJavaProcessInfo {
     $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.VMInfoPrinter ${JAVA_PID} > ${META_COLLECTION_DIR}/jvmdump.txt
 
     lsof -p ${JAVA_PID} | grep ".jar" > ${META_COLLECTION_DIR}/jarList.txt
+
+    echo $JAVA_PID > ${META_COLLECTION_DIR}/java.pid
 }
 
 function startSystemMeasCollection {
@@ -75,7 +77,7 @@ function startJavaMeasCollection {
     echo $! > ${DATA_COLLECTION_DIR}/jgcstat.pid
 }
 function startNetworkCapture {
-    if [[ -z ${NETWORK_CAPTURE} ]]; then
+    if [[ -z ${PC_NETWORK_CAPTURE} ]]; then
         echo Network capture disabled
     else 
         echo Network capture enabled

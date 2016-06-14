@@ -27,11 +27,13 @@
 
 
     <target name="start" depends="killBackgroundProcesses,cleanCollection,prepareCollectionOutputDirs,collectConfUsed,collectJavaProcessInfo,savePERF_TEST_SCRIPT,startSystemMeasCollection,startJavaMeasCollection,savePERF_TEST_SCRIPT, startNetworkCapture">
+        <echo>Ant is discontinued use Bash instead!!</echo>
         <tstamp prefix="start"/>
         <touch file="${META_COLLECTION_DIR}/startTimestamp"/>
     </target>
     
     <target name="stop" depends="killBackgroundProcesses, saveServerLogs, saveHeapDump">
+        <echo>Ant is discontinued use Bash instead!!</echo>
         <touch file="${META_COLLECTION_DIR}/endTimestamp"/> 
     </target>
     

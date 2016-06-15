@@ -39,12 +39,12 @@ public final class PerfCorderAnalyzer {
         sipTargets.add(new AnalysisMeasTarget("SIPSuccessCalls", 14));
         sipTargets.add(new AnalysisMeasTarget("SIPFailedCalls", 16));
         sipTargets.add(new AnalysisMeasTarget("SIPRetransmissions", 44));
+        sipTargets.add(new AnalysisMeasTarget("SIPResTimePartition1", 64));
+        sipTargets.add(new AnalysisMeasTarget("SIPResTimePartition100", 65));
+        sipTargets.add(new AnalysisMeasTarget("SIPResTimePartition500", 66));
+        sipTargets.add(new AnalysisMeasTarget("SIPResTimePartition1000", 67));
+        sipTargets.add(new AnalysisMeasTarget("SIPResTimePartition2000", 68));
         TARGETS.put("data/periodic/sip/sipp.csv", sipTargets);
-
-        FILES.add(new AnalysisFileTarget("data/periodic/sip/sipp_rtt.csv", ';', true));
-        List<AnalysisMeasTarget> sipResTargets = new ArrayList<>();
-        sipResTargets.add(new AnalysisMeasTarget("SIPResponseTime", 2));
-        TARGETS.put("data/periodic/sip/sipp_rtt.csv", sipResTargets);
 
         FILES.add(new AnalysisFileTarget("data/periodic/java/jgcstat.txt", ',', true));
         List<AnalysisMeasTarget> jgcTargets = new ArrayList<>();
@@ -52,6 +52,12 @@ public final class PerfCorderAnalyzer {
         jgcTargets.add(new AnalysisMeasTarget("GcMemBefore", 1));
         jgcTargets.add(new AnalysisMeasTarget("GcMemAfter", 2));
         TARGETS.put("data/periodic/java/jgcstat.txt", jgcTargets);
+        
+        FILES.add(new AnalysisFileTarget("data/periodic/java/objs.hist", ' ', false));
+        List<AnalysisMeasTarget> objTargets = new ArrayList<>();
+        objTargets.add(new AnalysisMeasTarget("ObjHistCount", 1));
+        objTargets.add(new AnalysisMeasTarget("ObjHistSize", 2));
+        TARGETS.put("data/periodic/java/objs.hist", objTargets);        
 
     }
 

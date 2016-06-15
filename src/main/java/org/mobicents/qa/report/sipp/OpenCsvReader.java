@@ -221,7 +221,10 @@ public class OpenCsvReader {
                 		}
                 	}
                 } else if (c == separator && !inQuotes) {
-                    tokensOnThisLine.add(sb.toString());
+                    String newColumn = sb.toString();
+                    if (!newColumn.isEmpty()) {
+                        tokensOnThisLine.add(sb.toString());
+                    }
                     sb = new StringBuffer(); // start work on next token
                 } else {
                     sb.append(c);

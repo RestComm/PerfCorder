@@ -6,7 +6,7 @@
 PerfCorder allows you to record and analyse data during performance testing using Sipp tool.
 It is specifically oriented to monitor a Java process that is processing the SIP signalling.
 
-The tool is based on Ant scripts, that allows you to start and stop the recording whenever you like.
+The tool is based on Bash scripts, that allows you to start and stop the recording whenever you like.
 
 The recording will include performance information about the system (io, cpu, VM, net) and the java process (GC....).
 
@@ -70,14 +70,50 @@ target
 
 ##How to run collect tool:
 
-1. Install prerequesites (sysstat, java JDK, ant)
+1. Install prerequesites (sysstat, java JDK)
 2. Create a directory to contain PerfCorder
 3. Download precompiled PerfCorder binaries from (both jar files) [PerfCorder CI](https://mobicents.ci.cloudbees.com/job/PerfCorder/lastSuccessfulBuild/artifact/target/) into PerfCorder dir
 4. Extract contents of small jar into PerfCorder dir, so you get access to CLI tools.
-5. Modify perfTools.properties and set accordingly (Java PID, sipp script filename, folder where java conf is saved...).
-6. Run 'ant start', from the download directory
-7. Run your sipp script
-8. When the test is finished, Run 'ant stopAndCompress'
+5. Run 'pc_start_collect.sh <java_pid>', from the download directory ("-h" for more options)
+6. Run your sipp script
+7. When the test is finished, Run 'pc_stop_collect.sh' ("-h" for more options)
+
+See command help
+```
+[root@avaya perfcorder]# ./pc_start_collect.sh -h
+
+Number of arguments: 0
+
+Help documentation for pc_start_collect.sh.
+
+Basic usage:pc_start_collect.sh file.ext
+
+Command line switches are optional. The following switches are recognized.
+-f  Frequency in seconds. Default is 4.
+-o  Output directory. Default is ./target.
+-c  Copy this path into conf dir. Default is empty.
+-h  --Displays this help message. No further functions are performed.
+
+Example: pc_start_collect.sh -f 1 -c /opt/conf java_pid
+
+
+[root@avaya perfcorder]# ./pc_stop_collect.sh -h
+
+Help documentation for pc_stop_collect.sh
+
+Basic usage: pc_stop_collect.sh
+
+Command line switches are optional. The following switches are recognized.
+-o  Output directory. Default is ./target.
+-l  Path to log directory to be saved. Default is empty.
+-d  Dump heap memory. Default is empty.
+-f  Force GC. Default is empty.
+-c  Package to filter class histogram. Default is empty.
+-h --Displays this help message. No further functions are performed.
+
+Example: pc_stop_collect.sh
+
+```
 
 ##How to run analysis tool:
 
@@ -155,6 +191,9 @@ As you can see, this simple yet powerful means of declaring your performance goa
  you to create endless possibilities for your performance goals. Of course, you are
 the one making sense of it all. For example, a CPU measurement may be more focused towards mean/median stats, while a ResponseTime measurement goal may be centered around high percentiles like percentile95 stat.
 
+##How to generate HTML view
+1. Run "`cat <analysis_xml_file> | pc_html_gen <goals_xsl_file>`"
+2. A JUnit XML report file is printed in standard output with test results.
 
 #Coming Soon
 ========

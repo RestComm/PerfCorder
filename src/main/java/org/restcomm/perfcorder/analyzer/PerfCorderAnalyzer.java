@@ -57,7 +57,18 @@ public final class PerfCorderAnalyzer {
         List<AnalysisMeasTarget> objTargets = new ArrayList<>();
         objTargets.add(new AnalysisMeasTarget("ObjHistCount", 1));
         objTargets.add(new AnalysisMeasTarget("ObjHistSize", 2));
-        TARGETS.put("data/periodic/java/objs.hist", objTargets);        
+        TARGETS.put("data/periodic/java/objs.hist", objTargets);
+
+        FILES.add(new AnalysisFileTarget("data/periodic/http/jmeter.csv", ',', true));
+        //timeStamp,elapsed,label,responseCode,success,Latency,SampleCount,ErrorCount,IdleTime,Connect
+        List<AnalysisMeasTarget> httpTargets = new ArrayList<>();
+        sipTargets.add(new AnalysisMeasTarget("HTTPElapsed", 1));
+        sipTargets.add(new AnalysisMeasTarget("HTTPLatency", 5));
+        sipTargets.add(new AnalysisMeasTarget("HTTPSampleCount", 6));
+        sipTargets.add(new AnalysisMeasTarget("HTTPErrorCount", 7));
+        sipTargets.add(new AnalysisMeasTarget("HTTPIdleTime", 8));
+        sipTargets.add(new AnalysisMeasTarget("HTTPConnect", 9));
+        TARGETS.put("data/periodic/http/jmeter.csv", sipTargets);
 
     }
 

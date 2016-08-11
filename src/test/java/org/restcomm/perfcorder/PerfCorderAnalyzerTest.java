@@ -37,6 +37,20 @@ public class PerfCorderAnalyzerTest {
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         ByteArrayOutputStream oStream = new ByteArrayOutputStream(51200); 
         jaxbMarshaller.marshal(analysis, oStream);
+        Assert.assertNotNull(analysis.getMeasMap().get("Mem"));
+        Assert.assertNotNull(analysis.getMeasMap().get("Cpu"));
+        Assert.assertNotNull(analysis.getMeasMap().get("GcPauseDuration"));
+        Assert.assertNotNull(analysis.getMeasMap().get("GcMemBefore"));
+        Assert.assertNotNull(analysis.getMeasMap().get("GcMemAfter"));
+        Assert.assertNotNull(analysis.getMeasMap().get("HTTPElapsed"));
+        Assert.assertNotNull(analysis.getMeasMap().get("HTTPLatency"));
+        Assert.assertNotNull(analysis.getMeasMap().get("HTTPSampleCount"));
+        Assert.assertNotNull(analysis.getMeasMap().get("HTTPErrorCount"));
+        Assert.assertNotNull(analysis.getMeasMap().get("HTTPIdleTime"));
+        Assert.assertNotNull(analysis.getMeasMap().get("HTTPConnect"));
+        Assert.assertNotNull(analysis.getMeasMap().get("SIPTotalCallCreated"));
+        
+        
     }
 
 }

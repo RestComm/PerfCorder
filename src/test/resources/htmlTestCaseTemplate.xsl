@@ -31,6 +31,7 @@
             <body>
                 Test Duration(seconds)= <xsl:value-of select="(//endTimeStamp - //startTimeStamp) div 1000"/>            
                 <table border="1">
+                    <caption>Java</caption>
                     <thead>
                         <tr>
                             <th>Meas</th>
@@ -39,12 +40,73 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each select="//key/parent::entry">
+                        <xsl:for-each select="//key[text()='Cpu']/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
                         </xsl:for-each>
+                        <xsl:for-each select="//key[text()='Mem']/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>
+                        <xsl:for-each select="//key[text()='GcMemAfter']/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>
+                        <xsl:for-each select="//key[text()='GcPauseDuration']/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                                                                        
                     </tbody>
                 </table>
+                
+                <table border="1">
+                    <caption>SIP</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//key[starts-with(text(),'SIP')]/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                                                                    
+                    </tbody>
+                </table>
+                <table border="1">
+                    <caption>HTTP</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//key[starts-with(text(),'HTTP')]/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                                                                    
+                    </tbody>
+                </table>                
+                <table border="1">
+                    <caption>SMPP</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//key[starts-with(text(),'SMPP')]/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                                                                    
+                    </tbody>
+                </table>                                  
             </body>
         </html>
     </xsl:template>

@@ -16,7 +16,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -33,10 +32,6 @@ public class PerfCorderAnalyzerTest {
         PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(resourceAsStream, 5);
         PerfCorderAnalysis analysis = analyzer.analyze();
         Assert.assertNotNull(analysis);
-        JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);
-        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-        ByteArrayOutputStream oStream = new ByteArrayOutputStream(51200); 
-        jaxbMarshaller.marshal(analysis, oStream);
         Assert.assertNotNull(analysis.getMeasMap().get("Mem"));
         Assert.assertNotNull(analysis.getMeasMap().get("Cpu"));
         Assert.assertNotNull(analysis.getMeasMap().get("GcPauseDuration"));
@@ -49,6 +44,20 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis.getMeasMap().get("HTTPIdleTime"));
         Assert.assertNotNull(analysis.getMeasMap().get("HTTPConnect"));
         Assert.assertNotNull(analysis.getMeasMap().get("SIPTotalCallCreated"));
+
+        //transform into xml
+        JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);
+        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+        ByteArrayOutputStream oStream = new ByteArrayOutputStream(51200); 
+        jaxbMarshaller.marshal(analysis, oStream);
+        
+        //Assert generated xml
+        byte[] toByteArray = oStream.toByteArray();
+        String result = new String(toByteArray);
+        Assert.assertTrue(result.contains("HTTP"));
+        Assert.assertTrue(result.contains("SIP"));
+        Assert.assertTrue(result.contains("GC"));        
+
         
         
     }

@@ -2,6 +2,7 @@ package org.restcomm.perfcorder.analyzer;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -14,9 +15,9 @@ public class GraphGenerator {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
-    public static String generateGraph(AnalysisMeasTarget target, List<String[]> readAll) throws IOException {
+    public static String generateGraph(AnalysisMeasTarget target, List<String[]> readAll, PerfCorderAnalysis analysis) throws IOException {
         TimeSeries tSeries = new TimeSeries(target.getLabel());
-        Second current = new Second();
+        Second current = new Second(new Date(analysis.getStartTimeStamp()));
         for (int i = 0; i < readAll.size(); i++) {
             String[] readNext = readAll.get(i);
             int column = target.getColumn();

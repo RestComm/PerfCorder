@@ -86,7 +86,10 @@ public final class PerfCorderAnalyzer {
         Map<AnalysisFileTarget, List<String[]>> dataFiles = extractDataFiles();
         for (AnalysisFileTarget file : dataFiles.keySet()) {
             List<String[]> dataFile = dataFiles.get(file);
-            Map<AnalysisMeasTarget, AnalysisMeasResults> results = StatsCalculator.analyzeTarget(dataFile, TARGETS.get(file.getPath()), linesToStripRatio);
+            Map<AnalysisMeasTarget, AnalysisMeasResults> results = StatsCalculator.analyzeTarget(dataFile, 
+                    TARGETS.get(file.getPath()), 
+                    linesToStripRatio,
+                    perfCorderAnalysis);
             for (AnalysisMeasTarget key : results.keySet()) {
                 AnalysisMeasResults measResults = results.get(key);
                 perfCorderAnalysis.addMeas(key, measResults);

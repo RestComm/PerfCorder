@@ -10,7 +10,7 @@ public class StatsCalculator {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
-    public static Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<AnalysisMeasTarget> targets, int linesToStripRatio) throws IOException {
+    public static Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<AnalysisMeasTarget> targets, int linesToStripRatio, PerfCorderAnalysis analysis) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
         Map<AnalysisMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
         //init empty stats to add values later
@@ -40,7 +40,7 @@ public class StatsCalculator {
         }
 
         for (AnalysisMeasTarget target : statsMap.keySet()) {
-            String graph = GraphGenerator.generateGraph(target, readAll);
+            String graph = GraphGenerator.generateGraph(target, readAll, analysis);
             AnalysisMeasResults measResults = transformIntoResults(statsMap.get(target), graph);
             measMap.put(target, measResults);
         }

@@ -1,7 +1,6 @@
 package org.restcomm.perfcorder.analyzer;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -9,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PerfCorderAnalysis {
     private long startTimeStamp;
     private long endTimeStamp;
+    private int measFrequency = 4;
     
     private Map<String, AnalysisMeasResults> measMap = new HashMap();
 
@@ -41,6 +41,13 @@ public class PerfCorderAnalysis {
     public void setEndTimeStamp(long endTimeStamp) {
         this.endTimeStamp = endTimeStamp;
     }
-    
-    
+
+    public int getMeasFrequency() {
+        return measFrequency;
+    }
+
+    public void setMeasFrequency(int measFrequency) {
+        this.measFrequency = measFrequency;
+    }
+
 }

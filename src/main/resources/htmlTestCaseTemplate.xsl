@@ -39,33 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each select="//key[text()='Cpu']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='Mem']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='GcMemAfter']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='GcPauseDuration']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-
-
-                        <xsl:for-each select="//key[text()='SIPTotalCallCreated']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='SIPFailedCalls']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='SIPRetransmissions']/parent::entry">
+                        <xsl:for-each select="//key/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
                         </xsl:for-each>

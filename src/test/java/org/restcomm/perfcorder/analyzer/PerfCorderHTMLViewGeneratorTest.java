@@ -32,6 +32,10 @@ public class PerfCorderHTMLViewGeneratorTest {
         Assert.assertTrue(toByteArray.length > 0);
         String result = new String(toByteArray);
         assertNotNull(result);
+        Assert.assertTrue(result.contains("HTTP"));
+        Assert.assertTrue(result.contains("SIP"));
+        Assert.assertTrue(result.contains("GC"));
+        
     }
     
 }

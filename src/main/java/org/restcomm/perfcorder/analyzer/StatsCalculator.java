@@ -42,7 +42,11 @@ public class StatsCalculator {
         for (AnalysisMeasTarget target : statsMap.keySet()) {
             String graph = GraphGenerator.generateGraph(target, readAll, analysis);
             AnalysisMeasResults measResults = transformIntoResults(statsMap.get(target), graph);
-            measMap.put(target, measResults);
+            if (measResults.getCount() > 0.0) {
+                measMap.put(target, measResults);
+            } else {
+                LOGGER.warn("Excluding target(" + target.getLabel() + ") becuase no samples were found");
+            }
         }
         return measMap;
     }

@@ -156,7 +156,7 @@ The format of this XML file is:
 
 ##How to run test tool:
 
-1. Run "`cat <analysis_xml_file> | pc_analyse <goals_xsl_file>`"
+1. Run "`cat <analysis_xml_file> | pc_test.sh <goals_xsl_file>`"
 2. A JUnit XML report file is printed in standard output with test results.
 
 Since the output of the analysis phase is an XML file, your performance goals at
@@ -192,7 +192,7 @@ As you can see, this simple yet powerful means of declaring your performance goa
 the one making sense of it all. For example, a CPU measurement may be more focused towards mean/median stats, while a ResponseTime measurement goal may be centered around high percentiles like percentile95 stat.
 
 ##How to generate HTML view
-1. Run "`cat <analysis_xml_file> | pc_html_gen <goals_xsl_file>`"
+1. Run "`cat <analysis_xml_file> | pc_html_gen.sh`"
 2. A JUnit XML report file is printed in standard output with test results.
 
 #Coming Soon

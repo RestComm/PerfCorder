@@ -8,6 +8,7 @@ function HELP {
   echo "-d  Dump heap memory. Default is empty."
   echo "-f  Force GC. Default is empty."
   echo "-c  Package to filter class histogram. Default is empty."
+  echo "-s  Time to wait for process to settle down.(seconds)"
   echo -e "-h --Displays this help message. No further functions are performed."\\n
   echo -e "Example: $SCRIPT "\\n
   exit 1
@@ -47,6 +48,12 @@ function forceGC {
     fi  
 }
 
+function waitForSettleDown {
+    ## implement a hardcoded sleep time for time being.
+    echo "Sleeping $TIME_TO_SETTLE_DOWN to allow settling down."
+    sleep $TIME_TO_SETTLE_DOWN
+}
+
 function saveObjectHistogram {
     if [[ -z $PC_DUMP_OBJ_PACKAGE ]]; then
         echo Dump Objects disabled
@@ -59,6 +66,7 @@ function saveObjectHistogram {
 function stopCollection {
     echo Stopping collection on process $JAVA_PID
     forceGC
+    waitForSettleDown
     killBackgroundProcesses
     saveServerLogs
     saveHeapDump
@@ -78,6 +86,7 @@ OUTPUT_DIR=./target
 EXTERNAL_FILES=
 PC_HEAP_DUMP_ENABLED=
 PC_SERVER_LOG_DIR=
+TIME_TO_SETTLE_DOWN=180
 
 while getopts "dfc:l:o:h" opt; do
   case $opt in
@@ -95,6 +104,9 @@ while getopts "dfc:l:o:h" opt; do
       ;;
     l)
       PC_SERVER_LOG_DIR=${OPTARG}
+      ;;
+    s)
+      TIME_TO_SETTLE_DOWN=${OPTARG}
       ;;
     h)
       HELP

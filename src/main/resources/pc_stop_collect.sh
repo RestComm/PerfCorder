@@ -58,8 +58,8 @@ function saveObjectHistogram {
 
 function stopCollection {
     echo Stopping collection on process $JAVA_PID
-    killBackgroundProcesses
     forceGC
+    killBackgroundProcesses
     saveServerLogs
     saveHeapDump
     saveObjectHistogram

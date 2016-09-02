@@ -88,7 +88,7 @@ PC_HEAP_DUMP_ENABLED=
 PC_SERVER_LOG_DIR=
 TIME_TO_SETTLE_DOWN=180
 
-while getopts "dfc:l:o:h" opt; do
+while getopts "dfcs:l:o:h" opt; do
   case $opt in
     o)
       OUTPUT_DIR=${OPTARG}

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Extracts zip file, and calculates statistics for the given targets.
@@ -15,9 +17,12 @@ import java.util.Map;
  */
 public final class PerfCorderAnalyzer {
 
+    private static final String SETTINGS_LOC = "data/meta/perfcorder_settings.csv";
+    
     private final Map<String, DataFile> uncompressZip;
     private static final List<AnalysisFileTarget> FILES = new ArrayList();
     private static final Map<String, List<AnalysisMeasTarget>> TARGETS = new HashMap();
+    private static AnalysisFileTarget SETTINGS_TARGET;
 
     /**
      * Percentage of lines to strip at the beginning and end of CSV file. These rows
@@ -26,6 +31,8 @@ public final class PerfCorderAnalyzer {
     private final int linesToStripRatio;
 
     static {
+        SETTINGS_TARGET= new AnalysisFileTarget(SETTINGS_LOC, ',', true);
+        
         FILES.add(new AnalysisFileTarget("data/periodic/java/jvmtop.txt", ',', true));
         List<AnalysisMeasTarget> jvmTargets = new ArrayList<>();
         jvmTargets.add(new AnalysisMeasTarget("Mem", 0));
@@ -79,9 +86,10 @@ public final class PerfCorderAnalyzer {
     }
 
     public PerfCorderAnalysis analyze() throws IOException {
-        PerfCorderAnalysis perfCorderAnalysis = new PerfCorderAnalysis();
-        perfCorderAnalysis.setStartTimeStamp(extractTimestamp("data/meta/startTimestamp"));
-        perfCorderAnalysis.setEndTimeStamp(extractTimestamp("data/meta/endTimestamp"));
+        long startTS = extractTimestamp("data/meta/startTimestamp");
+        long endTS = extractTimestamp("data/meta/endTimestamp");
+        PerfCorderCollectionSettings settings = extractSettings();
+        PerfCorderAnalysis perfCorderAnalysis = new PerfCorderAnalysis(startTS, endTS, settings);
 
         Map<AnalysisFileTarget, List<String[]>> dataFiles = extractDataFiles();
         for (AnalysisFileTarget file : dataFiles.keySet()) {
@@ -98,7 +106,21 @@ public final class PerfCorderAnalyzer {
         return perfCorderAnalysis;
     }
 
-
+    private PerfCorderCollectionSettings extractSettings() {
+        DataFile zEntry = uncompressZip.get("data/meta/perfcorder_settings.csv");
+        PerfCorderCollectionSettings settings = new PerfCorderCollectionSettings();
+        try {
+            List<String[]> extractFile = CSVExtractor.extractFile(zEntry, SETTINGS_TARGET);
+            settings.setMeasIntervalSeconds(Integer.valueOf (extractFile.get(0)[0]));
+            settings.setConfDir(extractFile.get(0)[0]);
+            settings.setOutputDir(extractFile.get(0)[0]);
+            settings.setPatternMode(extractFile.get(0)[0]);
+            settings.setJavaPID(extractFile.get(0)[0]);
+        } catch (IOException ex) {
+            Logger.getLogger(PerfCorderAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return settings;        
+    }
 
     private long extractTimestamp(String filePath) {
         DataFile zEntry = uncompressZip.get(filePath);

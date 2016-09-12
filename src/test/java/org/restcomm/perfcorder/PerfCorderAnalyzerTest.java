@@ -5,6 +5,7 @@
  */
 package org.restcomm.perfcorder;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import org.restcomm.perfcorder.analyzer.PerfCorderAnalyzer;
 import org.restcomm.perfcorder.analyzer.PerfCorderAnalysis;
@@ -14,8 +15,12 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamSource;
 import org.junit.Assert;
 import org.junit.Test;
+import org.restcomm.perfcorder.analyzer.PerfCorderHTMLViewGenerator;
 
 /**
  *
@@ -27,7 +32,7 @@ public class PerfCorderAnalyzerTest {
     }
 
     @Test
-    public void testAnalyze() throws IOException, JAXBException {
+    public void testAnalyze() throws IOException, JAXBException, TransformerConfigurationException, TransformerException {
         InputStream resourceAsStream = PerfCorderAnalyzeApp.class.getResourceAsStream("/perfTest.zip");
         PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(resourceAsStream, 5);
         PerfCorderAnalysis analysis = analyzer.analyze();
@@ -54,10 +59,19 @@ public class PerfCorderAnalyzerTest {
         //Assert generated xml
         byte[] toByteArray = oStream.toByteArray();
         String result = new String(toByteArray);
-        Assert.assertTrue(result.contains("HTTP"));
-        Assert.assertTrue(result.contains("SIP"));
-        Assert.assertTrue(result.contains("GC"));        
+        Assert.assertTrue(result.contains("Mem"));
+        Assert.assertTrue(result.contains("HTTPElapsed"));
+        Assert.assertTrue(result.contains("SIPTotalCallCreated"));
+        Assert.assertTrue(result.contains("GcPauseDuration"));
 
+        
+        ByteArrayInputStream iStream = new ByteArrayInputStream(toByteArray);
+        StreamSource streamSource2 = new StreamSource(iStream);
+        PerfCorderHTMLViewGenerator htmlGen = new PerfCorderHTMLViewGenerator();
+        ByteArrayOutputStream oStream2 = new ByteArrayOutputStream(51200); 
+        htmlGen.generateView(streamSource2, oStream2);
+        byte[] toByteArray2 = oStream2.toByteArray();        
+        String result2 = new String(toByteArray2);
         
         
     }

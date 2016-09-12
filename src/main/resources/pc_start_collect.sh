@@ -94,6 +94,7 @@ function startCollection {
     killBackgroundProcesses
     cleanCollection
     prepareCollectionOutputDirs
+    printCollectionSettings
     collectConfUsed
     collectJavaProcessInfo
 
@@ -122,6 +123,12 @@ function waitForPID {
     fi
 }
 
+function printCollectionSettings {
+    echo "Printing PerfCorder settings"
+    echo "MEAS_INTERVAL_SECONDS,CONF_DIR,OUTPUT_DIR,PATTERN_MODE,JAVA_PID" > ${META_COLLECTION_DIR}/perfcorder_settings.csv
+    echo "$MEAS_INTERVAL_SECONDS,$CONF_DIR,$OUTPUT_DIR,$PATTERN_MODE,$JAVA_PID" >> ${META_COLLECTION_DIR}/perfcorder_settings.csv
+}
+
 #Set Script Name variable
 SCRIPT=`basename ${BASH_SOURCE[0]}`
 
@@ -129,6 +136,7 @@ OUTPUT_DIR=./target
 MEAS_INTERVAL_SECONDS=4
 CONF_DIR=
 EXTERNAL_FILES=
+PATTERN_MODE=disabled
 
 #Check the number of arguments. If none are passed, print help and exit.
 NUMARGS=$#
@@ -169,11 +177,11 @@ fi
 
 
 ### Check if pattern mode was enable
-if [[ -z ${PATTERN_MODE} ]]; then
-    JAVA_PID=$1
-else
+if [[ "${PATTERN_MODE}" = "active" ]]; then
     export JPS_PATTERN=$1
     waitForPID
+else
+    JAVA_PID=$1
 fi
 
 echo "Process monitored $JAVA_PID"

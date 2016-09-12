@@ -6,11 +6,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class PerfCorderAnalysis {
+    
     private long startTimeStamp;
     private long endTimeStamp;
-    private int measFrequency = 4;
+    private PerfCorderCollectionSettings settings;
     
     private Map<String, AnalysisMeasResults> measMap = new HashMap();
+
+    public PerfCorderAnalysis() {
+    }
+
+    
+    
+    public PerfCorderAnalysis(long startTimeStamp, long endTimeStamp, PerfCorderCollectionSettings settings) {
+        this.startTimeStamp = startTimeStamp;
+        this.endTimeStamp = endTimeStamp;
+        this.settings = settings;
+    }
+    
+    
 
     public Map<String, AnalysisMeasResults> getMeasMap() {
         return measMap;
@@ -42,12 +56,11 @@ public class PerfCorderAnalysis {
         this.endTimeStamp = endTimeStamp;
     }
 
-    public int getMeasFrequency() {
-        return measFrequency;
+    public PerfCorderCollectionSettings getSettings() {
+        return settings;
     }
 
-    public void setMeasFrequency(int measFrequency) {
-        this.measFrequency = measFrequency;
+    public void setSettings(PerfCorderCollectionSettings settings) {
+        this.settings = settings;
     }
-
 }

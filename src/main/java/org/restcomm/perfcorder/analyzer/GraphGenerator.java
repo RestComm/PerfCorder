@@ -25,7 +25,10 @@ public class GraphGenerator {
                 String nextCol = readNext[column];
                 double nexValue = target.transformIntoDouble(nextCol);
                 tSeries.add(current, nexValue);
-                current = (Second) current.next();
+                //increment using meas interval to pruduce correct time scale
+                for (int j = 0; j < analysis.getSettings().getMeasIntervalSeconds(); j++) {
+                    current = (Second) current.next();
+                }
             } else {
                 LOGGER.warn("Attempted invalid column:" + target.getLabel());
             }

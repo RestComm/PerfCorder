@@ -9,6 +9,7 @@ function HELP {
   echo "-f  Force GC. Default is empty."
   echo "-c  Package to filter class histogram. Default is empty."
   echo "-s  Time to wait for process to settle down.(seconds)"
+  echo "-e  Path to script called just before packaging."
   echo -e "-h --Displays this help message. No further functions are performed."\\n
   echo -e "Example: $SCRIPT "\\n
   exit 1
@@ -63,6 +64,15 @@ function saveObjectHistogram {
     fi  
 }
 
+function invokeExternalHook {
+    if [[ -z $INVOKE_EXTERNAL_HOOK ]]; then
+        echo "Invoke External Hook Disabled"
+    else
+        echo "Invoke External Hook at:$INVOKE_EXTERNAL_HOOK"
+        bash $INVOKE_EXTERNAL_HOOK
+    fi  
+}
+
 function stopCollection {
     echo Stopping collection on process $JAVA_PID
     forceGC
@@ -75,6 +85,10 @@ function stopCollection {
     endTimestamp=$(date +%s)
     echo $endTimestamp > ${META_COLLECTION_DIR}/endTimestamp
     cd ${OUTPUT_DIR}
+
+    #invoke external just before packaging
+    invokeExternalHook
+
     zip -r ../perfTest-${endTimestamp}.zip data
 }
 
@@ -82,13 +96,14 @@ function stopCollection {
 SCRIPT=`basename ${BASH_SOURCE[0]}`
 PC_FORCE_GC=
 PC_DUMP_OBJ_PACKAGE=
-OUTPUT_DIR=./target
-EXTERNAL_FILES=
+#export it so external hook script may reuse this var
+export OUTPUT_DIR=./target
 PC_HEAP_DUMP_ENABLED=
 PC_SERVER_LOG_DIR=
 TIME_TO_SETTLE_DOWN=180
+INVOKE_EXTERNAL_HOOK=
 
-while getopts "dfcs:l:o:h" opt; do
+while getopts "dfcs:l:o:e:h" opt; do
   case $opt in
     o)
       OUTPUT_DIR=${OPTARG}
@@ -107,6 +122,9 @@ while getopts "dfcs:l:o:h" opt; do
       ;;
     s)
       TIME_TO_SETTLE_DOWN=${OPTARG}
+      ;;
+    e)
+      INVOKE_EXTERNAL_HOOK=${OPTARG}
       ;;
     h)
       HELP

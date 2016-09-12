@@ -89,6 +89,15 @@ function startNetworkCapture {
     fi
 }
 
+function invokeExternalHook {
+    if [[ -z $INVOKE_EXTERNAL_HOOK ]]; then
+        echo "Invoke External Hook Disabled"
+    else
+        echo "Invoke External Hook at:$INVOKE_EXTERNAL_HOOK"
+        bash $INVOKE_EXTERNAL_HOOK
+    fi  
+}
+
 function startCollection {
     echo Starting collection
     killBackgroundProcesses
@@ -97,6 +106,9 @@ function startCollection {
     printCollectionSettings
     collectConfUsed
     collectJavaProcessInfo
+
+    #invoke external before starting actual collection
+    invokeExternalHook
 
     startTimestamp=$(date +%s)
     echo $startTimestamp > ${META_COLLECTION_DIR}/startTimestamp
@@ -113,7 +125,7 @@ function waitForPID {
     while [[ -z ${JAVA_PID} ]] && [ "$LOOP_COUNT" -lt 20 ]
     do
         sleep $MEAS_INTERVAL_SECONDS
-        JAVA_PID=$(jps |grep $JPS_PATTERN | cut -d' ' -f1)
+        export JAVA_PID=$(jps |grep $JPS_PATTERN | cut -d' ' -f1)
         echo "PID found do far:$JAVA_PID"
         LOOP_COUNT=$((LOOP_COUNT+1))
     done
@@ -132,10 +144,9 @@ function printCollectionSettings {
 #Set Script Name variable
 SCRIPT=`basename ${BASH_SOURCE[0]}`
 
-OUTPUT_DIR=./target
-MEAS_INTERVAL_SECONDS=4
-CONF_DIR=
-EXTERNAL_FILES=
+export OUTPUT_DIR=./target
+export MEAS_INTERVAL_SECONDS=4
+export CONF_DIR=
 PATTERN_MODE=disabled
 
 #Check the number of arguments. If none are passed, print help and exit.
@@ -159,6 +170,9 @@ while getopts "f:c:o:e:ph" opt; do
     p)
       PATTERN_MODE=active
       ;;
+    e)
+      INVOKE_EXTERNAL_HOOK=${OPTARG}
+      ;;
     h)
       HELP
       ;;
@@ -181,7 +195,7 @@ if [[ "${PATTERN_MODE}" = "active" ]]; then
     export JPS_PATTERN=$1
     waitForPID
 else
-    JAVA_PID=$1
+    export JAVA_PID=$1
 fi
 
 echo "Process monitored $JAVA_PID"

@@ -1,5 +1,10 @@
 #!/bin/sh
-DIR=$( cd $(dirname $0) ; pwd -P )
+if [ -z ${PERFCORDER_HOME} ]; then
+    DIR=$( cd $(dirname $0) ; pwd -P )
+else 
+    echo "Using PERFCORDER_HOME at:$PERFCORDER_HOME"
+    DIR=$PERFCORDER_HOME
+fi
 
 if [ -z "$JAVA_HOME" ] ; then
         JAVA_HOME=`readlink -f \`which java 2>/dev/null\` 2>/dev/null | \

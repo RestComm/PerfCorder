@@ -191,7 +191,14 @@ if [ ! -f "$TOOLSJAR" ] ; then
         echo "$JAVA_HOME seems to be no JDK!" >&2
         exit 1
 fi
-DIR=$( cd $(dirname $0) ; pwd -P )
+
+if [[ -z ${PERFCORDER_HOME} ]]; then
+    DIR=$( cd $(dirname $0) ; pwd -P )
+else 
+    echo "Using PERFCORDER_HOME at:$PERFCORDER_HOME"
+    DIR=$PERFCORDER_HOME
+fi
+
 #maven filtering has to replace the version var during build
 CLASSPATH="$DIR/sipp-report-${project.version}-with-dependencies.jar:$TOOLSJAR"
 echo CLASSPATH:${CLASSPATH}

@@ -6,6 +6,7 @@ function HELP {
   echo "-f  Frequency in seconds. Default is 4."
   echo "-o  Output directory. Default is ./target."
   echo "-c  Copy this path into conf dir. Default is empty."
+  echo "-p  Pattern mode. PID is a grep pattern applied to jps output, to find actual PID."
   echo -e "-h  --Displays this help message. No further functions are performed."\\n
   echo -e "Example: $SCRIPT -f 1 -c /opt/conf java_pid"\\n
   exit 1
@@ -104,6 +105,23 @@ function startCollection {
     startNetworkCapture
 }
 
+function waitForPID {
+    echo "Pattern mode activated, try to find PID with pattern:$JPS_PATTERN"
+    LOOP_COUNT=0
+    ##lets wait 20 times the configured MEAS_INTERVAL maximum
+    while [[ -z ${JAVA_PID} ]] && [ "$LOOP_COUNT" -lt 20 ]
+    do
+        sleep $MEAS_INTERVAL_SECONDS
+        JAVA_PID=$(jps |grep $JPS_PATTERN | cut -d' ' -f1)
+        echo "PID found do far:$JAVA_PID"
+        LOOP_COUNT=$((LOOP_COUNT+1))
+    done
+    if [[ -z ${JAVA_PID} ]]; then
+        echo "No process found,exiting"
+        exit 2
+    fi
+}
+
 #Set Script Name variable
 SCRIPT=`basename ${BASH_SOURCE[0]}`
 
@@ -119,7 +137,7 @@ if [ $NUMARGS -eq 0 ]; then
   HELP
 fi
 
-while getopts "f:c:o:e:h" opt; do
+while getopts "f:c:o:e:ph" opt; do
   case $opt in
     f)
       MEAS_INTERVAL_SECONDS=${OPTARG}
@@ -129,6 +147,9 @@ while getopts "f:c:o:e:h" opt; do
       ;;
     o)
       OUTPUT_DIR=${OPTARG}
+      ;;
+    p)
+      PATTERN_MODE=active
       ;;
     h)
       HELP
@@ -146,8 +167,16 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-JAVA_PID=$1
-echo Process monitored $JAVA_PID
+
+### Check if pattern mode was enable
+if [[ -z ${PATTERN_MODE} ]]; then
+    JAVA_PID=$1
+else
+    export JPS_PATTERN=$1
+    waitForPID
+fi
+
+echo "Process monitored $JAVA_PID"
 
 TOOLSJAR="$JAVA_HOME/lib/tools.jar"
 if [ ! -f "$TOOLSJAR" ] ; then

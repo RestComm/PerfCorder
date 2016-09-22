@@ -103,7 +103,8 @@ PC_SERVER_LOG_DIR=
 TIME_TO_SETTLE_DOWN=180
 INVOKE_EXTERNAL_HOOK=
 
-while getopts "dfcs:l:o:e:h" opt; do
+#beware with getops pattern : means expecting argument
+while getopts "dfc:s:l:o:e:h" opt; do
   case $opt in
     o)
       OUTPUT_DIR=${OPTARG}

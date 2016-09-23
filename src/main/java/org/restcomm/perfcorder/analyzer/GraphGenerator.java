@@ -7,6 +7,9 @@ import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.title.Title;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -34,7 +37,8 @@ public class GraphGenerator {
             }
         }
         TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection(tSeries);
-        JFreeChart chart = ChartFactory.createTimeSeriesChart(target.getLabel(), "time", target.getLabel(), timeSeriesCollection, false, false, false);
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(target.getLabel(), "Time", target.getLabel(), timeSeriesCollection, false, false, false);
+        chart.addSubtitle(new TextTitle("CollFreq:" + analysis.getSettings().getMeasIntervalSeconds()));
         BufferedImage createBufferedImage = chart.createBufferedImage(320, 240);
         byte[] graph = ChartUtilities.encodeAsPNG(createBufferedImage, false, 9);
         String graphStr = encode(graph);

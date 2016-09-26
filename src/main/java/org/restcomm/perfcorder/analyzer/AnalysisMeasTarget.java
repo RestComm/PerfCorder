@@ -2,22 +2,16 @@ package org.restcomm.perfcorder.analyzer;
 
 import java.util.Objects;
 
+public class AnalysisMeasTarget {
 
-public final class AnalysisMeasTarget {
     private final String label;
-    private final int column;
 
-    public AnalysisMeasTarget(String label, int column) {
+    public AnalysisMeasTarget(String label) {
         this.label = label;
-        this.column = column;
     }
 
     public String getLabel() {
         return label;
-    }
-
-    public int getColumn() {
-        return column;
     }
 
     @Override
@@ -45,10 +39,8 @@ public final class AnalysisMeasTarget {
         return true;
     }
 
-    
-
     public static final double INVALID_STRING = -1;
-    
+
     public double transformIntoDouble(String value) {
         //remove percent char
         String transStr = value.replaceAll("%", "");
@@ -56,12 +48,11 @@ public final class AnalysisMeasTarget {
             return INVALID_STRING;
         } else {
             try {
-            return Double.valueOf(transStr);
-            } catch (NumberFormatException  nExp) {
+                return Double.valueOf(transStr);
+            } catch (NumberFormatException nExp) {
                 return 0.0;
             }
         }
     }
-    
-    
+
 }

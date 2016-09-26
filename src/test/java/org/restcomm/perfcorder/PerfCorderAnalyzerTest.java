@@ -46,6 +46,7 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis.getMeasMap().get("HTTPSampleCount"));
         Assert.assertNotNull(analysis.getMeasMap().get("HTTPErrorCount"));
         Assert.assertNotNull(analysis.getMeasMap().get("SIPTotalCallCreated"));
+        Assert.assertNotNull(analysis.getMeasMap().get("ObjHistogram-org.mobicents.as7.Attribute"));
 
         //transform into xml
         JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);

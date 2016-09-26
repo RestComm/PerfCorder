@@ -18,7 +18,7 @@ public class GraphGenerator {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
-    public static String generateGraph(AnalysisMeasTarget target, List<String[]> readAll, PerfCorderAnalysis analysis) throws IOException {
+    public static String generateGraph(CSVColumnMeasTarget target, List<String[]> readAll, PerfCorderAnalysis analysis) throws IOException {
         TimeSeries tSeries = new TimeSeries(target.getLabel());
         Second current = new Second(new Date(analysis.getStartTimeStamp()));
         for (int i = 0; i < readAll.size(); i++) {

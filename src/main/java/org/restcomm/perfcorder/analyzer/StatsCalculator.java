@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class StatsCalculator {
+public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
-    public static Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<AnalysisMeasTarget> targets, int linesToStripRatio, PerfCorderAnalysis analysis) throws IOException {
+    @Override
+    public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<CSVColumnMeasTarget> targets, int linesToStripRatio, PerfCorderAnalysis analysis) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
-        Map<AnalysisMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
+        Map<CSVColumnMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
         //init empty stats to add values later
-        for (AnalysisMeasTarget target : targets) {
+        for (CSVColumnMeasTarget target : targets) {
             statsMap.put(target, new DescriptiveStatistics());
         }
 
@@ -24,7 +25,7 @@ public class StatsCalculator {
         for (int i = thresholdRows; i < lastRowRow; i++) {
             String[] readNext = readAll.get(i);
             for (int j = 0; j < targets.size(); j++) {
-                AnalysisMeasTarget target = targets.get(j);
+                CSVColumnMeasTarget target = targets.get(j);
                 int column = target.getColumn();
                 if (column < readNext.length) {
                     String nextCol = readNext[column];
@@ -39,7 +40,7 @@ public class StatsCalculator {
             }
         }
 
-        for (AnalysisMeasTarget target : statsMap.keySet()) {
+        for (CSVColumnMeasTarget target : statsMap.keySet()) {
             String graph = GraphGenerator.generateGraph(target, readAll, analysis);
             AnalysisMeasResults measResults = transformIntoResults(statsMap.get(target), graph);
             if (measResults.getCount() > 0.0) {

@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.restcomm.perfcorder;
+package org.restcomm.perfcorder.analyzer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import org.restcomm.perfcorder.analyzer.PerfCorderAnalyzer;
-import org.restcomm.perfcorder.analyzer.PerfCorderAnalysis;
-import org.restcomm.perfcorder.analyzer.PerfCorderAnalyzeApp;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -20,7 +19,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 import org.junit.Assert;
 import org.junit.Test;
-import org.restcomm.perfcorder.analyzer.PerfCorderHTMLViewGenerator;
 
 /**
  *
@@ -30,11 +28,26 @@ public class PerfCorderAnalyzerTest {
 
     public PerfCorderAnalyzerTest() {
     }
+    
+    @Test
+    public void testFilesXML() throws JAXBException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(AnalysisFileTargetSet.class);
+        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+        ByteArrayOutputStream oStream = new ByteArrayOutputStream(51200);
+        jaxbMarshaller.marshal(DefaultTargetBuilder.build(), oStream);
+        byte[] toByteArray2 = oStream.toByteArray();
+        String result2 = new String(toByteArray2);
+    }
+    
 
     @Test
     public void testAnalyze() throws IOException, JAXBException, TransformerConfigurationException, TransformerException {
         InputStream resourceAsStream = PerfCorderAnalyzeApp.class.getResourceAsStream("/perfTest.zip");
-        PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(resourceAsStream, 5);
+        JAXBContext targetsContext = JAXBContext.newInstance(AnalysisFileTargetSet.class);
+        InputStream targetsStream = PerfCorderAnalyzeApp.class.getResourceAsStream("/defaultFileTargets.xml");
+        AnalysisFileTargetSet targetSet = (AnalysisFileTargetSet) targetsContext.createUnmarshaller().unmarshal(targetsStream);
+
+        PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(resourceAsStream, 5, targetSet.getFiles());
         PerfCorderAnalysis analysis = analyzer.analyze();
         Assert.assertNotNull(analysis);
         Assert.assertNotNull(analysis.getMeasMap().get("Mem"));
@@ -51,9 +64,9 @@ public class PerfCorderAnalyzerTest {
         //transform into xml
         JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-        ByteArrayOutputStream oStream = new ByteArrayOutputStream(51200); 
+        ByteArrayOutputStream oStream = new ByteArrayOutputStream(51200);
         jaxbMarshaller.marshal(analysis, oStream);
-        
+
         //Assert generated xml
         byte[] toByteArray = oStream.toByteArray();
         String result = new String(toByteArray);
@@ -62,16 +75,14 @@ public class PerfCorderAnalyzerTest {
         Assert.assertTrue(result.contains("SIPTotalCallCreated"));
         Assert.assertTrue(result.contains("GcPauseDuration"));
 
-        
         ByteArrayInputStream iStream = new ByteArrayInputStream(toByteArray);
         StreamSource streamSource2 = new StreamSource(iStream);
         PerfCorderHTMLViewGenerator htmlGen = new PerfCorderHTMLViewGenerator();
-        ByteArrayOutputStream oStream2 = new ByteArrayOutputStream(51200); 
+        ByteArrayOutputStream oStream2 = new ByteArrayOutputStream(51200);
         htmlGen.generateView(streamSource2, oStream2);
-        byte[] toByteArray2 = oStream2.toByteArray();        
+        byte[] toByteArray2 = oStream2.toByteArray();
         String result2 = new String(toByteArray2);
-        
-        
+
     }
 
 }

@@ -1,13 +1,25 @@
 package org.restcomm.perfcorder.analyzer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
-public final class AnalysisFileTarget {
-    private final String path;
-    private final char separator;
-    private final boolean headerIncluded;
+public class AnalysisFileTarget {
+    private String path;
+    private char separator;
+    private boolean headerIncluded;
+    
+    private String category = "";
+    
+    private List<CSVColumnMeasTarget> csvTargets = new ArrayList();
+    private List<PerRowFileMeasTarget> perRowTargets = new ArrayList();    
 
+    public AnalysisFileTarget() {
+    }
+
+    
+    
     public AnalysisFileTarget(String path, char separator, boolean headerIncluded) {
         this.path = path;
         this.separator = separator;
@@ -50,19 +62,52 @@ public final class AnalysisFileTarget {
         }
         return true;
     }
+
+    public void addCSVTarget(CSVColumnMeasTarget target) {
+        csvTargets.add(target);
+    }
+
+    public List<CSVColumnMeasTarget> getCsvTargets() {
+        return csvTargets;
+    }
+
+    public void setCsvTargets(List<CSVColumnMeasTarget> csvTargets) {
+        this.csvTargets = csvTargets;
+    }
+
+    public List<PerRowFileMeasTarget> getPerRowTargets() {
+        return perRowTargets;
+    }
+
+    public void setPerRowTargets(List<PerRowFileMeasTarget> perRowTargets) {
+        this.perRowTargets = perRowTargets;
+    }
+    
+    public void addPerRowTarget(PerRowFileMeasTarget target) {
+        perRowTargets.add(target);
+    }    
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setSeparator(char separator) {
+        this.separator = separator;
+    }
+
+    public void setHeaderIncluded(boolean headerIncluded) {
+        this.headerIncluded = headerIncluded;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
     
     
 
-
-    
-    
-
-
-
-
-    
-
-
-    
     
 }

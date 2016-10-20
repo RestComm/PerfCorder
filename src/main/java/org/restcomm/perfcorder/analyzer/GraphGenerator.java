@@ -2,14 +2,13 @@ package org.restcomm.perfcorder.analyzer;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
-import org.jfree.chart.title.Title;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -21,15 +20,33 @@ public class GraphGenerator {
     public static String generateGraph(CSVColumnMeasTarget target, List<String[]> readAll, PerfCorderAnalysis analysis) throws IOException {
         TimeSeries tSeries = new TimeSeries(target.getLabel());
         Second current = new Second(new Date(analysis.getStartTimeStamp()));
-        for (int i = 0; i < readAll.size(); i++) {
+        int stripWithHeader = 0;
+        if (target.getColumn() == CSVColumnMeasTarget.SEARCH_COL_INDX_BY_NAME) {
+            String[] colNames = readAll.get(0);
+            List<String> asList = Arrays.asList(colNames);
+            int indexOf = asList.indexOf(target.getLabel());
+            target.setColumn(indexOf);
+            stripWithHeader = stripWithHeader + 1;
+        }
+        int previousDelta = 0;
+        for (int i = stripWithHeader; i < readAll.size(); i++) {
             String[] readNext = readAll.get(i);
             int column = target.getColumn();
-            if (column < readNext.length) {
+            if (column < readNext.length && column >= 0) {
                 String nextCol = readNext[column];
                 double nexValue = target.transformIntoDouble(nextCol);
                 tSeries.add(current, nexValue);
                 //increment using meas interval to pruduce correct time scale
-                for (int j = 0; j < analysis.getSettings().getMeasIntervalSeconds(); j++) {
+                int measDeltaSeconds = analysis.getSettings().getMeasIntervalSeconds(); 
+                if (target.getAuxTimestampColumn() >= 0)
+                {
+                    measDeltaSeconds = Integer.parseInt(readNext[target.getAuxTimestampColumn()]) / 1000 - previousDelta;
+                    previousDelta = measDeltaSeconds + previousDelta;
+                    if (measDeltaSeconds <= 0) {
+                        measDeltaSeconds = 1;
+                    }
+                }
+                for (int j = 0; j < measDeltaSeconds; j++) {
                     current = (Second) current.next();
                 }
             } else {

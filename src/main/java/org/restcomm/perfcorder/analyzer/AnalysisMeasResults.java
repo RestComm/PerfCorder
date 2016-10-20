@@ -20,6 +20,7 @@ public class AnalysisMeasResults {
     private double skewness;
     private double quadraticMean;
     private String graph;
+    private String category;
     
     
 
@@ -166,7 +167,13 @@ public class AnalysisMeasResults {
     public void setGraph(String graph) {
         this.graph = graph;
     }
-    
-    
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
     
 }

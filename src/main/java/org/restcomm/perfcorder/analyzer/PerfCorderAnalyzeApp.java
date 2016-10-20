@@ -25,7 +25,7 @@ public class PerfCorderAnalyzeApp {
     private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
     private static void printInfo() {
-        System.out.println("Usage: java -jar 'thisFile' perfCorderFile linesToStripRatio");
+        System.out.println("Usage: java -jar 'thisFile' perfCorderFile linesToStripRatio [targetDefFilePath]");
     }
 
     /**
@@ -43,7 +43,18 @@ public class PerfCorderAnalyzeApp {
             InputStream iStream = null;
             iStream = new FileInputStream(args[0]);
             int linesToStripRatio = Integer.valueOf(args[1]);
-            PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(iStream, linesToStripRatio);
+            
+            //by default use xml in classpath
+            InputStream resourceAsStream = PerfCorderAnalyzeApp.class.getResourceAsStream("/defaultFileTargets.xml");
+            if (args.length > 2){
+                logger.info("Using provided targets file at:" + args[2]);
+                resourceAsStream = new FileInputStream(args[2]);
+            } else {
+                logger.info("Using Default targets file");
+            }
+            JAXBContext targetsContext = JAXBContext.newInstance(AnalysisFileTargetSet.class);
+            AnalysisFileTargetSet targetSet = (AnalysisFileTargetSet) targetsContext.createUnmarshaller().unmarshal(resourceAsStream);
+            PerfCorderAnalyzer analyzer = new PerfCorderAnalyzer(iStream, linesToStripRatio, targetSet.getFiles());
             PerfCorderAnalysis analysis = analyzer.analyze();
             JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();

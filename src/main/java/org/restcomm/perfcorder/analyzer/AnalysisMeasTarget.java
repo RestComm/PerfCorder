@@ -1,14 +1,34 @@
 package org.restcomm.perfcorder.analyzer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AnalysisMeasTarget {
 
-    private final String label;
+    private String label;
+
+    private String converterClass = "org.restcomm.perfcorder.analyzer.DefaultConverter";
+    private transient ColumnConverter converter = new DefaultConverter();
+
+    public AnalysisMeasTarget() {
+    }
 
     public AnalysisMeasTarget(String label) {
         this.label = label;
     }
+    
+    public AnalysisMeasTarget(String label, String converterClass) {
+        this.label = label;
+        this.converterClass = converterClass;
+        try {
+            converter = (ColumnConverter) Class.forName(converterClass).newInstance();
+        } catch (Exception ex) {
+            Logger.getLogger(AnalysisMeasTarget.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 
     public String getLabel() {
         return label;
@@ -42,17 +62,26 @@ public class AnalysisMeasTarget {
     public static final double INVALID_STRING = -1;
 
     public double transformIntoDouble(String value) {
-        //remove percent char
-        String transStr = value.replaceAll("%", "");
-        if (transStr.isEmpty()) {
-            return INVALID_STRING;
-        } else {
-            try {
-                return Double.valueOf(transStr);
-            } catch (NumberFormatException nExp) {
-                return 0.0;
-            }
-        }
+        return converter.convert(value);
     }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getConverterClass() {
+        return converterClass;
+    }
+
+    public void setConverterClass(String converterClass) {
+        this.converterClass = converterClass;
+        try {
+            converter = (ColumnConverter) Class.forName(converterClass).newInstance();
+        } catch (Exception ex) {
+            Logger.getLogger(AnalysisMeasTarget.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+
+
 
 }

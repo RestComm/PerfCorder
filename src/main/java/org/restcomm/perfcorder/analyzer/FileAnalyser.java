@@ -9,5 +9,5 @@ import java.util.Map;
  * @author jaime
  */
 public interface FileAnalyser<T extends AnalysisMeasTarget>  {
-     Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, List<T> targets, int linesToStripRatio, PerfCorderAnalysis analysis) throws IOException;    
+     Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, AnalysisFileTarget target, int linesToStripRatio, PerfCorderAnalysis analysis) throws IOException;    
 }

@@ -10,6 +10,7 @@ public class CSVExtractor {
 
     /**
      *
+     * @param dFile
      * @param file
      * @return csv file in the form of a list of String array.
      * @throws IOException
@@ -19,9 +20,6 @@ public class CSVExtractor {
         if (in != null) {
             InputStreamReader reader = new InputStreamReader(in);
             int stripWithHeader = 0;
-            if (file.isHeaderIncluded()) {
-                stripWithHeader = stripWithHeader + 1;
-            }
             OpenCsvReader csvReader = new OpenCsvReader(reader, file.getSeparator(), '"', stripWithHeader);
             List<String[]> readAll = csvReader.readAll();
             return readAll;

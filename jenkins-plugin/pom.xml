@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.mobicents.qa</groupId>
+    <artifactId>jenkins-plugin</artifactId>
+    <packaging>hpi</packaging>
+    <version>0.2-SNAPSHOT</version>
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>1.463</version>
+    </parent>
+ 
+    <properties>
+        <!-- MOBICENTS TOOL VERSIONS -->
+        <mobicents.tools.mavenplugin.eclipse.version>1.0.0.BETA2</mobicents.tools.mavenplugin.eclipse.version>
+        <!-- change it to point to your tools.jar from your JDK -->
+        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+        <jdk.version>1.6</jdk.version>     
+        <jenkins.version>2.14</jenkins.version>   
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArguments>
+                        <g />
+                    </compilerArguments>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+    <!-- repositories -->
+    <repositories>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </repository>        
+    </repositories>
+
+</project>

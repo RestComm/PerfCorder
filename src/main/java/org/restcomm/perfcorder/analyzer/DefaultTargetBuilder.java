@@ -42,7 +42,7 @@ public class DefaultTargetBuilder {
         files.add(jmeterTarget);
 
         AnalysisFileTarget histTarget = new AnalysisFileTarget("data/periodic/java/objs.hist", ' ', false);
-        histTarget.setCategory("Java");
+        histTarget.setCategory("ObjHist");
         histTarget.addPerRowTarget(new PerRowFileMeasTarget("ObjHistogram", 3, 2, 1));
         files.add(histTarget); 
         

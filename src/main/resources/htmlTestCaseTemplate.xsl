@@ -40,22 +40,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each select="//key[text()='Cpu']/parent::entry">
+                        <xsl:for-each select="//category[text()='Java']/parent::value/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='Mem']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='GcMemAfter']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>
-                        <xsl:for-each select="//key[text()='GcPauseDuration']/parent::entry">
-                            <xsl:call-template name="measRowTemplate">
-                            </xsl:call-template>
-                        </xsl:for-each>                                                                        
+                        </xsl:for-each>                         
                     </tbody>
                 </table>
                 
@@ -69,7 +57,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each select="//key[starts-with(text(),'SIP')]/parent::entry">
+                        <xsl:for-each select="//category[text()='SIP']/parent::value/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
@@ -85,7 +73,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each select="//key[starts-with(text(),'HTTP')]/parent::entry">
+                        <xsl:for-each select="//category[text()='HTPP']/parent::value/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
@@ -101,7 +89,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each select="//key[starts-with(text(),'SMPP')]/parent::entry">
+                        <xsl:for-each select="//category[text()='SMPP']/parent::value/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
                         </xsl:for-each>                                                                    

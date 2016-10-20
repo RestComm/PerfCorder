@@ -120,7 +120,7 @@
         <separator>32</separator>
     </files>
     <files>
-        <category>Java</category>
+        <category>ObjHist</category>
         <headerIncluded>false</headerIncluded>
         <path>data/periodic/java/objs.hist</path>
         <perRowTargets>

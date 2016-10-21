@@ -32,7 +32,7 @@ public class PerfCorderHTMLViewGeneratorTest {
         assertNotNull(result);
         Assert.assertTrue(result.contains("HTTP"));
         Assert.assertTrue(result.contains("SIP"));
-        Assert.assertTrue(result.contains("GC"));
+        Assert.assertTrue(result.contains("Java"));
         
     }
     

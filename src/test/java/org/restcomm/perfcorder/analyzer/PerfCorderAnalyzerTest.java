@@ -9,8 +9,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -82,7 +80,6 @@ public class PerfCorderAnalyzerTest {
         htmlGen.generateView(streamSource2, oStream2);
         byte[] toByteArray2 = oStream2.toByteArray();
         String result2 = new String(toByteArray2);
-
     }
 
 }

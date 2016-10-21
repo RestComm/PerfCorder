@@ -44,7 +44,7 @@ public final class PerfCorderAnalyzer {
         long startTS = extractTimestamp("data/meta/startTimestamp");
         long endTS = extractTimestamp("data/meta/endTimestamp");
         PerfCorderCollectionSettings settings = extractSettings();
-        PerfCorderAnalysis perfCorderAnalysis = new PerfCorderAnalysis(startTS, endTS, settings);
+        PerfCorderAnalysis perfCorderAnalysis = new PerfCorderAnalysis(startTS, endTS, settings, linesToStripRatio);
 
         Map<AnalysisFileTarget, List<String[]>> dataFiles = extractDataFiles();
         for (AnalysisFileTarget file : dataFiles.keySet()) {
@@ -54,7 +54,6 @@ public final class PerfCorderAnalyzer {
             analyser = new StatsCalculator();
             results = analyser.analyzeTarget(dataFile,
                     file,
-                    linesToStripRatio,
                     perfCorderAnalysis);
             for (AnalysisMeasTarget key : results.keySet()) {
                 AnalysisMeasResults measResults = results.get(key);
@@ -64,7 +63,6 @@ public final class PerfCorderAnalyzer {
             analyser = new PerRowMeasAnalyzer();
             results = analyser.analyzeTarget(dataFile,
                     file,
-                    linesToStripRatio,
                     perfCorderAnalysis);
             for (AnalysisMeasTarget key : results.keySet()) {
                 AnalysisMeasResults measResults = results.get(key);

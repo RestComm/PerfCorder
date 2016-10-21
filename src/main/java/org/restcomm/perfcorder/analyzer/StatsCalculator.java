@@ -12,7 +12,7 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
     @Override
-    public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll,AnalysisFileTarget fileTarget, int linesToStripRatio, PerfCorderAnalysis analysis) throws IOException {
+    public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll,AnalysisFileTarget fileTarget,  PerfCorderAnalysis analysis) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
         Map<CSVColumnMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
         //init empty stats to add values later
@@ -27,7 +27,7 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
             }            
         }
 
-        int thresholdRows = (readAll.size() * linesToStripRatio) / 100;
+        int thresholdRows = (readAll.size() * analysis.getSamplesToStripRatio()) / 100;
         int lastRowRow = readAll.size() - thresholdRows;
 
         for (int i = thresholdRows; i < lastRowRow; i++) {

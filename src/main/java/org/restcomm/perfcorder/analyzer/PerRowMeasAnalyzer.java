@@ -8,7 +8,7 @@ import java.util.Map;
 public class PerRowMeasAnalyzer implements FileAnalyser<PerRowFileMeasTarget> {
 
     @Override
-    public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, AnalysisFileTarget fileTarget, int linesToStripRatio, PerfCorderAnalysis analysis) throws IOException {
+    public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, AnalysisFileTarget fileTarget,  PerfCorderAnalysis analysis) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
         for (PerRowFileMeasTarget target : fileTarget.getPerRowTargets()) {
             for (String[] readNext : readAll) {

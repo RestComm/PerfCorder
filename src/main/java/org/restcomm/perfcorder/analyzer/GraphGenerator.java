@@ -1,5 +1,6 @@
 package org.restcomm.perfcorder.analyzer;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,10 +9,15 @@ import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.ui.RectangleAnchor;
+import org.jfree.ui.TextAnchor;
 
 public class GraphGenerator {
 
@@ -29,17 +35,18 @@ public class GraphGenerator {
             stripWithHeader = stripWithHeader + 1;
         }
         int previousDelta = 0;
+        Second statsStartSecond = null;
+        Second statsEndSecond = null;
         for (int i = stripWithHeader; i < readAll.size(); i++) {
             String[] readNext = readAll.get(i);
             int column = target.getColumn();
             if (column < readNext.length && column >= 0) {
                 String nextCol = readNext[column];
                 double nexValue = target.transformIntoDouble(nextCol);
-                tSeries.add(current, nexValue);
-                //increment using meas interval to pruduce correct time scale
-                int measDeltaSeconds = analysis.getSettings().getMeasIntervalSeconds(); 
-                if (target.getAuxTimestampColumn() >= 0)
-                {
+                //increment using meas interval to produce correct time scale
+                int measDeltaSeconds = analysis.getSettings().getMeasIntervalSeconds();
+                //If target has auxiliary ts col, use it to calculate delta
+                if (target.getAuxTimestampColumn() >= 0) {
                     measDeltaSeconds = Integer.parseInt(readNext[target.getAuxTimestampColumn()]) / 1000 - previousDelta;
                     previousDelta = measDeltaSeconds + previousDelta;
                     if (measDeltaSeconds <= 0) {
@@ -49,17 +56,54 @@ public class GraphGenerator {
                 for (int j = 0; j < measDeltaSeconds; j++) {
                     current = (Second) current.next();
                 }
+
+                if (statsStartSecond == null
+                        && i * 100 / readAll.size() >= analysis.getSamplesToStripRatio()) {
+                    statsStartSecond = new Second(current.getSecond(), current.getMinute());
+                }
+
+                if (statsEndSecond == null 
+                        && i * 100 / readAll.size() >= (100 - analysis.getSamplesToStripRatio())) {
+                    statsEndSecond = new Second(current.getSecond(), current.getMinute());
+                }
+
+                tSeries.add(current, nexValue);
             } else {
                 LOGGER.warn("Attempted invalid column:" + target.getLabel());
             }
         }
         TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection(tSeries);
         JFreeChart chart = ChartFactory.createTimeSeriesChart(target.getLabel(), "Time", target.getLabel(), timeSeriesCollection, false, false, false);
+        XYPlot plot = chart.getXYPlot();
+        if (statsStartSecond != null) {
+            int statsStart = (readAll.size() * analysis.getSamplesToStripRatio() / 100) * analysis.getSettings().getMeasIntervalSeconds() * 1000;
+            //final Second statsStartSecond = new Second(new Date(analysis.getStartTimeStamp() + statsStart));
+            final Marker statsStartMarker = new ValueMarker(statsStartSecond.getFirstMillisecond());
+            statsStartMarker.setPaint(Color.GREEN);
+            statsStartMarker.setLabel("Stats Start");
+            statsStartMarker.setLabelAnchor(RectangleAnchor.TOP_RIGHT);
+            statsStartMarker.setLabelTextAnchor(TextAnchor.TOP_LEFT);
+            plot.addDomainMarker(statsStartMarker);
+        }
+        if (statsEndSecond != null) {
+            int statsEnd = (readAll.size() - readAll.size() * analysis.getSamplesToStripRatio() / 100) * analysis.getSettings().getMeasIntervalSeconds() * 1000;
+            //statsEndSecond = new Second(new Date(analysis.getStartTimeStamp() + statsEnd));
+            final Marker statsEndMarker = new ValueMarker(statsEndSecond.getFirstMillisecond());
+            statsEndMarker.setPaint(Color.GREEN);
+            statsEndMarker.setLabel("Stats End");
+            statsEndMarker.setLabelAnchor(RectangleAnchor.TOP_LEFT);
+            statsEndMarker.setLabelTextAnchor(TextAnchor.TOP_LEFT);
+            plot.addDomainMarker(statsEndMarker);
+        }
         chart.addSubtitle(new TextTitle("CollFreq:" + analysis.getSettings().getMeasIntervalSeconds()));
         BufferedImage createBufferedImage = chart.createBufferedImage(320, 240);
         byte[] graph = ChartUtilities.encodeAsPNG(createBufferedImage, false, 9);
         String graphStr = encode(graph);
         return graphStr;
+    }
+    
+    private void addMarkers() {
+        
     }
     private final static char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 

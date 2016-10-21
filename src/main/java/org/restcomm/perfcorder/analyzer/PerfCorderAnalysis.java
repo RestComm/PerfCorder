@@ -10,6 +10,7 @@ public class PerfCorderAnalysis {
     private long startTimeStamp;
     private long endTimeStamp;
     private PerfCorderCollectionSettings settings;
+    private int samplesToStripRatio;
     
     private Map<String, AnalysisMeasResults> measMap = new HashMap();
 
@@ -18,14 +19,15 @@ public class PerfCorderAnalysis {
 
     
     
-    public PerfCorderAnalysis(long startTimeStamp, long endTimeStamp, PerfCorderCollectionSettings settings) {
+    public PerfCorderAnalysis(long startTimeStamp, long endTimeStamp, PerfCorderCollectionSettings settings, int samplesToStripRatio) {
         this.startTimeStamp = startTimeStamp;
         this.endTimeStamp = endTimeStamp;
         this.settings = settings;
+        this.samplesToStripRatio = samplesToStripRatio;
     }
     
     
-
+    
     public Map<String, AnalysisMeasResults> getMeasMap() {
         return measMap;
     }
@@ -63,4 +65,14 @@ public class PerfCorderAnalysis {
     public void setSettings(PerfCorderCollectionSettings settings) {
         this.settings = settings;
     }
+
+    public int getSamplesToStripRatio() {
+        return samplesToStripRatio;
+    }
+
+    public void setSamplesToStripRatio(int samplesToStripRatio) {
+        this.samplesToStripRatio = samplesToStripRatio;
+    }
+    
+    
 }

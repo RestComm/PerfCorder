@@ -26,15 +26,11 @@ public class GraphGenerator {
     public static String generateGraph(CSVColumnMeasTarget target, List<String[]> readAll, PerfCorderAnalysis analysis) throws IOException {
         TimeSeries tSeries = new TimeSeries(target.getLabel());
         Second current = new Second(new Date(analysis.getStartTimeStamp()));
-        int stripWithHeader = 0;
-        if (target.getColumn() == CSVColumnMeasTarget.SEARCH_COL_INDX_BY_NAME) {
-            String[] colNames = readAll.get(0);
-            List<String> asList = Arrays.asList(colNames);
-            int indexOf = asList.indexOf(target.getLabel());
-            target.setColumn(indexOf);
-            stripWithHeader = stripWithHeader + 1;
-        }
-        int previousDelta = 0;
+        //assume first lines contains column names
+        int stripWithHeader = 1;
+        
+        int previousDelta = 0;//used to calcualte delta for auxTSColums
+        
         Second statsStartSecond = null;
         Second statsEndSecond = null;
         for (int i = stripWithHeader; i < readAll.size(); i++) {
@@ -53,15 +49,20 @@ public class GraphGenerator {
                         measDeltaSeconds = 1;
                     }
                 }
+                
+                //calculate delta
                 for (int j = 0; j < measDeltaSeconds; j++) {
                     current = (Second) current.next();
                 }
 
+                
+                /**
+                 * record start and end of stats markers
+                 */
                 if (statsStartSecond == null
                         && i * 100 / readAll.size() >= analysis.getSamplesToStripRatio()) {
                     statsStartSecond = new Second(current.getSecond(), current.getMinute());
                 }
-
                 if (statsEndSecond == null 
                         && i * 100 / readAll.size() >= (100 - analysis.getSamplesToStripRatio())) {
                     statsEndSecond = new Second(current.getSecond(), current.getMinute());
@@ -74,9 +75,17 @@ public class GraphGenerator {
         }
         TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection(tSeries);
         JFreeChart chart = ChartFactory.createTimeSeriesChart(target.getLabel(), "Time", target.getLabel(), timeSeriesCollection, false, false, false);
+        addMarkers(chart, statsStartSecond, statsEndSecond);
+        chart.addSubtitle(new TextTitle("CollFreq:" + analysis.getSettings().getMeasIntervalSeconds()));
+        BufferedImage createBufferedImage = chart.createBufferedImage(320, 240);
+        byte[] graph = ChartUtilities.encodeAsPNG(createBufferedImage, false, 9);
+        String graphStr = encode(graph);
+        return graphStr;
+    }
+    
+    private static void addMarkers(JFreeChart chart, Second statsStartSecond,Second statsEndSecond) {
         XYPlot plot = chart.getXYPlot();
         if (statsStartSecond != null) {
-            int statsStart = (readAll.size() * analysis.getSamplesToStripRatio() / 100) * analysis.getSettings().getMeasIntervalSeconds() * 1000;
             //final Second statsStartSecond = new Second(new Date(analysis.getStartTimeStamp() + statsStart));
             final Marker statsStartMarker = new ValueMarker(statsStartSecond.getFirstMillisecond());
             statsStartMarker.setPaint(Color.GREEN);
@@ -86,7 +95,6 @@ public class GraphGenerator {
             plot.addDomainMarker(statsStartMarker);
         }
         if (statsEndSecond != null) {
-            int statsEnd = (readAll.size() - readAll.size() * analysis.getSamplesToStripRatio() / 100) * analysis.getSettings().getMeasIntervalSeconds() * 1000;
             //statsEndSecond = new Second(new Date(analysis.getStartTimeStamp() + statsEnd));
             final Marker statsEndMarker = new ValueMarker(statsEndSecond.getFirstMillisecond());
             statsEndMarker.setPaint(Color.GREEN);
@@ -94,16 +102,7 @@ public class GraphGenerator {
             statsEndMarker.setLabelAnchor(RectangleAnchor.TOP_LEFT);
             statsEndMarker.setLabelTextAnchor(TextAnchor.TOP_LEFT);
             plot.addDomainMarker(statsEndMarker);
-        }
-        chart.addSubtitle(new TextTitle("CollFreq:" + analysis.getSettings().getMeasIntervalSeconds()));
-        BufferedImage createBufferedImage = chart.createBufferedImage(320, 240);
-        byte[] graph = ChartUtilities.encodeAsPNG(createBufferedImage, false, 9);
-        String graphStr = encode(graph);
-        return graphStr;
-    }
-    
-    private void addMarkers() {
-        
+        }        
     }
     private final static char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 

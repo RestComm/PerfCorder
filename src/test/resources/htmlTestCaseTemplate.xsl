@@ -73,7 +73,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each select="//category[text()='HTPP']/parent::value/parent::entry">
+                        <xsl:for-each select="//category[text()='HTTP']/parent::value/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
                         </xsl:for-each>                                                                    

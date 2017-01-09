@@ -72,6 +72,33 @@
         <separator>59</separator>
     </files>
     <files>
+        <category>Diameter</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>DiameterSuccessfulCall</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+           <columnName>TrafficSuccessfulCall(P)</columnName>              
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>DiameterFailedCall</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>FailedCall(P)</columnName>            
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
+            <label>DiameterResponseTime</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>ResponseTime(P)</columnName>
+        </csvTargets>
+        <headerIncluded>true</headerIncluded>
+        <path>data/periodic/diameter/seagull-client-stat.csv</path>
+        <separator>44</separator>
+    </files>    
+    <files>
         <category>Java</category>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>

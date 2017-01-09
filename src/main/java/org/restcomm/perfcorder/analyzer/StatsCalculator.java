@@ -21,7 +21,12 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
             if (target.getColumn() == CSVColumnMeasTarget.SEARCH_COL_INDX_BY_NAME) {
                 String[] colNames = readAll.get(0);
                 List<String> asList = Arrays.asList(colNames);
-                int indexOf = asList.indexOf(target.getLabel());
+                int indexOf = -1;
+                if (target.getColumnName().isEmpty()) {
+                    indexOf = asList.indexOf(target.getLabel());
+                } else {
+                    indexOf = asList.indexOf(target.getColumnName());
+                }
                 LOGGER.info("Index found:"+ indexOf + ", for column" + target.getLabel());
                 target.setColumn(indexOf);
             }            

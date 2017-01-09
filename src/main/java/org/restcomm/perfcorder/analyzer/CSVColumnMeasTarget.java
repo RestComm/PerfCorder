@@ -3,6 +3,7 @@ package org.restcomm.perfcorder.analyzer;
 
 public final class CSVColumnMeasTarget extends AnalysisMeasTarget {
     static final int SEARCH_COL_INDX_BY_NAME = -1;
+    private String columnName = "";
     private int column;
     private int auxTimestampColumn = -1;
 
@@ -51,6 +52,14 @@ public final class CSVColumnMeasTarget extends AnalysisMeasTarget {
 
     public void setAuxTimestampColumn(int auxTimestampColumn) {
         this.auxTimestampColumn = auxTimestampColumn;
-    } 
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
     
 }

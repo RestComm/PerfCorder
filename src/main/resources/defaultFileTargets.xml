@@ -81,7 +81,14 @@
         <category>Diameter</category>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>DiameterSuccessfulCall</label>
+            <label>DiameterInitSuccessfulCall</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+           <columnName>InitSuccessfulCall(P)</columnName>              
+        </csvTargets>        
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>DiameterTrafficSuccessfulCall</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
            <columnName>TrafficSuccessfulCall(P)</columnName>              

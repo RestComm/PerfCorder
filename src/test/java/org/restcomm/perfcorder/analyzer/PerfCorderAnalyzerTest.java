@@ -84,6 +84,9 @@ public class PerfCorderAnalyzerTest {
         htmlGen.generateView(streamSource2, oStream2);
         byte[] toByteArray2 = oStream2.toByteArray();
         String result2 = new String(toByteArray2);
+        Assert.assertTrue(result2.contains("HTTPElapsed"));
+        Assert.assertTrue(result2.contains("SIPTotalCallCreated"));
+        Assert.assertTrue(result2.contains("JavaThreads"));        
     }
 
 }

@@ -94,7 +94,23 @@
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
                     </tbody>
-                </table>                                  
+                </table> 
+                <table border="1">
+                    <caption>Diameter</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//category[text()='Diameter']/parent::value/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                                                                    
+                    </tbody>
+                </table>                                                   
             </body>
         </html>
     </xsl:template>

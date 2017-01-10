@@ -13,6 +13,12 @@
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>1</column>
         </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JavaThreads</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>3</column>
+        </csvTargets>        
         <headerIncluded>true</headerIncluded>
         <path>data/periodic/java/jvmtop.txt</path>
         <separator>44</separator>

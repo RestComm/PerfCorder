@@ -27,7 +27,7 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
                 } else {
                     indexOf = asList.indexOf(target.getColumnName());
                 }
-                LOGGER.info("Index found:"+ indexOf + ", for column" + target.getLabel());
+                LOGGER.info("Index found:"+ indexOf + ", for column:" + target.getLabel());
                 target.setColumn(indexOf);
             }            
         }

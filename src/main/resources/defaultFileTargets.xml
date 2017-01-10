@@ -102,7 +102,7 @@
         </csvTargets>
         <headerIncluded>true</headerIncluded>
         <path>data/periodic/diameter/seagull-client-stat.csv</path>
-        <separator>44</separator>
+        <separator>59</separator>
     </files>    
     <files>
         <category>Java</category>

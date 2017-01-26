@@ -76,6 +76,15 @@ function startJavaMeasCollection {
 
     $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.GCPausePrinter -d ${MEAS_INTERVAL_SECONDS} ${JAVA_PID} > ${JAVA_COLLECTION_DIR}/jgcstat.txt &
     echo $! > ${DATA_COLLECTION_DIR}/jgcstat.pid
+
+    if [[ -z $JOIN_FILE_PATH ]]; then
+        echo "obj histogram disabled"
+    else
+        echo "obj histogram enabled"
+        cat $JOIN_FILE_PATH | awk -f $PERFCORDER_HOME./transpose.awk > ${JAVA_COLLECTION_DIR}/histo.csv
+        while sleep ${MEAS_INTERVAL_SECONDS}; do jcmd $JAVA_PID GC.class_histogram | awk '{print $4,$2}' | sort | join --nocheck-order $JOIN_FILE_PATH - | awk -f $PERFCORDER_HOME./transpose.awk | head -1 >> ${JAVA_COLLECTION_DIR}/histo.csv ; done &
+        echo $! > ${DATA_COLLECTION_DIR}/histo.pid
+    fi
 }
 function startNetworkCapture {
     if [[ -z ${PC_NETWORK_CAPTURE} ]]; then
@@ -154,7 +163,7 @@ if [ $NUMARGS -eq 0 ]; then
   HELP
 fi
 
-while getopts "f:c:o:e:ph" opt; do
+while getopts "f:c:o:e:phj" opt; do
   case $opt in
     f)
       MEAS_INTERVAL_SECONDS=${OPTARG}
@@ -170,6 +179,9 @@ while getopts "f:c:o:e:ph" opt; do
       ;;
     e)
       INVOKE_EXTERNAL_HOOK=${OPTARG}
+      ;;
+    j)
+      JOIN_FILE_PATH=${OPTARG}
       ;;
     h)
       HELP

@@ -281,15 +281,8 @@
     </files>
     <files>
         <category>ObjHist</category>
-        <headerIncluded>false</headerIncluded>
-        <path>data/periodic/java/objs.hist</path>
-        <perRowTargets>
-            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>ObjHistogram</label>
-            <countColumn>1</countColumn>
-            <labelColumn>3</labelColumn>
-            <sumColumn>2</sumColumn>
-        </perRowTargets>
-        <separator>32</separator>
+        <linesToSkip>0</linesToSkip>
+        <path>data/periodic/java/histo.csv</path>
+        <separator>44</separator>
     </files>
 </analysisFileTargetSet>

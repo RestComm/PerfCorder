@@ -61,7 +61,7 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis.getMeasMap().get("JavaThreads"));
         Assert.assertNotNull(analysis.getMeasMap().get("SysCpuUsr"));        
         
-        Assert.assertNotNull(analysis.getMeasMap().get("ObjHistogram-org.mobicents.as7.Attribute"));
+        Assert.assertNotNull(analysis.getMeasMap().get("ObjHist-org.netbeans.modules.editor.fold.ui.CodeFoldingSideBar$Mark"));
 
         //transform into xml
         JAXBContext jaxbContext = JAXBContext.newInstance(PerfCorderAnalysis.class);

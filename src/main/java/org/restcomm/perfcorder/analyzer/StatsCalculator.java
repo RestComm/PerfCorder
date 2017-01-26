@@ -1,6 +1,7 @@
 package org.restcomm.perfcorder.analyzer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +12,26 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
+    private void autogenerateTargets(List<String[]> readAll,AnalysisFileTarget fileTarget) {
+        if (fileTarget.getCsvTargets().isEmpty()) {
+            List<CSVColumnMeasTarget> targets = new ArrayList();
+            
+            String[] colNames = readAll.get(0);
+            for(int i = 0 ; i < colNames.length ; i++) {
+                CSVColumnMeasTarget target = new CSVColumnMeasTarget(fileTarget.getCategory() + "-" + colNames[i], i);
+                targets.add(target);
+            }
+            fileTarget.setCsvTargets(targets);
+        }
+    }
+    
     @Override
     public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll,AnalysisFileTarget fileTarget,  PerfCorderAnalysis analysis) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
         Map<CSVColumnMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
+        
+        autogenerateTargets(readAll, fileTarget);
+        
         //init empty stats to add values later
         for (CSVColumnMeasTarget target : fileTarget.getCsvTargets()) {
             statsMap.put(target, new DescriptiveStatistics());

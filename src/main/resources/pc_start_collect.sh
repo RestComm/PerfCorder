@@ -62,11 +62,8 @@ function collectJavaProcessInfo {
 function startSystemMeasCollection {
     echo Starting System Collection over process ${JAVA_PID}
 
-    iostat -x -d ${MEAS_INTERVAL_SECONDS} | grep -v 'Device' > ${SYS_COLLECTION_DIR}/iostat.txt &
-    echo $! > ${DATA_COLLECTION_DIR}/iostat.pid
-
-    netstat -s ${MEAS_INTERVAL_SECONDS} > ${SYS_COLLECTION_DIR}/netstat.txt &
-    echo $! > ${DATA_COLLECTION_DIR}/netstat.pid
+    dstat --cpu --net --disk --sys --tcp --udp --noupdate --noheaders --output ${SYS_COLLECTION_DIR}/dstat.csv ${MEAS_INTERVAL_SECONDS} &
+    echo $! > ${DATA_COLLECTION_DIR}/dstat.pid
 }
 function startJavaMeasCollection {
     echo Starting Java Collection over process ${JAVA_PID}

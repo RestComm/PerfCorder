@@ -1,4 +1,124 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><analysisFileTargetSet>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><analysisFileTargetSet>  
+    <files>
+        <category>Sys</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysCpuUsr</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>0</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysCpuSys</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>1</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysCpuIdl</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>2</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysCpuWai</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>3</column>
+        </csvTargets>  
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysCpuHiq</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>4</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysCpuSiq</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>5</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysNetRecv</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>6</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysNetSend</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>7</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysDiskRead</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>8</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysDiskWrit</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>9</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysSysInt</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>10</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysSysCsw</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>11</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysTcpLis</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>12</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysTcpAct</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>13</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysTcpSyn</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>14</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysTcpTim</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>15</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysTcpClo</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>16</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysUdpLis</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>17</column>
+        </csvTargets>                          
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SysUdpAct</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>18</column>
+        </csvTargets>                          
+        <linesToSkip>6</linesToSkip>
+        <path>data/periodic/sys/dstat.csv</path>
+        <separator>44</separator>
+    </files>    
     <files>
         <category>Java</category>
         <csvTargets>
@@ -19,7 +139,7 @@
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>3</column>
         </csvTargets>        
-        <headerIncluded>true</headerIncluded>
+        <linesToSkip>1</linesToSkip>
         <path>data/periodic/java/jvmtop.txt</path>
         <separator>44</separator>
     </files>
@@ -73,7 +193,7 @@
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
         </csvTargets>
-        <headerIncluded>true</headerIncluded>
+        <linesToSkip>1</linesToSkip>
         <path>data/periodic/sip/sipp.csv</path>
         <separator>59</separator>
     </files>
@@ -107,7 +227,7 @@
             <column>-1</column>
             <columnName>ResponseTime(P)</columnName>
         </csvTargets>
-        <headerIncluded>true</headerIncluded>
+        <linesToSkip>0</linesToSkip>
         <path>data/periodic/diameter/seagull-client-stat.csv</path>
         <separator>59</separator>
     </files>    
@@ -131,7 +251,7 @@
             <auxTimestampColumn>7</auxTimestampColumn>
             <column>2</column>
         </csvTargets>
-        <headerIncluded>true</headerIncluded>
+        <linesToSkip>1</linesToSkip>
         <path>data/periodic/java/jgcstat.txt</path>
         <separator>44</separator>
     </files>
@@ -155,7 +275,7 @@
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>14</column>
         </csvTargets>
-        <headerIncluded>false</headerIncluded>
+        <linesToSkip>1</linesToSkip>
         <path>data/periodic/http/jmeter.csv</path>
         <separator>32</separator>
     </files>

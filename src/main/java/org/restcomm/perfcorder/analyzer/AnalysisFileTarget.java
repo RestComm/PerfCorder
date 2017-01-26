@@ -8,7 +8,7 @@ import java.util.Objects;
 public class AnalysisFileTarget {
     private String path;
     private char separator;
-    private boolean headerIncluded;
+    private int linesToSkip;
     
     private String category = "";
     
@@ -20,10 +20,10 @@ public class AnalysisFileTarget {
 
     
     
-    public AnalysisFileTarget(String path, char separator, boolean headerIncluded) {
+    public AnalysisFileTarget(String path, char separator, int linesToSkip) {
         this.path = path;
         this.separator = separator;
-        this.headerIncluded = headerIncluded;
+        this.linesToSkip = linesToSkip;
     }
 
     public String getPath() {
@@ -32,10 +32,6 @@ public class AnalysisFileTarget {
 
     public char getSeparator() {
         return separator;
-    }
-
-    public boolean isHeaderIncluded() {
-        return headerIncluded;
     }
 
     @Override
@@ -95,10 +91,6 @@ public class AnalysisFileTarget {
         this.separator = separator;
     }
 
-    public void setHeaderIncluded(boolean headerIncluded) {
-        this.headerIncluded = headerIncluded;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -106,8 +98,14 @@ public class AnalysisFileTarget {
     public void setCategory(String category) {
         this.category = category;
     }
-    
-    
 
+    public int getLinesToSkip() {
+        return linesToSkip;
+    }
+
+    public void setLinesToSkip(int linesToSkip) {
+        this.linesToSkip = linesToSkip;
+    }
+    
     
 }

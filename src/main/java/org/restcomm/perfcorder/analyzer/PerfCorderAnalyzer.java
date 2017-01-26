@@ -24,7 +24,7 @@ public final class PerfCorderAnalyzer {
     private static final String SETTINGS_LOC = "data/meta/perfcorder_settings.csv";
 
     static {
-        SETTINGS_TARGET = new AnalysisFileTarget(SETTINGS_LOC, ',', true);
+        SETTINGS_TARGET = new AnalysisFileTarget(SETTINGS_LOC, ',', 0);
     }
 
     /**

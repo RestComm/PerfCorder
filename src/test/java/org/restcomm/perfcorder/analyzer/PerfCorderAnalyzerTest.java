@@ -59,7 +59,7 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis.getMeasMap().get("SIPTotalCallCreated"));
         Assert.assertNotNull(analysis.getMeasMap().get("DiameterResponseTime"));
         Assert.assertNotNull(analysis.getMeasMap().get("JavaThreads"));
-        
+        Assert.assertNotNull(analysis.getMeasMap().get("SysCpuUsr"));        
         
         Assert.assertNotNull(analysis.getMeasMap().get("ObjHistogram-org.mobicents.as7.Attribute"));
 

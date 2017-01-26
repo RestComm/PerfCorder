@@ -19,8 +19,7 @@ public class CSVExtractor {
         InputStream in = dFile.getContent();
         if (in != null) {
             InputStreamReader reader = new InputStreamReader(in);
-            int stripWithHeader = 0;
-            OpenCsvReader csvReader = new OpenCsvReader(reader, file.getSeparator(), '"', stripWithHeader);
+            OpenCsvReader csvReader = new OpenCsvReader(reader, file.getSeparator(), '"', file.getLinesToSkip());
             List<String[]> readAll = csvReader.readAll();
             return readAll;
         } else {

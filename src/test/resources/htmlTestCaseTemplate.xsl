@@ -78,7 +78,25 @@
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
                     </tbody>
-                </table>                
+                </table>
+                
+                <table border="1">
+                    <caption>Sys</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//category[text()='Sys']/parent::value/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                         
+                    </tbody>
+                </table>  
+                                                              
                 <table border="1">
                     <caption>SMPP</caption>
                     <thead>

@@ -62,7 +62,7 @@ function collectJavaProcessInfo {
 function startSystemMeasCollection {
     echo Starting System Collection over process ${JAVA_PID}
 
-    dstat --cpu --net --disk --sys --tcp --udp --noupdate --noheaders --output ${SYS_COLLECTION_DIR}/dstat.csv ${MEAS_INTERVAL_SECONDS} &
+    dstat --cpu --net --disk --sys --tcp --udp --noupdate --noheaders --output ${SYS_COLLECTION_DIR}/dstat.csv ${MEAS_INTERVAL_SECONDS} > ./dstat.screen 2>&1 &
     echo $! > ${DATA_COLLECTION_DIR}/dstat.pid
 }
 function startJavaMeasCollection {

@@ -6,6 +6,7 @@ function HELP {
   echo "-f  Frequency in seconds. Default is 4."
   echo "-o  Output directory. Default is ./target."
   echo "-c  Copy this path into conf dir. Default is empty."
+  echo "-j  Path to join file where sorted classes are listed"
   echo "-p  Pattern mode. PID is a grep pattern applied to jps output, to find actual PID."
   echo -e "-h  --Displays this help message. No further functions are performed."\\n
   echo -e "Example: $SCRIPT -f 1 -c /opt/conf java_pid"\\n
@@ -163,7 +164,7 @@ if [ $NUMARGS -eq 0 ]; then
   HELP
 fi
 
-while getopts "f:c:o:e:phj" opt; do
+while getopts "f:c:o:e:j:ph" opt; do
   case $opt in
     f)
       MEAS_INTERVAL_SECONDS=${OPTARG}

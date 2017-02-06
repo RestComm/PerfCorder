@@ -7,7 +7,6 @@ function HELP {
   echo "-l  Path to log directory to be saved. Default is empty."
   echo "-d  Dump heap memory. Default is empty."
   echo "-f  Force GC. Default is empty."
-  echo "-c  Package to filter class histogram. Default is empty."
   echo "-s  Time to wait for process to settle down.(seconds)"
   echo "-e  Path to script called just before packaging."
   echo -e "-h --Displays this help message. No further functions are performed."\\n
@@ -56,12 +55,8 @@ function waitForSettleDown {
 }
 
 function saveObjectHistogram {
-    if [[ -z $PC_DUMP_OBJ_PACKAGE ]]; then
-        echo Dump Objects disabled
-    else
-        echo Dumping Object on ${JAVA_PID}
-        jcmd $JAVA_PID GC.class_histogram | grep $PC_DUMP_OBJ_PACKAGE > $JAVA_COLLECTION_DIR/objs.hist
-    fi  
+    echo Dumping Object on ${JAVA_PID}
+    jcmd $JAVA_PID GC.class_histogram > $JAVA_COLLECTION_DIR/objs.hist
 }
 
 function invokeExternalHook {
@@ -95,7 +90,6 @@ function stopCollection {
 #Set Script Name variable
 SCRIPT=`basename ${BASH_SOURCE[0]}`
 PC_FORCE_GC=
-PC_DUMP_OBJ_PACKAGE=
 #export it so external hook script may reuse this var
 export OUTPUT_DIR=./target
 PC_HEAP_DUMP_ENABLED=
@@ -104,16 +98,13 @@ TIME_TO_SETTLE_DOWN=180
 INVOKE_EXTERNAL_HOOK=
 
 #beware with getops pattern : means expecting argument
-while getopts "dfc:s:l:o:e:h" opt; do
+while getopts "dfs:l:o:e:h" opt; do
   case $opt in
     o)
       OUTPUT_DIR=${OPTARG}
       ;;
     f)
       PC_FORCE_GC=true
-      ;;
-    c)
-      PC_DUMP_OBJ_PACKAGE=${OPTARG}
       ;;
     d)
       PC_HEAP_DUMP_ENABLED=true

@@ -10,6 +10,7 @@ function HELP {
   echo "-p  Pattern mode. PID is a grep pattern applied to jps output, to find actual PID."
   echo "-r  Rotate mode, specify seconds for snapshot creation. By default is disabled/-1"
   echo "-d  minutes to hold snapshots before removal. Default is 1440"
+  echo "-n enable network capture using tshark"
 
   echo -e "-h  --Displays this help message. No further functions are performed."\\n
   echo -e "Example: $SCRIPT -f 1 -c /opt/conf java_pid"\\n
@@ -175,6 +176,7 @@ export OUTPUT_DIR=./target
 export MEAS_INTERVAL_SECONDS=4
 export CONF_DIR=
 PATTERN_MODE=disabled
+PC_NETWORK_CAPTURE=""
 ROTATE_MODE=-1
 SNAPSHOT_RETENTION_MIN=1440
 
@@ -185,7 +187,7 @@ if [ $NUMARGS -eq 0 ]; then
   HELP
 fi
 
-while getopts "f:c:o:e:j:r:d:ph" opt; do
+while getopts "f:c:o:e:j:r:d:pnh" opt; do
   case $opt in
     f)
       MEAS_INTERVAL_SECONDS=${OPTARG}
@@ -210,6 +212,9 @@ while getopts "f:c:o:e:j:r:d:ph" opt; do
       ;;
     d)
       SNAPSHOT_RETENTION_MIN=${OPTARG}
+      ;;
+    n)
+      PC_NETWORK_CAPTURE=ENABLED
       ;;
     h)
       HELP

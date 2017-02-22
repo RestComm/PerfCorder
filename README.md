@@ -92,7 +92,13 @@ Command line switches are optional. The following switches are recognized.
 -f  Frequency in seconds. Default is 4.
 -o  Output directory. Default is ./target.
 -c  Copy this path into conf dir. Default is empty.
+-j  Path to join file where sorted classes are listed
+-p  Pattern mode. PID is a grep pattern applied to jps output, to find actual PID.
+-r  Rotate mode, specify seconds for snapshot creation. By default is disabled/-1
+-d  minutes to hold snapshots before removal. Default is 1440
+-n enable network capture using tshark
 -h  --Displays this help message. No further functions are performed.
+
 
 Example: pc_start_collect.sh -f 1 -c /opt/conf java_pid
 

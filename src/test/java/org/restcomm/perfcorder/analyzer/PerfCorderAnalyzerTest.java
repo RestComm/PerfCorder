@@ -26,7 +26,7 @@ public class PerfCorderAnalyzerTest {
 
     public PerfCorderAnalyzerTest() {
     }
-    
+
     @Test
     public void testFilesXML() throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(AnalysisFileTargetSet.class);
@@ -36,7 +36,6 @@ public class PerfCorderAnalyzerTest {
         byte[] toByteArray2 = oStream.toByteArray();
         String result2 = new String(toByteArray2);
     }
-    
 
     @Test
     public void testAnalyze() throws IOException, JAXBException, TransformerConfigurationException, TransformerException {
@@ -59,8 +58,9 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis.getMeasMap().get("SIPTotalCallCreated"));
         Assert.assertNotNull(analysis.getMeasMap().get("DiameterResponseTime"));
         Assert.assertNotNull(analysis.getMeasMap().get("JavaThreads"));
-        Assert.assertNotNull(analysis.getMeasMap().get("SysCpuUsr"));        
-        
+        Assert.assertNotNull(analysis.getMeasMap().get("SysCpuUsr"));
+        Assert.assertNotNull(analysis.getMeasMap().get("MAPCreatedScenario"));
+
         Assert.assertNotNull(analysis.getMeasMap().get("ObjHist-org.netbeans.modules.editor.fold.ui.CodeFoldingSideBar$Mark"));
 
         //transform into xml
@@ -86,7 +86,8 @@ public class PerfCorderAnalyzerTest {
         String result2 = new String(toByteArray2);
         Assert.assertTrue(result2.contains("HTTPElapsed"));
         Assert.assertTrue(result2.contains("SIPTotalCallCreated"));
-        Assert.assertTrue(result2.contains("JavaThreads"));        
+        Assert.assertTrue(result2.contains("JavaThreads"));
+        Assert.assertTrue(result2.contains("MAPCreatedScenario"));        
     }
 
 }

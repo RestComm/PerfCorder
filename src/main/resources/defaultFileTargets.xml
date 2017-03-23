@@ -285,4 +285,32 @@
         <path>data/periodic/java/histo.csv</path>
         <separator>44</separator>
     </files>
+    
+    <files>
+        <category>MAP</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>MAPCreatedScenario</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>CreatedScenario</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>MAPFailedScenario</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>FailedScenario</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>MAPCompletedScenario</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>CompletedScenario</columnName> 
+        </csvTargets>                  
+        <linesToSkip>0</linesToSkip>
+        <path>data/periodic/map/mapp.csv</path>
+        <separator>59</separator>
+    </files>    
 </analysisFileTargetSet>

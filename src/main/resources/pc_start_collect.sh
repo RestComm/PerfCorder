@@ -91,6 +91,9 @@ function startJavaMeasCollection {
         while sleep ${MEAS_INTERVAL_SECONDS}; do jcmd $JAVA_PID GC.class_histogram | awk '{print $4,$2}' | sort 2> ./sort.log | join --nocheck-order $JOIN_FILE_PATH - | awk -f $PERFCORDER_HOME./transpose.awk | head -1 >> ${JAVA_COLLECTION_DIR}/histo.csv ; done &
         echo $! > ${DATA_COLLECTION_DIR}/histo.pid
     fi
+
+    while sleep ${MEAS_INTERVAL_SECONDS}; do $DIR/pc_check_threads.sh ${JAVA_PID} >> ${JAVA_COLLECTION_DIR}/threads.csv ; done &
+    echo $! > ${DATA_COLLECTION_DIR}/threads.pid
 }
 function startNetworkCapture {
     if [[ -z ${PC_NETWORK_CAPTURE} ]]; then

@@ -143,6 +143,51 @@
         <path>data/periodic/java/jvmtop.txt</path>
         <separator>44</separator>
     </files>
+    
+    <files>
+        <category>Threads</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>ThreadsTotal</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>1</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>ThreadsWAITING</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>2</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>ThreadsTIMED_WAITING</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>3</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>ThreadsRUNNABLE</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>4</column>
+        </csvTargets> 
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>ThreadsBLOCKED</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>5</column>
+        </csvTargets>                       
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>ThreadsTERMINATED</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>6</column>
+        </csvTargets> 
+        
+                                   
+        <linesToSkip>1</linesToSkip>
+        <path>data/periodic/java/threads.csv</path>
+        <separator>59</separator>
+    </files>    
     <files>
         <category>SIP</category>
         <csvTargets>

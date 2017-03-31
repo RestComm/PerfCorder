@@ -92,7 +92,7 @@ function startJavaMeasCollection {
         echo $! > ${DATA_COLLECTION_DIR}/histo.pid
     fi
 
-    while sleep ${MEAS_INTERVAL_SECONDS}; do $DIR/pc_check_threads.sh ${JAVA_PID} >> ${JAVA_COLLECTION_DIR}/threads.csv ; done &
+    while sleep ${MEAS_INTERVAL_SECONDS}; do $DIR/pc_print_threads.sh ${JAVA_PID} >> ${JAVA_COLLECTION_DIR}/threads.csv ; done &
     echo $! > ${DATA_COLLECTION_DIR}/threads.pid
 }
 function startNetworkCapture {

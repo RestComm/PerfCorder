@@ -306,26 +306,23 @@
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>HTTPElapsed</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
-            <column>-1</column>
-            <columnName>elapsed</columnName>
+            <column>12</column>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>HTTPSampleCount</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
-            <column>-1</column>
-            <columnName>SampleCount</columnName>
+            <column>2</column>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>HTTPErrorCount</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
-            <column>-1</column>
-            <columnName>ErrorCount</columnName>
+            <column>14</column>
         </csvTargets>
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/http/jmeter.csv</path>
-        <separator>44</separator>
+        <separator>32</separator>
     </files>
     <files>
         <category>ObjHist</category>

@@ -357,5 +357,47 @@
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/map/mapp.csv</path>
         <separator>59</separator>
-    </files>    
+    </files>   
+    
+    <files>
+        <category>SMPP</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SMPPCreatedScenario</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>CreatedScenario</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SMPPFailedScenario</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>FailedScenario</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SMPPCompletedScenario</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>CompletedScenario</columnName> 
+        </csvTargets>      
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SMPPResponseTimeSamples1</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>ResponseTimeSamples1</columnName> 
+        </csvTargets> 
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SMPPResponseTimeSum1</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>ResponseTimeSum1</columnName> 
+        </csvTargets>                             
+        <linesToSkip>0</linesToSkip>
+        <path>data/periodic/smpp/smppp.csv</path>
+        <separator>59</separator>
+    </files>       
 </analysisFileTargetSet>

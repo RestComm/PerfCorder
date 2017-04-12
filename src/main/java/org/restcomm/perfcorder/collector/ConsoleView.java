@@ -30,14 +30,14 @@ package org.restcomm.perfcorder.collector;
 public interface ConsoleView
 {
     
-  public void printHeader() throws Exception;
+  public String printHeader() throws Exception;
   
   /**
    * Prints the view to STDOUT.
    *
    * @throws Exception
    */
-  public void printView() throws Exception;
+  public String printView() throws Exception;
 
   /**
    * Notifies that this view encountered issues

@@ -392,5 +392,48 @@
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/smpp/smppp.csv</path>
         <separator>59</separator>
-    </files>       
+    </files>
+    
+    <files>
+        <category>JMX</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXRouterActivitiesMapped</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>ActivitiesMapped</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXRouterAverageEventRoutingTime</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>AverageEventRoutingTime</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXRouterExecutedTasks</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>ExecutedTasks</columnName> 
+        </csvTargets>      
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXRouterMiscTasksExecuted</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>MiscTasksExecuted</columnName> 
+        </csvTargets>     
+        
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXRouterWorkingQueueSize</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>WorkingQueueSize</columnName> 
+        </csvTargets>                                              
+        <linesToSkip>0</linesToSkip>
+        <path>data/periodic/java/jmx2csv.csv</path>
+        <separator>59</separator>
+    </files>                 
 </analysisFileTargetSet>

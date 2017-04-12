@@ -2,20 +2,26 @@ package org.restcomm.perfcorder.collector;
 
 import java.io.BufferedOutputStream;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConvertUtilsBean;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 
 /**
  * PerfCorder collects info about an external process through JMX beans
  *
  *
  */
-public class JVMStatApp {
+public class JMX2CSVApp {
 
     private Double delay_ = 1.0;
 
@@ -35,16 +41,14 @@ public class JVMStatApp {
                 .acceptsAll(Arrays.asList(new String[]{"d", "delay"}),
                         "delay between each output iteration").withRequiredArg()
                 .ofType(Double.class);
-
+        parser
+                .acceptsAll(Arrays.asList(new String[]{"m", "meta"}),
+                        "Path to meta file").withRequiredArg().ofType(String.class);
         parser
                 .acceptsAll(Arrays.asList(new String[]{"p", "pid"}),
                         "PID to connect to").withRequiredArg().ofType(Integer.class);
 
         return parser;
-    }
-
-    private static void printHeaderLine() {
-        System.out.println("Dur,MemBefore,MemAfter,gcType,gcId,gcName,gcCause,startTime, endTime");
     }
 
     public static void main(String[] args) throws Exception {
@@ -89,10 +93,14 @@ public class JVMStatApp {
             pid = (Integer) a.valueOf("pid");
         }
 
-        JVMStatApp collector = new JVMStatApp();
+        JMX2CSVApp collector = new JMX2CSVApp();
         collector.setDelay(delay);
         collector.setMaxIterations(iterations);
-        VMDetailStatView vmDetailStatView = new VMDetailStatView(pid, null);
+        //by default use xml in classpath
+        InputStream resourceAsStream = new FileInputStream((String) a.valueOf("meta"));
+        JAXBContext targetsContext = JAXBContext.newInstance(JMX2CSVDescriptor.class);
+        JMX2CSVDescriptor descriptor = (JMX2CSVDescriptor) targetsContext.createUnmarshaller().unmarshal(resourceAsStream);
+        JMX2CSVView vmDetailStatView = new JMX2CSVView(pid, descriptor);
         System.out.println(vmDetailStatView.printHeader());
         collector.run(vmDetailStatView);
     }
@@ -130,7 +138,7 @@ public class JVMStatApp {
         }
     }
 
-    public JVMStatApp() {
+    public JMX2CSVApp() {
     }
 
     public Double getDelay() {

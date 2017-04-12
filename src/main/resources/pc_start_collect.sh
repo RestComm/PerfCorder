@@ -11,6 +11,7 @@ function HELP {
   echo "-r  Rotate mode, specify seconds for snapshot creation. By default is disabled/-1"
   echo "-d  minutes to hold snapshots before removal. Default is 1440"
   echo "-n enable network capture using tshark"
+  echo "-m path to jmx2csv xml metafile"
 
   echo -e "-h  --Displays this help message. No further functions are performed."\\n
   echo -e "Example: $SCRIPT -f 1 -c /opt/conf java_pid"\\n
@@ -90,6 +91,14 @@ function startJavaMeasCollection {
         cat $JOIN_FILE_PATH | awk -f $PERFCORDER_HOME./transpose.awk > ${JAVA_COLLECTION_DIR}/histo.csv
         while sleep ${MEAS_INTERVAL_SECONDS}; do jcmd $JAVA_PID GC.class_histogram | awk '{print $4,$2}' | sort 2> ./sort.log | join --nocheck-order $JOIN_FILE_PATH - | awk -f $PERFCORDER_HOME./transpose.awk | head -1 >> ${JAVA_COLLECTION_DIR}/histo.csv ; done &
         echo $! > ${DATA_COLLECTION_DIR}/histo.pid
+    fi
+
+    if [[ -z $JMX2CSV ]]; then
+        echo "JMX2CSV disabled"
+    else
+        echo "JMX2CSV enabled"
+        $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.JMX2CSVApp -d ${MEAS_INTERVAL_SECONDS} -m ${JMX2CSV} ${JAVA_PID} > ${JAVA_COLLECTION_DIR}/jmx2csv.csv &
+        echo $! > ${DATA_COLLECTION_DIR}/jmx2csv.pid
     fi
 
     while sleep ${MEAS_INTERVAL_SECONDS}; do $DIR/pc_print_threads.sh ${JAVA_PID} >> ${JAVA_COLLECTION_DIR}/threads.csv ; done &
@@ -183,6 +192,7 @@ PATTERN_MODE=disabled
 PC_NETWORK_CAPTURE=""
 ROTATE_MODE=-1
 SNAPSHOT_RETENTION_MIN=1440
+JMX2CSV=""
 
 #Check the number of arguments. If none are passed, print help and exit.
 NUMARGS=$#
@@ -191,7 +201,7 @@ if [ $NUMARGS -eq 0 ]; then
   HELP
 fi
 
-while getopts "f:c:o:e:j:r:d:pnh" opt; do
+while getopts "f:c:o:e:j:r:d:m:pnh" opt; do
   case $opt in
     f)
       MEAS_INTERVAL_SECONDS=${OPTARG}
@@ -216,6 +226,9 @@ while getopts "f:c:o:e:j:r:d:pnh" opt; do
       ;;
     d)
       SNAPSHOT_RETENTION_MIN=${OPTARG}
+      ;;
+    m)
+      JMX2CSV=${OPTARG}
       ;;
     n)
       PC_NETWORK_CAPTURE=ENABLED

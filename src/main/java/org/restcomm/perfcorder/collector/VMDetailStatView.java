@@ -20,7 +20,6 @@
  */
 package org.restcomm.perfcorder.collector;
 
-
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
 
 /**
@@ -42,33 +41,33 @@ public class VMDetailStatView extends AbstractConsoleView {
     }
 
     @Override
-    public void printView() throws Exception {
+    public String printView() throws Exception {
         vmInfo_.update();
 
         if (vmInfo_.getState() == VMInfoState.ATTACHED_UPDATE_ERROR) {
             System.out
                     .println("ERROR: Could not fetch telemetries - Process terminated?");
             exit();
-            return;
+            return "";
         }
         if (vmInfo_.getState() != VMInfoState.ATTACHED) {
             System.out.println("ERROR: Could not attach to process.");
             exit();
-            return;
+            return "";
         }
-        printVM(vmInfo_);
+        return printVM(vmInfo_);
 
     }
 
-    private void printVM(VMInfo vmInfo) throws Exception {
+    private String printVM(VMInfo vmInfo) throws Exception {
 
         String deadlockState = "C";
         if (vmInfo.hasDeadlockThreads()) {
             deadlockState = "!D";
         }
 
-        System.out
-                .printf(
+        return String
+                .format(
                         "%s,%.2f,%.2f,%d,%s%n",
                         toMB(vmInfo.getHeapUsed()),
                         vmInfo.getCpuLoad() * 100,
@@ -89,8 +88,7 @@ public class VMDetailStatView extends AbstractConsoleView {
     }
 
     @Override
-    public void printHeader() throws Exception {
-            System.out
-            .println("mem,cpu,gcCpu,threads,deadLock");
+    public String printHeader() throws Exception {
+        return ("mem,cpu,gcCpu,threads,deadLock");
     }
 }

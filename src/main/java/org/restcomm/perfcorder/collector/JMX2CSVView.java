@@ -49,6 +49,9 @@ public class JMX2CSVView extends AbstractConsoleView {
                         //convert to proper
                         Class targetClass = null;
                         switch (inf.getSignature()[i].getType()) {
+                            case "int":
+                                targetClass = Integer.class;
+                                break;                            
                             case "long":
                                 targetClass = Long.class;
                                 break;

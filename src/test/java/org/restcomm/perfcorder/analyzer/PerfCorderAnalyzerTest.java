@@ -61,7 +61,8 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis.getMeasMap().get("SysCpuUsr"));
         Assert.assertNotNull(analysis.getMeasMap().get("MAPCreatedScenario"));
         Assert.assertNotNull(analysis.getMeasMap().get("ThreadsRUNNABLE"));    
-        Assert.assertNotNull(analysis.getMeasMap().get("SMPPResponseTime1"));         
+        Assert.assertNotNull(analysis.getMeasMap().get("SMPPResponseTime1"));    
+        Assert.assertNotNull(analysis.getMeasMap().get("JMXRouterActivitiesMapped"));          
 
         Assert.assertNotNull(analysis.getMeasMap().get("ObjHist-org.netbeans.modules.editor.fold.ui.CodeFoldingSideBar$Mark"));
 

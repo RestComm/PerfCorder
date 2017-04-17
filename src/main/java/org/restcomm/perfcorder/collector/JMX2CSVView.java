@@ -38,15 +38,25 @@ public class JMX2CSVView extends AbstractConsoleView {
             boolean found = false;
             for (MBeanOperationInfo inf : mBeanInfo.getOperations()) {
                 if (inf.getName().equals(attAux.getName())
-                        && inf.getSignature().length == attAux.getArguments().size()) {
+                        && inf.getSignature().length == attAux.getArguments().size()
+                        && !inf.getReturnType().startsWith("[")) {
+
                     found = true;
 
                     Object[] args = new Object[attAux.getArguments().size()];
                     String[] sig = new String[inf.getSignature().length];
                     for (int i = 0; i < attAux.getArguments().size(); i++) {
                         //convert to proper
-                        Object converted = new ConvertUtilsBean().convert(attAux.getArguments().get(i), 
-                                this.getClass().getClassLoader().loadClass(inf.getSignature()[i].getType()));
+                        Class targetClass = null;
+                        switch (inf.getSignature()[i].getType()) {
+                            case "long":
+                                targetClass = Long.class;
+                                break;
+                            default:
+                                targetClass = this.getClass().getClassLoader().loadClass(inf.getSignature()[i].getType());
+                        }
+                        Object converted = new ConvertUtilsBean().convert(attAux.getArguments().get(i),
+                                targetClass);
                         args[i] = converted;
                         sig[i] = inf.getSignature()[i].getType();
                     }
@@ -104,6 +114,9 @@ public class JMX2CSVView extends AbstractConsoleView {
         }
         for (JMXOperation attAux : descriptor.getOperations()) {
             builder.append(attAux.getName());
+            for (String arg : attAux.getArguments()) {
+                builder.append(arg);
+            }
             builder.append(CSV_SEPARATOR);
         }
         return builder.toString();

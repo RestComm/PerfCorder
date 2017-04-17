@@ -431,7 +431,35 @@
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
             <columnName>WorkingQueueSize</columnName> 
-        </csvTargets>                                              
+        </csvTargets> 
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXgetExecutedTasks0</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>getExecutedTasks0</columnName> 
+        </csvTargets>  
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXgetExecutedTasks1</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>getExecutedTasks1</columnName> 
+        </csvTargets>  
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXgetExecutedTasks2</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>getExecutedTasks2</columnName> 
+        </csvTargets>  
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>JMXgetExecutedTasks3</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>getExecutedTasks3</columnName> 
+        </csvTargets>                                                                               
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/java/jmx2csv.csv</path>
         <separator>59</separator>

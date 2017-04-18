@@ -21,10 +21,10 @@ public class PerfCorderBuilder extends Builder {
 
         @Override
         public String getDisplayName() {
-            return "execute PerfCorder task";
+            return "Start PerfCorder";
         }
     }
-    
+
     private final String processPattern;
 
     @DataBoundConstructor
@@ -37,7 +37,6 @@ public class PerfCorderBuilder extends Builder {
     }
 
 
-
     @Override
     public hudson.model.Descriptor<Builder> getDescriptor() {
         return new Descriptor();
@@ -46,11 +45,9 @@ public class PerfCorderBuilder extends Builder {
     @Override
     public boolean prebuild(Build build, BuildListener listener) {
         boolean continueBuild = false;
-        
+
         return continueBuild;
     }
-    
-    
-    
-    
+
+
 }

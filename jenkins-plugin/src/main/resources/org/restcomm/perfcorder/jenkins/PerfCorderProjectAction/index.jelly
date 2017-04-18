@@ -1,0 +1,64 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+  <l:layout css="/plugin/performance/css/style.css">
+    <st:include it="${it.project}" page="sidepanel.jelly" />
+    <l:main-panel>
+      <h1>${%Performance Trend}</h1>
+      <div>
+        <a href="../lastBuild/performance/">${%Last Report}</a><br/>
+        <a href="${from.urlName}configure">${%Filter trend data}</a>
+      </div>
+      <div>
+        <j:forEach var="performanceReport" items="${it.performanceReportList}">
+          <div class="title"><h1><center>${%Test file}: ${performanceReport}</center></h1></div>
+          <center>
+            <j:if test="${it.ifModeThroughputUsed()}">
+              <a href="./throughputGraph?width=900&amp;height=550&amp;performanceReportPosition=${performanceReport}" title="${%Click for larger image}">
+                <img class="trend" src="./throughputGraph?width=300&amp;height=225&amp;performanceReportPosition=${performanceReport}" width="300" height="225" />
+              </a>
+            </j:if>
+
+            <j:choose>
+              <j:when test="${it.ifModePerformancePerTestCaseUsed()}">
+                <a href="./respondingTimeGraphPerTestCaseMode?width=900&amp;height=550&amp;performanceReportPosition=${performanceReport}" title="${%Click for larger image}">
+                  <img class="trend" src="./respondingTimeGraphPerTestCaseMode?width=500&amp;height=225&amp;performanceReportPosition=${performanceReport}" width="300" height="225" />
+                </a>
+                <a href="./errorsGraph?width=900&amp;height=550&amp;performanceReportPosition=${performanceReport}"  title="${%Click for larger image}">
+                  <img class="trend" src="./errorsGraph?width=300&amp;height=225&amp;performanceReportPosition=${performanceReport}" width="300" height="225" />
+                </a>
+                <center>
+                  <a href="${from.urlName}testsuiteReport?performanceReportPosition=${performanceReport}">${%Testcase Trend}</a>
+                </center>
+              </j:when>
+
+              <j:otherwise>
+                <j:choose>
+                  <j:when test="${it.ifSummarizerParserUsed(performanceReport)}">
+                    <a href="./summarizerGraph?width=1500&amp;height=650&amp;performanceReportPosition=${performanceReport}"  title="${%Click for larger image}">
+                      <img class="trend" src="./summarizerGraph?width=600&amp;height=325&amp;performanceReportPosition=${performanceReport}" width="600" height="325" />
+                      <br></br>
+                    </a>
+                    <a href="./summarizerGraph?width=1500&amp;height=650&amp;summarizerReportType=${%error}&amp;performanceReportPosition=${performanceReport}"  title="${%Click for larger image}">
+                      <img class="trend" src="./summarizerGraph?width=600&amp;height=325&amp;summarizerReportType=${%error}&amp;performanceReportPosition=${performanceReport}" width="600" height="325" />
+                    </a>
+                  </j:when>
+                  <j:otherwise>
+                    <a href="./respondingTimeGraph?width=900&amp;height=550&amp;performanceReportPosition=${performanceReport}" title="${%Click for larger image}">
+                      <img class="trend" src="./respondingTimeGraph?width=300&amp;height=225&amp;performanceReportPosition=${performanceReport}" width="300" height="225" />
+                    </a>
+                    <a href="./errorsGraph?width=900&amp;height=550&amp;performanceReportPosition=${performanceReport}"  title="${%Click for larger image}">
+                      <img class="trend" src="./errorsGraph?width=300&amp;height=225&amp;performanceReportPosition=${performanceReport}" width="300" height="225" />
+                    </a>
+                    <center>
+                      <a href="${from.urlName}trendReport?performanceReportPosition=${performanceReport}">${%Trend report}</a>
+                    </center>
+                  </j:otherwise>
+                </j:choose>
+              </j:otherwise>
+            </j:choose>
+          </center>
+        </j:forEach>
+      </div>
+    </l:main-panel>
+  </l:layout>
+</j:jelly>

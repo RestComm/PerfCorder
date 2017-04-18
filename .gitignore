@@ -1,2 +1,5 @@
 /target/
 /nbproject/
+/jenkins-plugin/target/
+/jenkins-plugin/.idea
+/jenkins-plugin/work

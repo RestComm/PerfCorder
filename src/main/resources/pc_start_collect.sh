@@ -97,7 +97,7 @@ function startJavaMeasCollection {
         echo "JMX2CSV disabled"
     else
         echo "JMX2CSV enabled"
-        $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.JMX2CSVApp -d ${MEAS_INTERVAL_SECONDS} -m ${JMX2CSV} ${JAVA_PID} > ${JAVA_COLLECTION_DIR}/jmx2csv.csv &
+        $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.JMX2CSVApp -d ${MEAS_INTERVAL_SECONDS} -m ${JMX2CSV} > ${JAVA_COLLECTION_DIR}/jmx2csv.csv &
         echo $! > ${DATA_COLLECTION_DIR}/jmx2csv.pid
     fi
 

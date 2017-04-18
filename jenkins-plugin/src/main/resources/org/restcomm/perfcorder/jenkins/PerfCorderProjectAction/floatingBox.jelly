@@ -1,0 +1,21 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core">
+  <j:if test="${from.isTrendVisibleOnProjectDashboard()}">
+    <div class="test-trend-caption">
+      ${%Performance Trend}
+      <br/>
+      <div>
+      </div>
+      <br/>
+
+      <j:if test="${from.ifModeThroughputUsed()}">
+        <a href="performance/"><img src="performance/throughputGraph"/></a>
+        <br/>
+      </j:if>
+
+      <a href="performance/"><img src="performance/respondingTimeGraph"/></a>
+      <br/>
+      <a href="performance/"><img src="performance/errorsGraph"/></a>
+    </div>
+  </j:if>
+</j:jelly>

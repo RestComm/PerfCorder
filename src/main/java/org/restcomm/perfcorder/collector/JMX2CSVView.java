@@ -1,7 +1,9 @@
 package org.restcomm.perfcorder.collector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.ObjectName;
@@ -18,20 +20,45 @@ public class JMX2CSVView extends AbstractConsoleView {
     private final MBeanInfo mBeanInfo;
     private final List<String[]> signatures = new ArrayList();
     private final List<Object[]> arguments = new ArrayList();
+    private final Map<String, Number> previousValues = new HashMap();
 
     public JMX2CSVView(int vmid, JMX2CSVDescriptor descriptor) throws Exception {
         super(null);
-        LocalVirtualMachine localVirtualMachine = LocalVirtualMachine
-                .getLocalVirtualMachine(vmid);
-        proxyClient = ProxyClient.getProxyClient(localVirtualMachine);
+        if (vmid > 0) {
+            LocalVirtualMachine localVirtualMachine = LocalVirtualMachine
+                    .getLocalVirtualMachine(vmid);
+            proxyClient = ProxyClient.getProxyClient(localVirtualMachine);
+            proxyClient.connect();
+        } else {
+            proxyClient = ProxyClient.getProxyClient(descriptor.getUrl(), 
+                    descriptor.getUserName(), 
+                    descriptor.getPassword());
+            proxyClient.connect();
+        }
+        oName = new ObjectName(descriptor.getObjectName());
+        mBeanInfo = proxyClient.getMBeanServerConnection().getMBeanInfo(oName);
+        this.descriptor = descriptor;
+
+        initMeta();
+
+    }
+
+    public JMX2CSVView(String url, JMX2CSVDescriptor descriptor) throws Exception {
+        super(null);
+        proxyClient = ProxyClient.getProxyClient(url, null, null);
         proxyClient.connect();
         oName = new ObjectName(descriptor.getObjectName());
         mBeanInfo = proxyClient.getMBeanServerConnection().getMBeanInfo(oName);
         this.descriptor = descriptor;
 
+        initMeta();
+
+    }
+
+    private void initMeta() throws Exception {
         //verify atts exists
-        for (String attAux : descriptor.getAttributes()) {
-            proxyClient.getMBeanServerConnection().getAttribute(oName, attAux);
+        for (JMXAttribute attAux : descriptor.getAttributes()) {
+            proxyClient.getMBeanServerConnection().getAttribute(oName, attAux.getName());
         }
 
         for (JMXOperation attAux : descriptor.getOperations()) {
@@ -51,7 +78,7 @@ public class JMX2CSVView extends AbstractConsoleView {
                         switch (inf.getSignature()[i].getType()) {
                             case "int":
                                 targetClass = Integer.class;
-                                break;                            
+                                break;
                             case "long":
                                 targetClass = Long.class;
                                 break;
@@ -73,26 +100,37 @@ public class JMX2CSVView extends AbstractConsoleView {
         }
     }
 
+    private void appendValue(String name, Number newValue, StringBuilder builder, Boolean delta) {
+        Number updatedValue = newValue;
+        if (!delta) {
+            if (previousValues.containsKey(name)) {
+                updatedValue = newValue.doubleValue() - previousValues.get(name).doubleValue();
+            }
+            previousValues.put(name, newValue);
+        }
+        builder.append(updatedValue);
+        builder.append(CSV_SEPARATOR);
+    }
+
     @Override
     public String printView() throws Exception {
 
         StringBuilder builder = new StringBuilder();
-        for (String attAux : descriptor.getAttributes()) {
-            Object obj = proxyClient.getMBeanServerConnection().getAttribute(oName, attAux);
-            builder.append(obj);
-            builder.append(CSV_SEPARATOR);
+        for (JMXAttribute attAux : descriptor.getAttributes()) {
+            Number attValue = (java.lang.Number) proxyClient.getMBeanServerConnection().getAttribute(oName,
+                    attAux.getName());
+            appendValue(attAux.getName(), attValue, builder, attAux.getDelta());
         }
 
         for (int i = 0; i < descriptor.getOperations().size(); i++) {
             JMXOperation attAux = descriptor.getOperations().get(i);
             Object[] args = arguments.get(i);
             String[] sig = signatures.get(i);
-            Object result = proxyClient.getMBeanServerConnection().invoke(oName,
+            Number result = (Number) proxyClient.getMBeanServerConnection().invoke(oName,
                     attAux.getName(),
                     args,
                     sig);
-            builder.append(result);
-            builder.append(CSV_SEPARATOR);
+            appendValue(attAux.toString(), result, builder, attAux.getDelta());
         }
 
         return builder.toString();
@@ -111,15 +149,12 @@ public class JMX2CSVView extends AbstractConsoleView {
     @Override
     public String printHeader() throws Exception {
         StringBuilder builder = new StringBuilder();
-        for (String attAux : descriptor.getAttributes()) {
-            builder.append(attAux);
+        for (JMXAttribute attAux : descriptor.getAttributes()) {
+            builder.append(attAux.getName());
             builder.append(CSV_SEPARATOR);
         }
         for (JMXOperation attAux : descriptor.getOperations()) {
-            builder.append(attAux.getName());
-            for (String arg : attAux.getArguments()) {
-                builder.append(arg);
-            }
+            builder.append(attAux.toString());
             builder.append(CSV_SEPARATOR);
         }
         return builder.toString();

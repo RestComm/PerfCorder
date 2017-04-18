@@ -12,9 +12,6 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.ConvertUtilsBean;
-import org.apache.commons.beanutils.PropertyUtilsBean;
 
 /**
  * PerfCorder collects info about an external process through JMX beans
@@ -46,7 +43,8 @@ public class JMX2CSVApp {
                         "Path to meta file").withRequiredArg().ofType(String.class);
         parser
                 .acceptsAll(Arrays.asList(new String[]{"p", "pid"}),
-                        "PID to connect to").withRequiredArg().ofType(Integer.class);
+                        "PID to connect to").withOptionalArg().ofType(Integer.class);
+      
 
         return parser;
     }
@@ -89,18 +87,22 @@ public class JMX2CSVApp {
             pid = Integer.valueOf((String) a.nonOptionArguments().get(0));
         }
 
-        if (a.hasArgument("pid")) {
-            pid = (Integer) a.valueOf("pid");
-        }
+        InputStream resourceAsStream = new FileInputStream((String) a.valueOf("meta"));
+        JAXBContext targetsContext = JAXBContext.newInstance(JMX2CSVDescriptor.class);
+        JMX2CSVDescriptor descriptor = (JMX2CSVDescriptor) targetsContext.createUnmarshaller().unmarshal(resourceAsStream);        
 
+        JMX2CSVView vmDetailStatView = null;
+        if (a.hasArgument("pid")) {
+            pid =(Integer) a.valueOf("pid");
+            vmDetailStatView = new JMX2CSVView(pid, descriptor);
+        } else {
+            vmDetailStatView = new JMX2CSVView(0, descriptor);
+        }
+        
         JMX2CSVApp collector = new JMX2CSVApp();
         collector.setDelay(delay);
         collector.setMaxIterations(iterations);
-        //by default use xml in classpath
-        InputStream resourceAsStream = new FileInputStream((String) a.valueOf("meta"));
-        JAXBContext targetsContext = JAXBContext.newInstance(JMX2CSVDescriptor.class);
-        JMX2CSVDescriptor descriptor = (JMX2CSVDescriptor) targetsContext.createUnmarshaller().unmarshal(resourceAsStream);
-        JMX2CSVView vmDetailStatView = new JMX2CSVView(pid, descriptor);
+        
         System.out.println(vmDetailStatView.printHeader());
         collector.run(vmDetailStatView);
     }

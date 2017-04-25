@@ -274,7 +274,7 @@ else
 fi
 
 #maven filtering has to replace the version var during build
-CLASSPATH="$DIR/sipp-report-${project.version}-with-dependencies.jar:$TOOLSJAR"
+CLASSPATH="$DIR/sipp-report-with-dependencies.jar:$TOOLSJAR"
 echo CLASSPATH:${CLASSPATH}
 
 DATA_COLLECTION_DIR=${OUTPUT_DIR}/data

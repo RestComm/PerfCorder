@@ -195,48 +195,57 @@
             <label>SIPTotalCallCreated</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>12</column>
+            <columnName>FailedScenario</columnName>
+            <columnName>TotalCallCreated</columnName>              
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPCurrentCall</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
-            <column>13</column>
+            <column>-1</column>
+            <columnName>CurrentCall</columnName>             
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPSuccessCalls</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
-            <column>14</column>
+            <column>-1</column>
+            <columnName>SuccessfulCall(C)</columnName>             
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPFailedCalls</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
-            <column>16</column>
+            <column>-1</column>
+            <columnName>FailedCall(P)</columnName> 
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>Retransmissions(P)</label>
+            <label>SIPRetransmissions</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
+            <columnName>Retransmissions(P)</columnName> 
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
-            <label>ResponseTime1(P)</label>
+            <label>SIPResponseTime1</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
+            <columnName>ResponseTime1(P)</columnName> 
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
-            <label>ResponseTime2(P)</label>
+            <label>SIPResponseTime2</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
+            <columnName>ResponseTime2(P)</columnName> 
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
-            <label>CallLength(P)</label>
+            <label>SIPCallLength</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
+            <columnName>CallLength(P)</columnName> 
         </csvTargets>
         <linesToSkip>1</linesToSkip>
         <path>data/periodic/sip/sipp.csv</path>

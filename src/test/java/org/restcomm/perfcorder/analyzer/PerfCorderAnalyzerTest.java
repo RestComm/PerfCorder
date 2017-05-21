@@ -56,6 +56,7 @@ public class PerfCorderAnalyzerTest {
         Assert.assertNotNull(analysis.getMeasMap().get("HTTPSampleCount"));
         Assert.assertNotNull(analysis.getMeasMap().get("HTTPErrorCount"));
         Assert.assertNotNull(analysis.getMeasMap().get("SIPTotalCallCreated"));
+        Assert.assertNotNull(analysis.getMeasMap().get("SIPResponseTime1"));        
         Assert.assertNotNull(analysis.getMeasMap().get("DiameterResponseTime"));
         Assert.assertNotNull(analysis.getMeasMap().get("JavaThreads"));
         Assert.assertNotNull(analysis.getMeasMap().get("SysCpuUsr"));

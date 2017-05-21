@@ -194,7 +194,7 @@
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPTotalCallCreated</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
-            <column>12</column>
+            <column>-1</column>
             <columnName>FailedScenario</columnName>
             <columnName>TotalCallCreated</columnName>              
         </csvTargets>
@@ -247,7 +247,7 @@
             <column>-1</column>
             <columnName>CallLength(P)</columnName> 
         </csvTargets>
-        <linesToSkip>1</linesToSkip>
+        <linesToSkip>0</linesToSkip>
         <path>data/periodic/sip/sipp.csv</path>
         <separator>59</separator>
     </files>

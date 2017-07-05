@@ -1,7 +1,8 @@
 package org.restcomm.perfcorder.analyzer;
 
-
 public class AnalysisMeasResults {
+
+    //descriptive
     private double median;
     private double percentile5;
     private double percentile25;
@@ -21,8 +22,15 @@ public class AnalysisMeasResults {
     private double quadraticMean;
     private String graph;
     private String category;
-    
-    
+
+    //regression
+    private double slope = 0;
+    private double rSquared = 0;
+    private double adjustedRSquared = 0;
+    private double errorSumSquares = 0;
+    private double meanSquareError = 0;
+    private double regressionSumSquares = 0;
+    private double totalSumSquares = 0;
 
     public double getMedian() {
         return median;
@@ -175,5 +183,61 @@ public class AnalysisMeasResults {
     public void setCategory(String category) {
         this.category = category;
     }
-    
+
+    public double getSlope() {
+        return slope;
+    }
+
+    public void setSlope(double slope) {
+        this.slope = slope;
+    }
+
+    public double getrSquared() {
+        return rSquared;
+    }
+
+    public void setrSquared(double rSquared) {
+        this.rSquared = rSquared;
+    }
+
+    public double getAdjustedRSquared() {
+        return adjustedRSquared;
+    }
+
+    public void setAdjustedRSquared(double adjustedRSquared) {
+        this.adjustedRSquared = adjustedRSquared;
+    }
+
+    public double getErrorSumSquares() {
+        return errorSumSquares;
+    }
+
+    public void setErrorSumSquares(double errorSumSquares) {
+        this.errorSumSquares = errorSumSquares;
+    }
+
+    public double getMeanSquareError() {
+        return meanSquareError;
+    }
+
+    public void setMeanSquareError(double meanSquareError) {
+        this.meanSquareError = meanSquareError;
+    }
+
+    public double getRegressionSumSquares() {
+        return regressionSumSquares;
+    }
+
+    public void setRegressionSumSquares(double regressionSumSquares) {
+        this.regressionSumSquares = regressionSumSquares;
+    }
+
+    public double getTotalSumSquares() {
+        return totalSumSquares;
+    }
+
+    public void setTotalSumSquares(double totalSumSquares) {
+        this.totalSumSquares = totalSumSquares;
+    }
+
 }

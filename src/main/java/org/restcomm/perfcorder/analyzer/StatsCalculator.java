@@ -7,33 +7,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.regression.RegressionResults;
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
-    private void autogenerateTargets(List<String[]> readAll,AnalysisFileTarget fileTarget) {
+    private void autogenerateTargets(List<String[]> readAll, AnalysisFileTarget fileTarget) {
         if (fileTarget.getCsvTargets().isEmpty()) {
             List<CSVColumnMeasTarget> targets = new ArrayList();
-            
+
             String[] colNames = readAll.get(0);
-            for(int i = 0 ; i < colNames.length ; i++) {
+            for (int i = 0; i < colNames.length; i++) {
                 CSVColumnMeasTarget target = new CSVColumnMeasTarget(fileTarget.getCategory() + "-" + colNames[i], i);
                 targets.add(target);
             }
             fileTarget.setCsvTargets(targets);
         }
     }
-    
+
     @Override
-    public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll,AnalysisFileTarget fileTarget,  PerfCorderAnalysis analysis) throws IOException {
+    public Map<AnalysisMeasTarget, AnalysisMeasResults> analyzeTarget(List<String[]> readAll, AnalysisFileTarget fileTarget, PerfCorderAnalysis analysis) throws IOException {
         Map<AnalysisMeasTarget, AnalysisMeasResults> measMap = new HashMap();
         Map<CSVColumnMeasTarget, DescriptiveStatistics> statsMap = new HashMap();
-        
+        Map<CSVColumnMeasTarget, SimpleRegression> regressionMap = new HashMap();
+
         autogenerateTargets(readAll, fileTarget);
-        
+
         //init empty stats to add values later
         for (CSVColumnMeasTarget target : fileTarget.getCsvTargets()) {
+            regressionMap.put(target, new SimpleRegression());
             statsMap.put(target, new DescriptiveStatistics());
             if (target.getColumn() == CSVColumnMeasTarget.SEARCH_COL_INDX_BY_NAME) {
                 String[] colNames = readAll.get(0);
@@ -44,9 +48,9 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
                 } else {
                     indexOf = asList.indexOf(target.getColumnName());
                 }
-                LOGGER.info("Index found:"+ indexOf + ", for column:" + target.getLabel());
+                LOGGER.info("Index found:" + indexOf + ", for column:" + target.getLabel());
                 target.setColumn(indexOf);
-            }            
+            }
         }
 
         int thresholdRows = (readAll.size() * analysis.getSamplesToStripRatio()) / 100;
@@ -62,7 +66,9 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
                     double nexValue = target.transformIntoDouble(nextCol);
                     if (nexValue != AnalysisMeasTarget.INVALID_STRING) {
                         DescriptiveStatistics stats = statsMap.get(target);
+                        SimpleRegression reg = regressionMap.get(target);
                         stats.addValue(nexValue);
+                        reg.addData(i, nexValue);
                     }
                 } else {
                     LOGGER.warn("Attempted invalid column:" + target.getLabel());
@@ -72,7 +78,9 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
 
         for (CSVColumnMeasTarget target : statsMap.keySet()) {
             String graph = GraphGenerator.generateGraph(target, readAll, analysis);
-            AnalysisMeasResults measResults = transformIntoResults(statsMap.get(target), graph);
+
+            AnalysisMeasResults measResults = transformIntoResults(statsMap.get(target), 
+                    regressionMap.get(target), graph);
             measResults.setCategory(fileTarget.getCategory());
             if (measResults.getCount() > 0.0) {
                 measMap.put(target, measResults);
@@ -83,7 +91,9 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
         return measMap;
     }
 
-    private static AnalysisMeasResults transformIntoResults(DescriptiveStatistics stats, String graph) {
+    private static AnalysisMeasResults transformIntoResults(DescriptiveStatistics stats,
+            SimpleRegression regression, String graph) {
+
         AnalysisMeasResults results = new AnalysisMeasResults();
         results.setMax(stats.getMax());
         results.setMin(stats.getMin());
@@ -103,6 +113,19 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
         results.setGeometricMean(stats.getGeometricMean());
         results.setQuadraticMean(stats.getQuadraticMean());
 
+        
+        //we need at least two samples to do actual regression
+        if (regression.getN() > 1) {
+            RegressionResults regResults = regression.regress();
+            results.setSlope(regression.getSlope());
+            results.setrSquared(regResults.getRSquared());
+            results.setAdjustedRSquared(regResults.getAdjustedRSquared());
+            results.setErrorSumSquares(regResults.getErrorSumSquares());
+            results.setMeanSquareError(regResults.getMeanSquareError());
+            results.setRegressionSumSquares(regResults.getRegressionSumSquares());
+            results.setTotalSumSquares(regResults.getTotalSumSquares());
+        }
+        
         results.setGraph(graph);
         return results;
     }

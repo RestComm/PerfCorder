@@ -143,7 +143,50 @@
         <path>data/periodic/java/jvmtop.txt</path>
         <separator>44</separator>
     </files>
-    
+    <files>
+        <category>Threads</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>PrefixThreadsTotal</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>1</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>PrefixThreadsWAITING</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>2</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>PrefixThreadsTIMED_WAITING</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>3</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>PrefixThreadsRUNNABLE</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>4</column>
+        </csvTargets> 
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>PrefixThreadsBLOCKED</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>5</column>
+        </csvTargets>                       
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>PrefixThreadsTERMINATED</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>6</column>
+        </csvTargets> 
+        
+                                   
+        <linesToSkip>1</linesToSkip>
+        <path>data/periodic/java/prefixThreads.csv</path>
+        <separator>59</separator>
+    </files>      
     <files>
         <category>Threads</category>
         <csvTargets>

@@ -4,7 +4,8 @@
     <xsl:template name="lessThanTemplate" priority="0">
         <xsl:param name = "caseName" />
         <xsl:param name = "thresholdValue" />
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="." />
             </xsl:attribute>            
@@ -20,7 +21,8 @@
     <xsl:template name="biggerThanTemplate" priority="0">
         <xsl:param name = "caseName" />
         <xsl:param name = "thresholdValue" />
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="." />
             </xsl:attribute>                
@@ -38,7 +40,8 @@
         <xsl:param name = "thresholdValue" />
         <xsl:param name = "measA" />
         <xsl:param name = "measB" />        
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="$measA div $measB" />
             </xsl:attribute>            
@@ -56,7 +59,8 @@
         <xsl:param name = "thresholdValue" />
         <xsl:param name = "measA" />
         <xsl:param name = "measB" />        
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="$measA div $measB" />
             </xsl:attribute>            

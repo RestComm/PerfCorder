@@ -4,7 +4,8 @@
     <xsl:template name="lessThanTemplate" priority="0">
         <xsl:param name = "caseName" />
         <xsl:param name = "thresholdValue" />
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="." />
             </xsl:attribute>            
@@ -20,7 +21,8 @@
     <xsl:template name="biggerThanTemplate" priority="0">
         <xsl:param name = "caseName" />
         <xsl:param name = "thresholdValue" />
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="." />
             </xsl:attribute>                
@@ -31,14 +33,15 @@
             </xsl:if>
             <system-out>&lt;measurement&gt;&lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;&lt;value&gt;<xsl:value-of select="."/>&lt;/value&gt;&lt;/measurement&gt;</system-out>
         </testcase>
-    </xsl:template> 
+    </xsl:template>
     
     <xsl:template name="ratioLessThanTemplate" priority="0">
         <xsl:param name = "caseName" />
         <xsl:param name = "thresholdValue" />
         <xsl:param name = "measA" />
         <xsl:param name = "measB" />        
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="$measA div $measB" />
             </xsl:attribute>            
@@ -56,7 +59,8 @@
         <xsl:param name = "thresholdValue" />
         <xsl:param name = "measA" />
         <xsl:param name = "measB" />        
-        <testcase classname="org.restcomm.perfcorder.PerfCorderAnalyzerTest" name="{$caseName}">
+        <xsl:param name = "classname" select="org.restcomm.perfcorder.PerfCorderAnalyzerTest" />
+        <testcase classname="{$classname}" name="{$caseName}">
             <xsl:attribute name="time">
                 <xsl:value-of select="$measA div $measB" />
             </xsl:attribute>            
@@ -67,5 +71,5 @@
             </xsl:if>
             <system-out>&lt;measurement&gt;&lt;name&gt;<xsl:value-of select="$caseName"/>&lt;/name&gt;&lt;value&gt;<xsl:value-of select="$measA div $measB"/>&lt;/value&gt;&lt;/measurement&gt;</system-out>
         </testcase>
-    </xsl:template>                  
+    </xsl:template>                    
 </xsl:stylesheet>

@@ -4,13 +4,16 @@
     <xsl:include href="junitTestCaseTemplate.xsl"/>
 
     <xsl:template match="/" priority="9">
-        <testsuite>
+        <testsuite name="org.restcomm.perfcorder.SipServlet">
             <xsl:for-each select="//key[text()='HTTPErrorCount']/parent::entry/value/sum">
                 <xsl:call-template name="ratioLessThanTemplate">
                     <xsl:with-param name="caseName" select="'HTTPFailureRatio'" />
                     <xsl:with-param name="thresholdValue"  select="'0.1'" />
                     <xsl:with-param name="measA"  select="//key[text()='HTTPErrorCount']/parent::entry/value/sum" />
                     <xsl:with-param name="measB"  select="//key[text()='HTTPSampleCount']/parent::entry/value/sum" />
+                    <xsl:with-param name="classname"  select="'org.restcomm.perfcorder.SipServlet.Proxy100CAPS'" />
+                    
+                    
                 </xsl:call-template>
             </xsl:for-each>
             <xsl:for-each select="//key[text()='Mem']/parent::entry/value/min">

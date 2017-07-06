@@ -78,7 +78,7 @@
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
                     </tbody>
-                </table>
+                </table>     
                 
                 <table border="1">
                     <caption>Sys</caption>
@@ -95,7 +95,7 @@
                             </xsl:call-template>
                         </xsl:for-each>                         
                     </tbody>
-                </table>  
+                </table>     
                 
                 <table border="1">
                     <caption>ObjHist</caption>
@@ -112,8 +112,8 @@
                             </xsl:call-template>
                         </xsl:for-each>                         
                     </tbody>
-                </table>                 
-                                                              
+                </table>                                        
+                                      
                 <table border="1">
                     <caption>SMPP</caption>
                     <thead>
@@ -129,7 +129,7 @@
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
                     </tbody>
-                </table>
+                </table> 
                 <table border="1">
                     <caption>Diameter</caption>
                     <thead>
@@ -145,7 +145,7 @@
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
                     </tbody>
-                </table>    
+                </table> 
                 
                 <table border="1">
                     <caption>MAP</caption>
@@ -162,7 +162,40 @@
                             </xsl:call-template>
                         </xsl:for-each>                                                                    
                     </tbody>
-                </table>                                                                                                               
+                </table>     
+                
+                <table border="1">
+                    <caption>JMX</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//category[text()='JMX']/parent::value/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                                                                    
+                    </tbody>
+                </table> 
+                <table border="1">
+                    <caption>Threads</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//category[text()='Threads']/parent::value/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>                                                                    
+                    </tbody>
+                </table>                                                                                                                                                                                                                                                                   
             </body>
         </html>
     </xsl:template>

@@ -1,27 +1,24 @@
-#!/bin/bash
-# This script is trying to get total number of thread is in each state (WAITING, TIMED_WAITING, RUNABLE) and the number of
-# thread is TIMED_WAITING for sending message. 
+#!/bin/sh
+if [ -z ${PERFCORDER_HOME} ]; then
+    DIR=$( cd $(dirname $0) ; pwd -P )
+else 
+    echo "Using PERFCORDER_HOME at:$PERFCORDER_HOME"
+    DIR=$PERFCORDER_HOME
+fi
 
-# Constant value
-WAITING_STATE="WAITING"
-TIMED_WAITING_STATE="TIMED_WAITING"
-RUNABLE_STATE="RUNNABLE"
-BLOCKED_STATE="BLOCKED"
-TERMINATED_STATE="TERMINATED"
+if [ -z "$JAVA_HOME" ] ; then
+        JAVA_HOME=`readlink -f \`which java 2>/dev/null\` 2>/dev/null | \
+        sed 's/\/bin\/java//'`
+fi
 
-#get thread dump 
-threadDump="$(jstack $1)"
-#calculate the number of threads in each state
-numOfWaiting=$(grep -o "$WAITING_STATE" <<< "$threadDump" | wc -l)
-numOfTimedWaiting=$(grep -o "$TIMED_WAITING_STATE" <<< "$threadDump" | wc -l)
-numOfRunable=$(grep -o "$RUNABLE_STATE" <<< "$threadDump" | wc -l)
-numOfBlock=$(grep -o "$BLOCKED_STATE" <<< "$threadDump" | wc -l)
-numOfTerminated=$(grep -o "$TERMINATED_STATE" <<< "$threadDump" | wc -l)
-#get daytime
-datetime="$(date '+%d/%m %H:%M:%S')"
-#count total threads
-totalThreads=0
-let totalThreads=numOfWaiting+numOfTimedWaiting+numOfRunable+numOfBlock+numOfTerminated
+TOOLSJAR="$JAVA_HOME/lib/tools.jar"
 
-#print all data into log file
-echo "[$datetime];$totalThreads;$numOfWaiting;$numOfTimedWaiting;$numOfRunable;$numOfBlock;$numOfTerminated"
+if [ ! -f "$TOOLSJAR" ] ; then
+        echo "$JAVA_HOME seems to be no JDK!" >&2
+        exit 1
+fi
+
+"$JAVA_HOME"/bin/java $JAVA_OPTS -cp "$DIR/sipp-report-with-dependencies.jar:$TOOLSJAR" \
+org.restcomm.perfcorder.collector.ThreadStatApp "$@" &
+echo $! > jvmstat.pid
+exit $?

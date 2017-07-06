@@ -12,6 +12,7 @@ function HELP {
   echo "-d  minutes to hold snapshots before removal. Default is 1440"
   echo "-n enable network capture using tshark"
   echo "-m path to jmx2csv xml metafile"
+  echo "-t thread prefix filter"
 
   echo -e "-h  --Displays this help message. No further functions are performed."\\n
   echo -e "Example: $SCRIPT -f 1 -c /opt/conf java_pid"\\n
@@ -101,8 +102,17 @@ function startJavaMeasCollection {
         echo $! > ${DATA_COLLECTION_DIR}/jmx2csv.pid
     fi
 
-    while sleep ${MEAS_INTERVAL_SECONDS}; do $DIR/pc_print_threads.sh ${JAVA_PID} >> ${JAVA_COLLECTION_DIR}/threads.csv ; done &
+
+    $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.ThreadStatApp -d ${MEAS_INTERVAL_SECONDS} ${JAVA_PID} > ${JAVA_COLLECTION_DIR}/threads.csv &
     echo $! > ${DATA_COLLECTION_DIR}/threads.pid
+    if [[ -z ${THREAD_PREFIX_FILTER} ]]; then
+        echo Thread prefix disabled
+    else 
+        echo Thread prefix enabled
+        $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.ThreadStatApp -d ${MEAS_INTERVAL_SECONDS} -f ${THREAD_PREFIX_FILTER} ${JAVA_PID} > ${JAVA_COLLECTION_DIR}/prefixThreads.csv &
+        echo $! > ${DATA_COLLECTION_DIR}/prefixThreads.pid
+    fi
+
 }
 function startNetworkCapture {
     if [[ -z ${PC_NETWORK_CAPTURE} ]]; then
@@ -193,6 +203,7 @@ PC_NETWORK_CAPTURE=""
 ROTATE_MODE=-1
 SNAPSHOT_RETENTION_MIN=1440
 JMX2CSV=""
+THREAD_PREFIX_FILTER=""
 
 #Check the number of arguments. If none are passed, print help and exit.
 NUMARGS=$#
@@ -229,6 +240,9 @@ while getopts "f:c:o:e:j:r:d:m:pnh" opt; do
       ;;
     m)
       JMX2CSV=${OPTARG}
+      ;;
+    t)
+      THREAD_PREFIX_FILTER=${OPTARG}
       ;;
     n)
       PC_NETWORK_CAPTURE=ENABLED

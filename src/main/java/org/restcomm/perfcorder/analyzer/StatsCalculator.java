@@ -115,7 +115,7 @@ public class StatsCalculator implements FileAnalyser<CSVColumnMeasTarget> {
 
         
         //we need at least two samples to do actual regression
-        if (regression.getN() > 1) {
+        if (regression.getN() > 2) {
             RegressionResults regResults = regression.regress();
             results.setSlope(regression.getSlope());
             results.setrSquared(regResults.getRSquared());

@@ -45,13 +45,13 @@ public class VMDetailStatView extends AbstractConsoleView {
         vmInfo_.update();
 
         if (vmInfo_.getState() == VMInfoState.ATTACHED_UPDATE_ERROR) {
-            System.out
+            System.err
                     .println("ERROR: Could not fetch telemetries - Process terminated?");
             exit();
             return "";
         }
         if (vmInfo_.getState() != VMInfoState.ATTACHED) {
-            System.out.println("ERROR: Could not attach to process.");
+            System.err.println("ERROR: Could not attach to process.");
             exit();
             return "";
         }

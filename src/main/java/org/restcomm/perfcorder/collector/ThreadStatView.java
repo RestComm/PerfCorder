@@ -104,7 +104,7 @@ public class ThreadStatView extends AbstractConsoleView {
         //System.out.println("Date,TotalThreads,NumOfWaiting,NumOfTimedWaiting,NumOfRunable,NumOfBlock,NumOfTerminated");        
         return String
                 .format(
-                        "%d,%d,%d,%d,%d,%d,%d",
+                        "%d;%d;%d;%d;%d;%d;%d",
                         System.currentTimeMillis(),
                         total,
                         waiting,

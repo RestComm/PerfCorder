@@ -224,7 +224,7 @@ Please ask your question on [StackOverflow](http://stackoverflow.com/search?q=mo
 
 PerfCorder is lead by [TeleStax](http://www.telestax.com/), Inc. and developed collaboratively by a community of individual and enterprise contributors.
 
-PerfCorder is licensed under dual license policy. The default license is the Free Open Source GNU Affero GPL v3.0. Alternatively a commercial license can be obtained from Telestax ([contact form](http://www.telestax.com/contactus/#InquiryForm))
+PerfCorder is licensed under dual license policy. The default license is the Free Open Source GNU Affero General Public License v3.0. Alternatively a commercial license can be obtained from Telestax ([contact form](http://www.telestax.com/contactus/#InquiryForm))
 
 #Continuous Integration and Delivery
 ========

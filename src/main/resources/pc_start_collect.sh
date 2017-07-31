@@ -212,7 +212,7 @@ if [ $NUMARGS -eq 0 ]; then
   HELP
 fi
 
-while getopts "f:c:o:e:j:r:d:m:pnh" opt; do
+while getopts "f:c:o:e:j:r:d:m:t:pnh" opt; do
   case $opt in
     f)
       MEAS_INTERVAL_SECONDS=${OPTARG}

@@ -1,4 +1,4 @@
-package org.mobicents.qa.report.sipp;
+package org.restcomm.perfcorder.analyzer;
 
 /**
  Copyright 2005 Bytecode Pty Ltd.

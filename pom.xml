@@ -16,7 +16,7 @@
         <mobicents.tools.mavenplugin.eclipse.version>1.0.0.BETA2</mobicents.tools.mavenplugin.eclipse.version>
         <!-- change it to point to your tools.jar from your JDK -->
         <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
-        <jdk.version>1.6</jdk.version>        
+        <jdk.version>1.7</jdk.version>        
     </properties>
     <description />
     <dependencies>
@@ -28,11 +28,6 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -108,14 +103,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.mobicents.qa.report.sipp.Report</mainClass>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>

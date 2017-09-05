@@ -76,9 +76,6 @@ function startSystemMeasCollection {
 function startJavaMeasCollection {
     echo Starting Java Collection over process ${JAVA_PID}
 
-    jstat -gccause -t ${JAVA_PID} ${MEAS_INTERVAL_SECONDS}s > ${JAVA_COLLECTION_DIR}/jstat.txt &
-    echo $! > ${DATA_COLLECTION_DIR}/jstat.pid
-
     $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.JVMStatApp -d ${MEAS_INTERVAL_SECONDS} ${JAVA_PID} > ${JAVA_COLLECTION_DIR}/jvmtop.txt &
     echo $! > ${DATA_COLLECTION_DIR}/jvmstat.pid
 

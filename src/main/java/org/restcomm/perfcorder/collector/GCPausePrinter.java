@@ -153,6 +153,10 @@ public class GCPausePrinter {
                 .getLocalVirtualMachine(pid);
         VMInfo vmInfo_ = VMInfo.processNewVM(localVirtualMachine, pid);
         Collection<GarbageCollectorMXBean> gcbeans = vmInfo_.getGcMXBeans();
+        if (gcbeans == null) {
+            System.out.println("No gc mbeans located");
+            System.exit(0);
+        }
         printHeaderLine();
         //Install a notifcation handler for each bean
         for (GarbageCollectorMXBean gcbean : gcbeans) {

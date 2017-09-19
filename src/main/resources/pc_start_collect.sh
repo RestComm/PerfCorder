@@ -157,7 +157,7 @@ function waitForPID {
     while [[ -z ${JAVA_PID} ]] && [ "$LOOP_COUNT" -lt 20 ]
     do
         sleep $MEAS_INTERVAL_SECONDS
-        export JAVA_PID=$(jps |grep $JPS_PATTERN | cut -d' ' -f1)
+        export JAVA_PID=$(jps -l |grep $JPS_PATTERN | cut -d' ' -f1)
         echo "PID found do far:$JAVA_PID"
         LOOP_COUNT=$((LOOP_COUNT+1))
     done

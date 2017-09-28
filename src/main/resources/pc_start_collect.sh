@@ -119,7 +119,7 @@ function startNetworkCapture {
         #allow tshark to save in the file run by root
         touch ${SYS_COLLECTION_DIR}/net.pcap
         chmod o=rw ${SYS_COLLECTION_DIR}/net.pcap
-        sudo -s tshark  -w ${SYS_COLLECTION_DIR}/net.pcap -F pcapng &
+        sudo -s tshark -ni any -w ${SYS_COLLECTION_DIR}/net.pcap -F pcapng &
         echo $! > DATA_COLLECTION_DIR/tshark.pid
     fi
 }

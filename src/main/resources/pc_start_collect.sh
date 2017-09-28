@@ -116,7 +116,7 @@ function startNetworkCapture {
         echo Network capture disabled
     else 
         echo Network capture enabled
-        sudo tshark  -w ${SYS_COLLECTION_DIR}/net.pcap -F pcapng &
+        sudo -s tshark  -w ${SYS_COLLECTION_DIR}/net.pcap -F pcapng &
         echo $! > DATA_COLLECTION_DIR/tshark.pid
     fi
 }

@@ -65,6 +65,8 @@ function collectJavaProcessInfo {
     lsof -p ${JAVA_PID} | grep ".jar" > ${META_COLLECTION_DIR}/jarList.txt
 
     echo $JAVA_PID > ${META_COLLECTION_DIR}/java.pid
+
+    curl http://169.254.169.254/latest/dynamic/instance-identity/document > ${META_COLLECTION_DIR}/ec2instance.doc
 }
 
 function startSystemMeasCollection {

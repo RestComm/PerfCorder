@@ -16,7 +16,7 @@
             </td>
             <td>
                 <img>             
-                    <xsl:attribute name="src">data:image/png;base64,<xsl:value-of select="./value/graph/text()" /></xsl:attribute>
+                    <xsl:attribute name="src"><xsl:value-of select="./value/graph/text()" /></xsl:attribute>
                 </img>
             </td>
         </tr>

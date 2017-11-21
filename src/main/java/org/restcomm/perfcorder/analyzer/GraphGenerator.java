@@ -2,10 +2,12 @@ package org.restcomm.perfcorder.analyzer;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -28,9 +30,9 @@ public class GraphGenerator {
         Second current = new Second(new Date(analysis.getStartTimeStamp()));
         //assume first lines contains column names
         int stripWithHeader = 1;
-        
+
         int previousDelta = 0;//used to calcualte delta for auxTSColums
-        
+
         Second statsStartSecond = null;
         Second statsEndSecond = null;
         for (int i = stripWithHeader; i < readAll.size(); i++) {
@@ -49,13 +51,13 @@ public class GraphGenerator {
                         measDeltaSeconds = 1;
                     }
                 }
-                
+
                 //calculate delta
                 for (int j = 0; j < measDeltaSeconds; j++) {
                     current = (Second) current.next();
                 }
 
-                
+
                 /**
                  * record start and end of stats markers
                  */
@@ -63,7 +65,7 @@ public class GraphGenerator {
                         && i * 100 / readAll.size() >= analysis.getSamplesToStripRatio()) {
                     statsStartSecond = new Second(current.getSecond(), current.getMinute());
                 }
-                if (statsEndSecond == null 
+                if (statsEndSecond == null
                         && i * 100 / readAll.size() >= (100 - analysis.getSamplesToStripRatio())) {
                     statsEndSecond = new Second(current.getSecond(), current.getMinute());
                 }
@@ -79,10 +81,22 @@ public class GraphGenerator {
         chart.addSubtitle(new TextTitle("CollFreq:" + analysis.getSettings().getMeasIntervalSeconds()));
         BufferedImage createBufferedImage = chart.createBufferedImage(320, 240);
         byte[] graph = ChartUtilities.encodeAsPNG(createBufferedImage, false, 9);
-        String graphStr = encode(graph);
-        return graphStr;
+        UUID randomUUID = UUID.randomUUID();
+        File directory = new File("./graphs");
+        if (! directory.exists()){
+            directory.mkdir();
+        }
+        String path = directory.getPath()+  File.separator + target.getLabel() + randomUUID + ".png";
+        FileOutputStream stream = new FileOutputStream(path);
+        try {
+            stream.write(graph);
+        } finally {
+            stream.close();
+        }
+
+        return path;
     }
-    
+
     private static void addMarkers(JFreeChart chart, Second statsStartSecond,Second statsEndSecond) {
         XYPlot plot = chart.getXYPlot();
         if (statsStartSecond != null) {
@@ -102,32 +116,7 @@ public class GraphGenerator {
             statsEndMarker.setLabelAnchor(RectangleAnchor.TOP_LEFT);
             statsEndMarker.setLabelTextAnchor(TextAnchor.TOP_LEFT);
             plot.addDomainMarker(statsEndMarker);
-        }        
-    }
-    private final static char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
-
-    public static String encode(byte[] buf) {
-        int size = buf.length;
-        char[] ar = new char[((size + 2) / 3) * 4];
-        int a = 0;
-        int i = 0;
-        while (i < size) {
-            byte b0 = buf[i++];
-            byte b1 = (i < size) ? buf[i++] : 0;
-            byte b2 = (i < size) ? buf[i++] : 0;
-
-            int mask = 0x3F;
-            ar[a++] = ALPHABET[(b0 >> 2) & mask];
-            ar[a++] = ALPHABET[((b0 << 4) | ((b1 & 0xFF) >> 4)) & mask];
-            ar[a++] = ALPHABET[((b1 << 2) | ((b2 & 0xFF) >> 6)) & mask];
-            ar[a++] = ALPHABET[b2 & mask];
         }
-        switch (size % 3) {
-            case 1:
-                ar[--a] = '=';
-            case 2:
-                ar[--a] = '=';
-        }
-        return new String(ar);
     }
+
 }

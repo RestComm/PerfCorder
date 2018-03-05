@@ -514,5 +514,46 @@
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/java/jmx2csv.csv</path>
         <separator>44</separator>
-    </files>                 
+    </files>  
+    <files>
+        <category>TCAP</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>TCAPCreatedIncomingDialogs</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>CreatedIncomingDialogs</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>TCAPSuccessfulOutgoingDialogs</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>SuccessfulOutgoingDialogs</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>TCAPCreatedOutgoingDialogs</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>CreatedOutgoingDialogs</columnName> 
+        </csvTargets>      
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>TCAPSuccessfulIncomingDialogs1</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>SuccessfulIncomingDialogs1</columnName> 
+        </csvTargets>
+         <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>TCAPSuccessfulIncomingDialogs2</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>SuccessfulIncomingDialogs2</columnName> 
+        </csvTargets>                         
+        <linesToSkip>0</linesToSkip>
+        <path>data/periodic/tcap/tcap.csv</path>
+        <separator>59</separator>
+    </files>
 </analysisFileTargetSet>

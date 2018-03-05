@@ -238,7 +238,6 @@
             <label>SIPTotalCallCreated</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>FailedScenario</columnName>
             <columnName>TotalCallCreated</columnName>              
         </csvTargets>
         <csvTargets>

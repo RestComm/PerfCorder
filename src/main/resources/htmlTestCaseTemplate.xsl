@@ -176,10 +176,27 @@
                         <xsl:for-each select="//category[text()='MAP']/parent::value/parent::entry">
                             <xsl:call-template name="measRowTemplate">
                             </xsl:call-template>
-                        </xsl:for-each>                                                                    
+                        </xsl:for-each>
                     </tbody>
-                </table>     
-                
+                </table>
+
+                <table border="1">
+                    <caption>MAP</caption>
+                    <thead>
+                        <tr>
+                            <th>Meas</th>
+                            <th>Stats</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//category[text()='MAP-MO-MT']/parent::value/parent::entry">
+                            <xsl:call-template name="measRowTemplate">
+                            </xsl:call-template>
+                        </xsl:for-each>
+                    </tbody>
+                </table>
+
                 <table border="1">
                     <caption>JMX</caption>
                     <thead>

@@ -556,4 +556,52 @@
         <path>data/periodic/tcap/tcap.csv</path>
         <separator>59</separator>
     </files>
+    <files>
+        <category>MAP-MO-MT</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>MoForwardShortMessageRequest</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>MoForwardShortMessageRequest</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>MoForwardShortMessageResponse</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>MoForwardShortMessageResponse</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SendRoutingInfoForSMRequest</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>SendRoutingInfoForSMRequest</columnName> 
+        </csvTargets>      
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SendRoutingInfoForSMResponse</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>SendRoutingInfoForSMResponse</columnName> 
+        </csvTargets>
+         <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>MtForwardShortMessageRequest</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>MtForwardShortMessageRequest</columnName> 
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>MtForwardShortMessageResponse</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+            <columnName>MtForwardShortMessageResponse</columnName> 
+        </csvTargets>                         
+        <linesToSkip>0</linesToSkip>
+        <path>data/periodic/map-mo-mt/map-mo-mt.csv</path>
+        <separator>59</separator>
+    </files>
 </analysisFileTargetSet>

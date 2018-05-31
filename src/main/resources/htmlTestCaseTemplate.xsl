@@ -181,7 +181,7 @@
                 </table>
 
                 <table border="1">
-                    <caption>MAP</caption>
+                    <caption>MAP-MO-MT</caption>
                     <thead>
                         <tr>
                             <th>Meas</th>

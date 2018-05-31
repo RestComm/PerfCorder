@@ -560,42 +560,42 @@
         <category>MAP-MO-MT</category>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>MoForwardShortMessageRequest</label>
+            <label>MAP-MO-MTMoForwardShortMessageRequest</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
             <columnName>MoForwardShortMessageRequest</columnName> 
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>MoForwardShortMessageResponse</label>
+            <label>MAP-MO-MTMoForwardShortMessageResponse</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
             <columnName>MoForwardShortMessageResponse</columnName> 
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>SendRoutingInfoForSMRequest</label>
+            <label>MAP-MO-MTSendRoutingInfoForSMRequest</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
             <columnName>SendRoutingInfoForSMRequest</columnName> 
         </csvTargets>      
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>SendRoutingInfoForSMResponse</label>
+            <label>MAP-MO-MTSendRoutingInfoForSMResponse</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
             <columnName>SendRoutingInfoForSMResponse</columnName> 
         </csvTargets>
          <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>MtForwardShortMessageRequest</label>
+            <label>MAP-MO-MTMtForwardShortMessageRequest</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
             <columnName>MtForwardShortMessageRequest</columnName> 
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
-            <label>MtForwardShortMessageResponse</label>
+            <label>MAP-MO-MTMtForwardShortMessageResponse</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
             <columnName>MtForwardShortMessageResponse</columnName> 

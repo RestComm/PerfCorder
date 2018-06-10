@@ -4,7 +4,7 @@
     <artifactId>sipp-report</artifactId>
     <packaging>jar</packaging>
     <name>sipp-report</name>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3.0-130</version>
     <parent>
         <artifactId>mobicents</artifactId>
         <groupId>org.mobicents</groupId>

@@ -63,7 +63,7 @@ public class JVMStatApp {
             System.exit(0);
         }
 
-        Integer pid = null;
+        Integer targetJVM = null;
 
         double delay = 1.0;
 
@@ -82,17 +82,23 @@ public class JVMStatApp {
 
         //to support PID as non option argument
         if (a.nonOptionArguments().size() > 0) {
-            pid = Integer.valueOf((String) a.nonOptionArguments().get(0));
+            targetJVM = Integer.valueOf((String) a.nonOptionArguments().get(0));
         }
 
         if (a.hasArgument("pid")) {
-            pid = (Integer) a.valueOf("pid");
+            targetJVM = (Integer) a.valueOf("pid");
         }
 
         JVMStatApp collector = new JVMStatApp();
         collector.setDelay(delay);
         collector.setMaxIterations(iterations);
-        VMDetailStatView vmDetailStatView = new VMDetailStatView(pid, null);
+        VMDetailStatView vmDetailStatView = null;
+        try {
+            Integer pid = Integer.valueOf(targetJVM);
+            vmDetailStatView = new VMDetailStatView(pid, null);
+        } catch (Exception e) {
+            vmDetailStatView = new VMDetailStatView(targetJVM, null);
+        }
         System.out.println(vmDetailStatView.printHeader());
         collector.run(vmDetailStatView);
     }

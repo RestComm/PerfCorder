@@ -21,6 +21,7 @@
 package org.restcomm.perfcorder.collector;
 
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
+import org.restcomm.perfcorder.collector.jmx.ProxyClient;
 
 /**
  * "detail" view, printing detail metrics of a specific jvm in a vmstat manner.
@@ -38,6 +39,15 @@ public class VMDetailStatView extends AbstractConsoleView {
         LocalVirtualMachine localVirtualMachine = LocalVirtualMachine
                 .getLocalVirtualMachine(vmid);
         vmInfo_ = VMInfo.processNewVM(localVirtualMachine, vmid);
+    }
+    public VMDetailStatView(String url, Integer width) throws Exception {
+        super(width);
+        ProxyClient proxyClient = ProxyClient.getProxyClient(url,
+                "",
+                "");
+        proxyClient.connect();
+
+        vmInfo_ = new VMInfo(proxyClient, null, null);
     }
 
     @Override

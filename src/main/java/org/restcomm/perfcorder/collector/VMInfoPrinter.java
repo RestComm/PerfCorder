@@ -2,12 +2,12 @@ package org.restcomm.perfcorder.collector;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.logging.Logger;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.PatternLayout;
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
+import org.restcomm.perfcorder.collector.jmx.ProxyClient;
 
 /**
  * PerfCorder collects info about an external process through JMX beans
@@ -46,20 +46,30 @@ public class VMInfoPrinter {
             System.exit(0);
         }
 
-        Integer pid = null;
+        String targetJVM = null;
 
         //to support PID as non option argument
         if (a.nonOptionArguments().size() > 0) {
-            pid = Integer.valueOf((String) a.nonOptionArguments().get(0));
+            targetJVM = (String) a.nonOptionArguments().get(0);
         }
 
         if (a.hasArgument("pid")) {
-            pid = (Integer) a.valueOf("pid");
+            targetJVM = (String) a.valueOf("pid");
         }
 
-        LocalVirtualMachine localVirtualMachine = LocalVirtualMachine
-                .getLocalVirtualMachine(pid);
-        VMInfo vmInfo_ = VMInfo.processNewVM(localVirtualMachine, pid);
+        VMInfo vmInfo_ = null;
+        try {
+            Integer pid = Integer.valueOf(targetJVM);
+            LocalVirtualMachine localVirtualMachine = LocalVirtualMachine
+                    .getLocalVirtualMachine(pid);
+            vmInfo_ = VMInfo.processNewVM(localVirtualMachine, pid);
+        } catch (Exception e) {
+            ProxyClient proxyClient = ProxyClient.getProxyClient(targetJVM,
+                    "",
+                    "");
+            proxyClient.connect();
+            vmInfo_ = new VMInfo(proxyClient, null, null);
+        }
         System.out.println(vmInfo_.getRuntimeMXBean().getBootClassPath());
         System.out.println(vmInfo_.getRuntimeMXBean().getClassPath());
         System.out.println(vmInfo_.getRuntimeMXBean().getInputArguments());

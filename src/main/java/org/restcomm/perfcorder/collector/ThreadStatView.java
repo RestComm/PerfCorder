@@ -22,6 +22,7 @@ package org.restcomm.perfcorder.collector;
 
 import java.lang.management.ThreadInfo;
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
+import org.restcomm.perfcorder.collector.jmx.ProxyClient;
 
 /**
  * "detail" view, printing detail metrics of a specific jvm in a vmstat manner.
@@ -44,6 +45,18 @@ public class ThreadStatView extends AbstractConsoleView {
         vmInfo_ = VMInfo.processNewVM(localVirtualMachine, vmid);
     }
 
+    public ThreadStatView(String url, Integer width, String prefix) throws Exception {
+        super(width);
+        this.prefix = prefix;
+        ProxyClient proxyClient = ProxyClient.getProxyClient(url,
+                "",
+                "");
+        proxyClient.connect();
+
+        vmInfo_ = new VMInfo(proxyClient, null, prefix);
+
+    }
+
     @Override
     public String printView() throws Exception {
         vmInfo_.update();
@@ -64,7 +77,6 @@ public class ThreadStatView extends AbstractConsoleView {
     }
 
     private String printVM(VMInfo vmInfo) throws Exception {
-
 
         ThreadInfo[] dumpAllThreads = vmInfo.getThreadMXBean().dumpAllThreads(false, false);
         int waiting = 0;
@@ -101,7 +113,7 @@ public class ThreadStatView extends AbstractConsoleView {
             }
 
         }
-        //System.out.println("Date,TotalThreads,NumOfWaiting,NumOfTimedWaiting,NumOfRunable,NumOfBlock,NumOfTerminated");        
+        //System.out.println("Date,TotalThreads,NumOfWaiting,NumOfTimedWaiting,NumOfRunable,NumOfBlock,NumOfTerminated");
         return String
                 .format(
                         "%d;%d;%d;%d;%d;%d;%d",

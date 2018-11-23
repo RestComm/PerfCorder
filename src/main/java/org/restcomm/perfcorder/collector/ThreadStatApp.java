@@ -41,7 +41,7 @@ public class ThreadStatApp {
                         "PID to connect to").withRequiredArg().ofType(Integer.class);
         parser
                 .acceptsAll(Arrays.asList(new String[]{"f", "filter"}),
-                        "Thread filter prefix").withOptionalArg().ofType(String.class);        
+                        "Thread filter prefix").withOptionalArg().ofType(String.class);
 
         return parser;
     }
@@ -62,12 +62,12 @@ public class ThreadStatApp {
             System.exit(0);
         }
 
-        Integer pid = null;
+        String targetJVM = null;
 
         double delay = 1.0;
 
         Integer iterations = -1;
-        
+
         String prefix = "";
 
         if (a.hasArgument("delay")) {
@@ -83,21 +83,29 @@ public class ThreadStatApp {
 
         //to support PID as non option argument
         if (a.nonOptionArguments().size() > 0) {
-            pid = Integer.valueOf((String) a.nonOptionArguments().get(0));
+            targetJVM = (String) a.nonOptionArguments().get(0);
         }
 
         if (a.hasArgument("pid")) {
-            pid = (Integer) a.valueOf("pid");
+            targetJVM = (String) a.valueOf("pid");
         }
-        
+
         if (a.hasArgument("filter")) {
             prefix = (String) a.valueOf("filter");
-        }        
+        }
 
         ThreadStatApp collector = new ThreadStatApp();
         collector.setDelay(delay);
         collector.setMaxIterations(iterations);
-        ThreadStatView vmDetailStatView = new ThreadStatView(pid, null, prefix);
+        ThreadStatView vmDetailStatView = null;
+        try {
+            Integer pid = Integer.valueOf(targetJVM);
+            vmDetailStatView = new ThreadStatView(pid, null, prefix);
+        } catch (Exception e) {
+            vmDetailStatView = new ThreadStatView(targetJVM, null, prefix);
+        }
+
+
         System.out.println(vmDetailStatView.printHeader());
         collector.run(vmDetailStatView);
     }

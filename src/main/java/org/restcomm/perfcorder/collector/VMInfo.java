@@ -486,21 +486,6 @@ public class VMInfo
     return proxyClient;
   }
 
-  public String getDisplayName()
-  {
-    return localVm_.displayName();
-  }
-
-  public Integer getId()
-  {
-    return localVm_.vmid();
-  }
-
-  public String getRawId()
-  {
-    return rawId_;
-  }
-
   public long getGcCount()
   {
     return gcCount;

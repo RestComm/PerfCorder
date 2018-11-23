@@ -18,6 +18,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
+import org.restcomm.perfcorder.collector.jmx.ProxyClient;
 
 /**
  * PerfCorder collects info about an external process through JMX beans
@@ -46,7 +47,7 @@ public class GCPausePrinter {
 
         return parser;
     }
-    
+
     //using this as opposed to byte version to have JConsole compatible data
     private static final int BYTES_PER_MEGA = 1000000;
 
@@ -99,7 +100,7 @@ public class GCPausePrinter {
             }
         }
     }
-    
+
     private static void printHeaderLine() {
         System.out.println("Dur,MemBefore,MemAfter,gcType,gcId,gcName,gcCause,startTime, endTime");
     }
@@ -138,20 +139,32 @@ public class GCPausePrinter {
             iterations = (Integer) a.valueOf("n");
         }
 
-        Integer pid = null;
+        String targetJVM = null;
 
         //to support PID as non option argument
         if (a.nonOptionArguments().size() > 0) {
-            pid = Integer.valueOf((String) a.nonOptionArguments().get(0));
+            targetJVM = (String) a.nonOptionArguments().get(0);
         }
 
         if (a.hasArgument("pid")) {
-            pid = (Integer) a.valueOf("pid");
+            targetJVM =  (String) a.valueOf("pid");
         }
 
-        LocalVirtualMachine localVirtualMachine = LocalVirtualMachine
-                .getLocalVirtualMachine(pid);
-        VMInfo vmInfo_ = VMInfo.processNewVM(localVirtualMachine, pid);
+        VMInfo vmInfo_ = null;
+        try {
+            Integer pid = Integer.valueOf(targetJVM);
+            LocalVirtualMachine localVirtualMachine = LocalVirtualMachine
+                    .getLocalVirtualMachine(pid);
+            vmInfo_ = VMInfo.processNewVM(localVirtualMachine, pid);
+        } catch (Exception e) {
+            ProxyClient proxyClient = ProxyClient.getProxyClient(targetJVM,
+                    "",
+                    "");
+            proxyClient.connect();
+            vmInfo_ = new VMInfo(proxyClient, null, null);
+        }
+
+
         Collection<GarbageCollectorMXBean> gcbeans = vmInfo_.getGcMXBeans();
         if (gcbeans == null) {
             System.out.println("No gc mbeans located");

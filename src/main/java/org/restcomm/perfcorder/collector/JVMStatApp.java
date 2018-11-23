@@ -63,7 +63,7 @@ public class JVMStatApp {
             System.exit(0);
         }
 
-        Integer targetJVM = null;
+        String targetJVM = null;
 
         double delay = 1.0;
 
@@ -82,11 +82,11 @@ public class JVMStatApp {
 
         //to support PID as non option argument
         if (a.nonOptionArguments().size() > 0) {
-            targetJVM = Integer.valueOf((String) a.nonOptionArguments().get(0));
+            targetJVM = (String) a.nonOptionArguments().get(0);
         }
 
         if (a.hasArgument("pid")) {
-            targetJVM = (Integer) a.valueOf("pid");
+            targetJVM = (String) a.valueOf("pid");
         }
 
         JVMStatApp collector = new JVMStatApp();

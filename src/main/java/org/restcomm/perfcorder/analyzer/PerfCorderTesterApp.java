@@ -19,7 +19,7 @@ public class PerfCorderTesterApp {
     private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(PerfCorderTesterApp.class.getName());
 
     private static void printInfo() {
-        System.out.println("Usage: java -jar 'thisFile' perfCorderFile linesToStrip");
+        System.out.println("Usage: java -jar 'thisFile' goalfile");
     }
 
     /**
@@ -28,7 +28,7 @@ public class PerfCorderTesterApp {
     public static void main(String[] args) {
         org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
         logger.setLevel(org.apache.log4j.Level.INFO);
-        logger.info("Analyze Tool starting ... ");
+        logger.info("Testing Tool starting ... ");
         if (args.length <= 0 || args.length > 2) {
             printInfo();
             exit(-1);

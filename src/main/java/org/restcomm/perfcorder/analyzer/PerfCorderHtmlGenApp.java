@@ -26,7 +26,7 @@ public class PerfCorderHtmlGenApp {
     public static void main(String[] args) {
         org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
         logger.setLevel(org.apache.log4j.Level.INFO);
-        logger.info("Analyze Tool starting ... ");
+        logger.info("HTML Tool starting ... ");
         try {
 
             PerfCorderHTMLViewGenerator htmlGen = new PerfCorderHTMLViewGenerator();

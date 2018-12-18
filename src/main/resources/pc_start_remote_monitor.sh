@@ -224,7 +224,6 @@ fi
 if [[ -z ${PERFCORDER_HOME} ]]; then
     DIR=$( cd $(dirname $0) ; pwd -P )
 else 
-    echo "Using PERFCORDER_HOME at:$PERFCORDER_HOME"
     DIR=$PERFCORDER_HOME
 fi
 

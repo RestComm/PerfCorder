@@ -35,14 +35,17 @@ public class PerfCorderAnalyzeApp {
         org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
         logger.setLevel(org.apache.log4j.Level.INFO);
         logger.info("Analyze Tool starting ... ");
-        if (args.length <= 0 || args.length > 2) {
+        if (args.length <= 0) {
             printInfo();
             exit(-1);
         }
         try {
             InputStream iStream = null;
             iStream = new FileInputStream(args[0]);
-            int linesToStripRatio = Integer.valueOf(args[1]);
+            int linesToStripRatio = 5;
+            if (args.length > 1){
+                linesToStripRatio = Integer.valueOf(args[1]);
+            }
             
             //by default use xml in classpath
             InputStream resourceAsStream = PerfCorderAnalyzeApp.class.getResourceAsStream("/defaultFileTargets.xml");

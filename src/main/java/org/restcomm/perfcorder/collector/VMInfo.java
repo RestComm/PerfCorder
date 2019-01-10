@@ -339,7 +339,7 @@ public class VMInfo
     }
     catch (Throwable e)
     {
-      Logger.getLogger("jvmtop").log(Level.FINE, "error during update", e);
+      Logger.getLogger("jvmtop").log(Level.WARNING, "error during update", e);
       updateErrorCount_++;
       if (updateErrorCount_ > 10)
       {

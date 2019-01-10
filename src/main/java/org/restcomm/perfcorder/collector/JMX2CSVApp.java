@@ -55,8 +55,8 @@ public class JMX2CSVApp {
         Locale.setDefault(Locale.US);
         Locale.setDefault(Locale.US);
         org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
-        logger.setLevel(org.apache.log4j.Level.INFO);
         logger = org.apache.log4j.Logger.getLogger("perfcorder");        
+        logger.setLevel(org.apache.log4j.Level.INFO);
 
         OptionParser parser = createOptionParser();
         OptionSet a = parser.parse(args);

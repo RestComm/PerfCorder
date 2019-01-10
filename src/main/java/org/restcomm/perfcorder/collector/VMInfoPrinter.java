@@ -83,6 +83,8 @@ public class VMInfoPrinter {
         System.out.println(vmInfo_.getRuntimeMXBean().getVmName());
         System.out.println(vmInfo_.getRuntimeMXBean().getVmVendor());
         System.out.println(vmInfo_.getRuntimeMXBean().getVmVersion());
+        
+        System.exit(0);
     }
 
     public VMInfoPrinter() {

@@ -6,9 +6,11 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.logging.Logger;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 
 /**
  * PerfCorder collects info about an external process through JMX beans
@@ -48,8 +50,9 @@ public class ThreadStatApp {
 
     public static void main(String[] args) throws Exception {
         Locale.setDefault(Locale.US);
-
-        logger = Logger.getLogger("JVMStatApp");
+        org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
+        logger.setLevel(org.apache.log4j.Level.INFO);
+        logger = org.apache.log4j.Logger.getLogger("perfcorder");
 
         OptionParser parser = createOptionParser();
         OptionSet a = parser.parse(args);

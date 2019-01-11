@@ -343,6 +343,7 @@ public class VMInfo
       if (updateErrorCount_ > 10)
       {
         state_ = VMInfoState.DETACHED;
+        proxyClient.disconnect();
       }
       else
       {

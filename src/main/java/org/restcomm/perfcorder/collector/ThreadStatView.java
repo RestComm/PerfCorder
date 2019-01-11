@@ -60,18 +60,6 @@ public class ThreadStatView extends AbstractConsoleView {
     @Override
     public String printView() throws Exception {
         vmInfo_.update();
-
-        if (vmInfo_.getState() == VMInfoState.ATTACHED_UPDATE_ERROR) {
-            System.err
-                    .println("ERROR: Could not fetch telemetries - Process terminated?");
-            exit();
-            return "";
-        }
-        if (vmInfo_.getState() != VMInfoState.ATTACHED) {
-            System.err.println("ERROR: Could not attach to process.");
-            exit();
-            return "";
-        }
         return printVM(vmInfo_);
 
     }

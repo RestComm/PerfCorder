@@ -302,7 +302,6 @@ public class VMInfo
   public void update() throws Exception
   {
     if (state_ == VMInfoState.ERROR_DURING_ATTACH
-        || state_ == VMInfoState.DETACHED
         || state_ == VMInfoState.CONNECTION_REFUSED)
     {
       return;

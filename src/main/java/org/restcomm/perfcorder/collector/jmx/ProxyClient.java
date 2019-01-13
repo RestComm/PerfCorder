@@ -96,13 +96,14 @@ import sun.rmi.server.UnicastRef2;
 import sun.rmi.transport.LiveRef;
 
 public class ProxyClient {
+
     private Logger logger = org.apache.log4j.Logger.getLogger("perfcorder");
 
     private ConnectionState connectionState = ConnectionState.DISCONNECTED;
 
     private static Map<String, ProxyClient> cache
             = Collections.synchronizedMap(new HashMap<String, ProxyClient>());
-    
+
     private static ScheduledExecutorService scheduledService = Executors.newScheduledThreadPool(1);
 
     private volatile boolean isDead = true;
@@ -186,7 +187,7 @@ public class ProxyClient {
         }
         scheduledService.scheduleAtFixedRate(new ConnectionRecover(), recoveryRate, recoveryRate, TimeUnit.SECONDS);
     }
-    
+
     class ConnectionRecover implements Runnable {
 
         @Override
@@ -197,7 +198,7 @@ public class ProxyClient {
                 connect();
             }
         }
-        
+
     }
 
     private ProxyClient(LocalVirtualMachine lvm) {
@@ -633,12 +634,7 @@ public class ProxyClient {
      * Returns the list of domains in which any MBean is currently registered.
      */
     public String[] getDomains() throws IOException {
-        try {
             return server.getDomains();
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
     }
 
     /**
@@ -648,8 +644,6 @@ public class ProxyClient {
      *
      */
     public Map<ObjectName, MBeanInfo> getMBeans(String domain) throws IOException {
-
-        try {
             ObjectName name = null;
             if (domain != null) {
                 try {
@@ -680,29 +674,15 @@ public class ProxyClient {
                 }
             }
             return result;
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
     }
 
     /**
      * Returns a list of attributes of a named MBean.
      *
      */
-    public AttributeList getAttributes(ObjectName name, String[] attributes) throws IOException {
+    public AttributeList getAttributes(ObjectName name, String[] attributes) throws IOException, InstanceNotFoundException, ReflectionException {
         AttributeList list = null;
-        try {
-            list = server.getAttributes(name, attributes);
-        } catch (InstanceNotFoundException e) {
-            // TODO: A MBean may have been unregistered.
-            // need to set up listener to listen for MBeanServerNotification.
-        } catch (ReflectionException e) {
-            // TODO: should log the error
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
+        list = server.getAttributes(name, attributes);
         return list;
     }
 
@@ -712,19 +692,11 @@ public class ProxyClient {
     public void setAttribute(ObjectName name, Attribute attribute)
             throws InvalidAttributeValueException,
             MBeanException,
-            IOException {
-        try {
-            server.setAttribute(name, attribute);
-        } catch (InstanceNotFoundException e) {
-            // TODO: A MBean may have been unregistered.
-        } catch (AttributeNotFoundException e) {
-            assert (false);
-        } catch (ReflectionException e) {
-            // TODO: should log the error
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
+            IOException,
+            InstanceNotFoundException,
+            AttributeNotFoundException,
+            ReflectionException {
+        server.setAttribute(name, attribute);
     }
 
     /**
@@ -735,45 +707,26 @@ public class ProxyClient {
      */
     public Object invoke(ObjectName name, String operationName,
             Object[] params, String[] signature)
-            throws MBeanException, IOException {
+            throws MBeanException, IOException, InstanceNotFoundException, ReflectionException {
         Object result = null;
-        try {
-            result = server.invoke(name, operationName, params, signature);
-        } catch (InstanceNotFoundException e) {
-            // TODO: A MBean may have been unregistered.
-        } catch (ReflectionException e) {
-            // TODO: should log the error
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
+        result = server.invoke(name, operationName, params, signature);
         return result;
     }
 
     public synchronized ClassLoadingMXBean getClassLoadingMXBean() throws IOException {
         if (hasPlatformMXBeans && classLoadingMBean == null) {
-            try {
-                classLoadingMBean
-                        = newPlatformMXBeanProxy(server, CLASS_LOADING_MXBEAN_NAME,
-                                ClassLoadingMXBean.class);
-            } catch (IOException ex) {
-                disconnect();
-                throw ex;
-            }
+            classLoadingMBean
+                    = newPlatformMXBeanProxy(server, CLASS_LOADING_MXBEAN_NAME,
+                            ClassLoadingMXBean.class);
         }
         return classLoadingMBean;
     }
 
     public synchronized CompilationMXBean getCompilationMXBean() throws IOException {
         if (hasCompilationMXBean && compilationMBean == null) {
-            try {
-                compilationMBean
-                        = newPlatformMXBeanProxy(server, COMPILATION_MXBEAN_NAME,
-                                CompilationMXBean.class);
-            } catch (IOException ex) {
-                disconnect();
-                throw ex;
-            }
+            compilationMBean
+                    = newPlatformMXBeanProxy(server, COMPILATION_MXBEAN_NAME,
+                            CompilationMXBean.class);
         }
         return compilationMBean;
     }
@@ -782,32 +735,27 @@ public class ProxyClient {
 
         // TODO: How to deal with changes to the list??
         if (garbageCollectorMBeans == null) {
+            ObjectName gcName = null;
             try {
-                ObjectName gcName = null;
-                try {
-                    gcName = new ObjectName(GARBAGE_COLLECTOR_MXBEAN_DOMAIN_TYPE + ",*");
-                } catch (MalformedObjectNameException e) {
-                    // should not reach here
-                    assert (false);
-                }
-                Set mbeans = server.queryNames(gcName, null);
-                if (mbeans != null) {
-                    garbageCollectorMBeans = new ArrayList<GarbageCollectorMXBean>();
-                    Iterator iterator = mbeans.iterator();
-                    while (iterator.hasNext()) {
-                        ObjectName on = (ObjectName) iterator.next();
-                        String name = GARBAGE_COLLECTOR_MXBEAN_DOMAIN_TYPE
-                                + ",name=" + on.getKeyProperty("name");
+                gcName = new ObjectName(GARBAGE_COLLECTOR_MXBEAN_DOMAIN_TYPE + ",*");
+            } catch (MalformedObjectNameException e) {
+                // should not reach here
+                assert (false);
+            }
+            Set mbeans = server.queryNames(gcName, null);
+            if (mbeans != null) {
+                garbageCollectorMBeans = new ArrayList<GarbageCollectorMXBean>();
+                Iterator iterator = mbeans.iterator();
+                while (iterator.hasNext()) {
+                    ObjectName on = (ObjectName) iterator.next();
+                    String name = GARBAGE_COLLECTOR_MXBEAN_DOMAIN_TYPE
+                            + ",name=" + on.getKeyProperty("name");
 
-                        GarbageCollectorMXBean mBean
-                                = newPlatformMXBeanProxy(server, name,
-                                        GarbageCollectorMXBean.class);
-                        garbageCollectorMBeans.add(mBean);
-                    }
+                    GarbageCollectorMXBean mBean
+                            = newPlatformMXBeanProxy(server, name,
+                                    GarbageCollectorMXBean.class);
+                    garbageCollectorMBeans.add(mBean);
                 }
-            } catch (IOException ex) {
-                disconnect();
-                throw ex;
             }
         }
         return garbageCollectorMBeans;
@@ -815,95 +763,60 @@ public class ProxyClient {
 
     public synchronized MemoryMXBean getMemoryMXBean() throws IOException {
         if (hasPlatformMXBeans && memoryMBean == null) {
-            try {
-                memoryMBean
-                        = newPlatformMXBeanProxy(server, MEMORY_MXBEAN_NAME,
-                                MemoryMXBean.class);
-            } catch (IOException ex) {
-                disconnect();
-                throw ex;
-            }
+            memoryMBean
+                    = newPlatformMXBeanProxy(server, MEMORY_MXBEAN_NAME,
+                            MemoryMXBean.class);
         }
         return memoryMBean;
     }
 
     public synchronized RuntimeMXBean getRuntimeMXBean() throws IOException {
         if (hasPlatformMXBeans && runtimeMBean == null) {
-            try {
-                runtimeMBean
-                        = newPlatformMXBeanProxy(server, RUNTIME_MXBEAN_NAME,
-                                RuntimeMXBean.class);
-            } catch (IOException ex) {
-                disconnect();
-                throw ex;
-            }
+            runtimeMBean
+                    = newPlatformMXBeanProxy(server, RUNTIME_MXBEAN_NAME,
+                            RuntimeMXBean.class);
         }
         return runtimeMBean;
     }
 
     public synchronized ThreadMXBean getThreadMXBean() throws IOException {
         if (hasPlatformMXBeans && threadMBean == null) {
-            try {
-                threadMBean
-                        = newPlatformMXBeanProxy(server, THREAD_MXBEAN_NAME,
-                                ThreadMXBean.class);
-            } catch (IOException ex) {
-                disconnect();
-                throw ex;
-            }
+            threadMBean
+                    = newPlatformMXBeanProxy(server, THREAD_MXBEAN_NAME,
+                            ThreadMXBean.class);
         }
         return threadMBean;
     }
 
     public synchronized OperatingSystemMXBean getOperatingSystemMXBean() throws IOException {
         if (hasPlatformMXBeans && operatingSystemMBean == null) {
-            try {
-                operatingSystemMBean
-                        = newPlatformMXBeanProxy(server, OPERATING_SYSTEM_MXBEAN_NAME,
-                                OperatingSystemMXBean.class);
-            } catch (IOException ex) {
-                disconnect();
-                throw ex;
-            }
+            operatingSystemMBean
+                    = newPlatformMXBeanProxy(server, OPERATING_SYSTEM_MXBEAN_NAME,
+                            OperatingSystemMXBean.class);
         }
         return operatingSystemMBean;
     }
 
     public synchronized java.lang.management.OperatingSystemMXBean
-            getSunOperatingSystemMXBean() throws IOException {
-
-        try {
-            ObjectName on = new ObjectName(OPERATING_SYSTEM_MXBEAN_NAME);
-            if (sunOperatingSystemMXBean == null) {
-                if (server.isInstanceOf(on,
-                        "java.lang.management.OperatingSystemMXBean")) {
-                    sunOperatingSystemMXBean
-                            = newPlatformMXBeanProxy(server,
-                                    OPERATING_SYSTEM_MXBEAN_NAME,
-                                    //     com.sun.management.OperatingSystemMXBean.class);
-                                    java.lang.management.OperatingSystemMXBean.class);
-                }
+            getSunOperatingSystemMXBean() throws IOException, MalformedObjectNameException, InstanceNotFoundException {
+        ObjectName on = new ObjectName(OPERATING_SYSTEM_MXBEAN_NAME);
+        if (sunOperatingSystemMXBean == null) {
+            if (server.isInstanceOf(on,
+                    "java.lang.management.OperatingSystemMXBean")) {
+                sunOperatingSystemMXBean
+                        = newPlatformMXBeanProxy(server,
+                                OPERATING_SYSTEM_MXBEAN_NAME,
+                                //     com.sun.management.OperatingSystemMXBean.class);
+                                java.lang.management.OperatingSystemMXBean.class);
             }
-        } catch (InstanceNotFoundException e) {
-            return null;
-        } catch (MalformedObjectNameException e) {
-            return null; // should never reach here
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
         }
         return sunOperatingSystemMXBean;
     }
 
     public <T> T getMXBean(ObjectName objName, Class<T> interfaceClass) throws IOException {
-        try {
             return newPlatformMXBeanProxy(server,
                     objName.toString(),
                     interfaceClass);
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
 
     }
 
@@ -912,17 +825,12 @@ public class ProxyClient {
     // Otherwise, it finds deadlocks involving both monitors and
     // the concurrent locks.
     public long[] findDeadlockedThreads() throws IOException {
-        try {
             ThreadMXBean tm = getThreadMXBean();
             if (supportsLockUsage && tm.isSynchronizerUsageSupported()) {
                 return tm.findDeadlockedThreads();
             } else {
                 return tm.findMonitorDeadlockedThreads();
             }
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
     }
 
     public synchronized void markAsDead() {
@@ -950,12 +858,7 @@ public class ProxyClient {
     }
 
     public boolean isRegistered(ObjectName name) throws IOException {
-        try {
             return server.isRegistered(name);
-        } catch (IOException ex) {
-            disconnect();
-            throw ex;
-        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

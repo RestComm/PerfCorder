@@ -26,9 +26,9 @@ import org.restcomm.perfcorder.collector.jmx.ProxyClient;
  *
  */
 public class GCPausePrinter {
-
+    
     private static Logger logger = org.apache.log4j.Logger.getLogger(GCPausePrinter.class.getName());
-
+    
     private static OptionParser createOptionParser() {
         OptionParser parser = new OptionParser();
         parser.acceptsAll(Arrays.asList(new String[]{"help", "?", "h"}),
@@ -44,13 +44,13 @@ public class GCPausePrinter {
         parser
                 .acceptsAll(Arrays.asList(new String[]{"p", "pid"}),
                         "PID to connect to").withRequiredArg().ofType(Integer.class);
-
+        
         return parser;
     }
 
     //using this as opposed to byte version to have JConsole compatible data
     private static final int BYTES_PER_MEGA = 1000000;
-
+    
     static class GCListener implements NotificationListener {
         //implement the notifier callback handler
 
@@ -86,7 +86,7 @@ public class GCPausePrinter {
                 //convert mem from bytes into M
                 memUsedBefore = memUsedBefore / BYTES_PER_MEGA;
                 memUsedAfter = memUsedAfter / BYTES_PER_MEGA;
-
+                
                 String format = String.format("%d,%d,%d,%s,%d,%s,%s,%d, %d", duration,
                         memUsedBefore,
                         memUsedAfter,
@@ -100,22 +100,22 @@ public class GCPausePrinter {
             }
         }
     }
-
+    
     private static void printHeaderLine() {
         System.out.println("Dur,MemBefore,MemAfter,gcType,gcId,gcName,gcCause,startTime, endTime");
     }
-
+    
     private static volatile boolean shutdown = false;
-
+    
     public static void main(String[] args) throws Exception {
         Locale.setDefault(Locale.US);
         org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
         logger.setLevel(org.apache.log4j.Level.INFO);
         logger = Logger.getLogger("perfcorder");
-
+        
         OptionParser parser = createOptionParser();
         OptionSet a = parser.parse(args);
-
+        
         if (a.has("help")) {
             System.out.println("perfcorder - java monitoring for the command-line");
             System.out.println("Usage: perfcorder.sh [PID]");
@@ -123,33 +123,33 @@ public class GCPausePrinter {
             parser.printHelpOn(System.out);
             System.exit(0);
         }
-
+        
         int delay = 1;
-
+        
         Integer iterations = Integer.MAX_VALUE;
-
+        
         if (a.hasArgument("delay")) {
             delay = (Integer) (a.valueOf("delay"));
             if (delay < 1) {
                 throw new IllegalArgumentException("Delay cannot be set below 1");
             }
         }
-
+        
         if (a.hasArgument("n")) {
             iterations = (Integer) a.valueOf("n");
         }
-
+        
         String targetJVM = null;
 
         //to support PID as non option argument
         if (a.nonOptionArguments().size() > 0) {
             targetJVM = (String) a.nonOptionArguments().get(0);
         }
-
+        
         if (a.hasArgument("pid")) {
-            targetJVM =  (String) a.valueOf("pid");
+            targetJVM = (String) a.valueOf("pid");
         }
-
+        
         VMInfo vmInfo_ = null;
         try {
             Integer pid = Integer.valueOf(targetJVM);
@@ -163,20 +163,26 @@ public class GCPausePrinter {
             proxyClient.connect();
             vmInfo_ = new VMInfo(proxyClient, null, null);
         }
-
-
-        Collection<GarbageCollectorMXBean> gcbeans = vmInfo_.getGcMXBeans();
-        if (gcbeans == null) {
-            System.out.println("No gc mbeans located");
-            System.exit(0);
-        }
+        
         printHeaderLine();
-        //Install a notifcation handler for each bean
-        for (GarbageCollectorMXBean gcbean : gcbeans) {
-            NotificationEmitter emitter = (NotificationEmitter) gcbean;
-            NotificationListener listener = new GCListener();
-            emitter.addNotificationListener(listener, null, null);
-        }
+                    
+        StateListener sListener = new StateListener() {
+            public void stateChanged(VMInfo vmInfo_, VMInfoState newState) {
+                if (newState.equals(VMInfoState.ATTACHED)) {
+                    Collection<GarbageCollectorMXBean> gcbeans = vmInfo_.getGcMXBeans();
+                    logger.info("Registering GC notifications again");
+                    if (gcbeans != null) {
+                        //Install a notifcation handler for each bean
+                        for (GarbageCollectorMXBean gcbean : gcbeans) {
+                            NotificationEmitter emitter = (NotificationEmitter) gcbean;
+                            NotificationListener listener = new GCListener();
+                            emitter.addNotificationListener(listener, null, null);
+                        }
+                    }
+                }
+            }
+        };
+        vmInfo_.addListener(sListener);
 
         //register a shutdown hook so process is stopped gracefully
         Runtime.getRuntime().addShutdownHook(new Thread("StopPrinterHook") {
@@ -185,15 +191,16 @@ public class GCPausePrinter {
                 shutdown = true;
             }
         });
-
+        
         int currentIt = 0;
         while (!shutdown && currentIt < iterations) {
             Thread.sleep(delay * 1000);
+            vmInfo_.update();
             currentIt = currentIt + 1;
         }
     }
-
+    
     public GCPausePrinter() {
     }
-
+    
 }

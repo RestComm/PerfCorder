@@ -11,6 +11,7 @@ import joptsimple.OptionSet;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.apache.log4j.Priority;
 
 /**
  * PerfCorder collects info about an external process through JMX beans
@@ -53,7 +54,6 @@ public class ThreadStatApp {
         org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
         logger = org.apache.log4j.Logger.getLogger("perfcorder");
         logger.setLevel(org.apache.log4j.Level.INFO);
-
 
         OptionParser parser = createOptionParser();
         OptionSet a = parser.parse(args);
@@ -109,7 +109,6 @@ public class ThreadStatApp {
             vmDetailStatView = new ThreadStatView(targetJVM, null, prefix);
         }
 
-
         System.out.println(vmDetailStatView.printHeader());
         collector.run(vmDetailStatView);
     }
@@ -128,8 +127,12 @@ public class ThreadStatApp {
                     new FileOutputStream(FileDescriptor.out)), false));
             int iterations = 0;
             while (!view.shouldExit()) {
-                System.out.println(view.printView());
-                System.out.flush();
+                try {
+                    System.out.println(view.printView());
+                    System.out.flush();
+                } catch (Exception t) {
+                    logger.log(Priority.WARN, "Failed printing view", t);
+                }
                 iterations++;
                 if (iterations >= maxIterations_ && maxIterations_ > 0) {
                     break;

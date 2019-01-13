@@ -14,6 +14,7 @@ import joptsimple.OptionSet;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.apache.log4j.Priority;
 
 /**
  * PerfCorder collects info about an external process through JMX beans
@@ -46,7 +47,6 @@ public class JMX2CSVApp {
         parser
                 .acceptsAll(Arrays.asList(new String[]{"p", "pid"}),
                         "PID to connect to").withOptionalArg().ofType(Integer.class);
-      
 
         return parser;
     }
@@ -55,7 +55,7 @@ public class JMX2CSVApp {
         Locale.setDefault(Locale.US);
         Locale.setDefault(Locale.US);
         org.apache.log4j.Logger.getRootLogger().addAppender(new ConsoleAppender(new PatternLayout("%c %-5p %m%n"), "System.err"));
-        logger = org.apache.log4j.Logger.getLogger("perfcorder");        
+        logger = org.apache.log4j.Logger.getLogger("perfcorder");
         logger.setLevel(org.apache.log4j.Level.INFO);
 
         OptionParser parser = createOptionParser();
@@ -93,20 +93,20 @@ public class JMX2CSVApp {
 
         InputStream resourceAsStream = new FileInputStream((String) a.valueOf("meta"));
         JAXBContext targetsContext = JAXBContext.newInstance(JMX2CSVDescriptor.class);
-        JMX2CSVDescriptor descriptor = (JMX2CSVDescriptor) targetsContext.createUnmarshaller().unmarshal(resourceAsStream);        
+        JMX2CSVDescriptor descriptor = (JMX2CSVDescriptor) targetsContext.createUnmarshaller().unmarshal(resourceAsStream);
 
         JMX2CSVView vmDetailStatView = null;
         if (a.hasArgument("pid")) {
-            pid =(Integer) a.valueOf("pid");
+            pid = (Integer) a.valueOf("pid");
             vmDetailStatView = new JMX2CSVView(pid, descriptor);
         } else {
             vmDetailStatView = new JMX2CSVView(0, descriptor);
         }
-        
+
         JMX2CSVApp collector = new JMX2CSVApp();
         collector.setDelay(delay);
         collector.setMaxIterations(iterations);
-        
+
         System.out.println(vmDetailStatView.printHeader());
         collector.run(vmDetailStatView);
     }
@@ -125,8 +125,12 @@ public class JMX2CSVApp {
                     new FileOutputStream(FileDescriptor.out)), false));
             int iterations = 0;
             while (!view.shouldExit()) {
-                System.out.println(view.printView());
-                System.out.flush();
+                try {
+                    System.out.println(view.printView());
+                    System.out.flush();
+                } catch (Exception t) {
+                    logger.log(Priority.WARN, "Failed printing view", t);
+                }
                 iterations++;
                 if (iterations >= maxIterations_ && maxIterations_ > 0) {
                     break;

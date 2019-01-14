@@ -35,16 +35,6 @@ function prepareCollectionOutputDirs {
     mkdir -p ${JAVA_COLLECTION_DIR}
 }
 
-function collectJavaProcessInfo {
-    echo Collect Java Process Info
-
-    $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.VMInfoPrinter ${JAVA_PID} > ${META_COLLECTION_DIR}/jvmdump.txt
-
-    echo $JAVA_PID > ${META_COLLECTION_DIR}/java.pid
-
-    curl http://169.254.169.254/latest/dynamic/instance-identity/document > ${META_COLLECTION_DIR}/ec2instance.doc
-}
-
 function startJavaMeasCollection {
     echo Starting Java Collection over process ${JAVA_PID}
 
@@ -89,9 +79,6 @@ function startCollection {
     killBackgroundProcesses
     cleanCollection
     prepareCollectionOutputDirs
-    printCollectionSettings
-    collectConfUsed
-    collectJavaProcessInfo
 
     #invoke external before starting actual collection
     invokeExternalHook
@@ -119,11 +106,6 @@ function waitForPID {
     fi
 }
 
-function printCollectionSettings {
-    echo "Printing PerfCorder settings"
-    echo "MEAS_INTERVAL_SECONDS,CONF_DIR,OUTPUT_DIR,PATTERN_MODE,JAVA_PID" > ${META_COLLECTION_DIR}/perfcorder_settings.csv
-    echo "$MEAS_INTERVAL_SECONDS,$CONF_DIR,$OUTPUT_DIR,$PATTERN_MODE,$JAVA_PID" >> ${META_COLLECTION_DIR}/perfcorder_settings.csv
-}
 
 function takeSnapshot {
     endTimestamp=$(date +%s)

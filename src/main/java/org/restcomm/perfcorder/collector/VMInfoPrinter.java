@@ -65,8 +65,8 @@ public class VMInfoPrinter {
             vmInfo_ = VMInfo.processNewVM(localVirtualMachine, pid);
         } catch (Exception e) {
             ProxyClient proxyClient = ProxyClient.getProxyClient(targetJVM,
-                    "",
-                    "");
+                    System.getenv("PERF_USER"),
+                    System.getenv("PERF_PSW"));
             proxyClient.connect();
             vmInfo_ = new VMInfo(proxyClient, null, null);
         }

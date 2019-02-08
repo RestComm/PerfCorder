@@ -43,8 +43,8 @@ public class VMDetailStatView extends AbstractConsoleView {
     public VMDetailStatView(String url, Integer width) throws Exception {
         super(width);
         ProxyClient proxyClient = ProxyClient.getProxyClient(url,
-                "",
-                "");
+                    System.getenv("PERF_USER"),
+                    System.getenv("PERF_PSW"));
         proxyClient.connect();
 
         vmInfo_ = new VMInfo(proxyClient, null, null);

@@ -49,8 +49,8 @@ public class ThreadStatView extends AbstractConsoleView {
         super(width);
         this.prefix = prefix;
         ProxyClient proxyClient = ProxyClient.getProxyClient(url,
-                "",
-                "");
+                    System.getenv("PERF_USER"),
+                    System.getenv("PERF_PSW"));
         proxyClient.connect();
 
         vmInfo_ = new VMInfo(proxyClient, null, prefix);

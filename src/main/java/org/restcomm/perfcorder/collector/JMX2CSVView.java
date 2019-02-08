@@ -30,8 +30,8 @@ public class JMX2CSVView extends AbstractConsoleView {
             proxyClient = ProxyClient.getProxyClient(localVirtualMachine);
             proxyClient.connect();
         } else {
-            proxyClient = ProxyClient.getProxyClient(descriptor.getUrl(), 
-                    descriptor.getUserName(), 
+            proxyClient = ProxyClient.getProxyClient(descriptor.getUrl(),
+                    descriptor.getUserName(),
                     descriptor.getPassword());
             proxyClient.connect();
         }
@@ -45,7 +45,8 @@ public class JMX2CSVView extends AbstractConsoleView {
 
     public JMX2CSVView(String url, JMX2CSVDescriptor descriptor) throws Exception {
         super(null);
-        proxyClient = ProxyClient.getProxyClient(url, null, null);
+        proxyClient = ProxyClient.getProxyClient(url, System.getenv("PERF_USER"),
+                System.getenv("PERF_PSW"));
         proxyClient.connect();
         oName = new ObjectName(descriptor.getObjectName());
         mBeanInfo = proxyClient.getMBeanServerConnection().getMBeanInfo(oName);

@@ -21,7 +21,14 @@ public class GCPauseViewTest {
         VMInfo vmInfo = view.getVmInfo();
         //force a gc event
         vmInfo.getMemoryMXBean().gc();
+        //wait for notification
+        for (int i = 0; i < 10; i++) {
+            if (view.getInfo() != null) {
+                break;
+            }
+            Thread.sleep(100);
+        }
         String printView = view.printView();
-        Assert.assertNotNull(printView);
+        Assert.assertNotSame("", printView);
     }
 }

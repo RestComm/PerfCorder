@@ -128,17 +128,20 @@ public class GCPauseView extends AbstractConsoleView {
 
     @Override
     public String printView() throws Exception {
-        String format = String.format("%d,%d,%d,%s,%d,%s,%s,%d,%d,%d", duration,
-                memUsedBefore,
-                memUsedAfter,
-                gctype,
-                info.getGcInfo().getId(),
-                info.getGcName(),
-                info.getGcCause(),
-                info.getGcInfo().getStartTime(),
-                info.getGcInfo().getEndTime(),
-                oldMemUsedAfter);
-        return format;
+        String line = "";
+        if (info != null) {
+            line = String.format("%d,%d,%d,%s,%d,%s,%s,%d,%d,%d", duration,
+                    memUsedBefore,
+                    memUsedAfter,
+                    gctype,
+                    info.getGcInfo().getId(),
+                    info.getGcName(),
+                    info.getGcCause(),
+                    info.getGcInfo().getStartTime(),
+                    info.getGcInfo().getEndTime(),
+                    oldMemUsedAfter);
+        }
+        return line;
     }
 
     @Override
@@ -148,6 +151,10 @@ public class GCPauseView extends AbstractConsoleView {
 
     public VMInfo getVmInfo() {
         return vmInfo;
+    }
+
+    public GarbageCollectionNotificationInfo getInfo() {
+        return info;
     }
 
 }

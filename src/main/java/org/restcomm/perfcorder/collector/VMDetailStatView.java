@@ -20,6 +20,7 @@
  */
 package org.restcomm.perfcorder.collector;
 
+import org.apache.log4j.Logger;
 import org.restcomm.perfcorder.collector.jmx.LocalVirtualMachine;
 import org.restcomm.perfcorder.collector.jmx.ProxyClient;
 
@@ -32,6 +33,7 @@ import org.restcomm.perfcorder.collector.jmx.ProxyClient;
  */
 public class VMDetailStatView extends AbstractConsoleView {
 
+    private static Logger logger = org.apache.log4j.Logger.getLogger(VMDetailStatView.class.getName());
     private VMInfo vmInfo_;
 
     public VMDetailStatView(int vmid, Integer width) throws Exception {
@@ -40,11 +42,12 @@ public class VMDetailStatView extends AbstractConsoleView {
                 .getLocalVirtualMachine(vmid);
         vmInfo_ = VMInfo.processNewVM(localVirtualMachine, vmid);
     }
+
     public VMDetailStatView(String url, Integer width) throws Exception {
         super(width);
         ProxyClient proxyClient = ProxyClient.getProxyClient(url,
-                    System.getenv("PERF_USER"),
-                    System.getenv("PERF_PSW"));
+                System.getenv("PERF_USER"),
+                System.getenv("PERF_PSW"));
         proxyClient.connect();
 
         vmInfo_ = new VMInfo(proxyClient, null, null);
@@ -66,12 +69,13 @@ public class VMDetailStatView extends AbstractConsoleView {
 
         return String
                 .format(
-                        "%s,%.2f,%.2f,%d,%s",
+                        "%s,%.2f,%.2f,%d,%s,%s",
                         toMB(vmInfo.getHeapUsed()),
                         vmInfo.getCpuLoad() * 100,
                         vmInfo.getGcLoad() * 100,
                         vmInfo.getThreadCount(),
-                        deadlockState);
+                        deadlockState,
+                        toMB(vmInfo.getOldPoolMXBean().getUsage().getUsed()));
 
     }
 
@@ -87,6 +91,6 @@ public class VMDetailStatView extends AbstractConsoleView {
 
     @Override
     public String printHeader() throws Exception {
-        return ("mem,cpu,gcCpu,threads,deadLock");
+        return ("mem,cpu,gcCpu,threads,deadLock,oldMem");
     }
 }

@@ -28,6 +28,7 @@ import java.lang.management.MemoryUsage;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
 import java.lang.management.ThreadMXBean;
+import java.lang.management.MemoryPoolMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.ConnectException;
 import java.util.Collection;
@@ -109,6 +110,7 @@ public class VMInfo {
     private double gcLoad = 0.0;
 
     private MemoryMXBean memoryMXBean;
+    private MemoryPoolMXBean oldPoolMXBean;
 
     private MemoryUsage heapMemoryUsage;
 
@@ -298,7 +300,7 @@ public class VMInfo {
 
     private void setState(VMInfoState newState) {
         if (state_ != newState) {
-            
+
             state_ = newState;
             fireStateEvent();
         }
@@ -328,6 +330,7 @@ public class VMInfo {
             gcMXBeans = proxyClient.getGarbageCollectorMXBeans();
             classLoadingMXBean_ = proxyClient.getClassLoadingMXBean();
             memoryMXBean = proxyClient.getMemoryMXBean();
+            oldPoolMXBean = proxyClient.getOldPoolMXBean();
             heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
             nonHeapMemoryUsage = memoryMXBean.getNonHeapMemoryUsage();
             threadMXBean = proxyClient.getThreadMXBean();
@@ -342,7 +345,6 @@ public class VMInfo {
             deadlocksDetected_ = threadMXBean.findDeadlockedThreads() != null
                     || threadMXBean.findMonitorDeadlockedThreads() != null;
 
-            
         } catch (Exception e) {
             Logger.getLogger("jvmtop").log(Level.WARNING, "error during update", e);
             setState(VMInfoState.DETACHED);
@@ -505,6 +507,10 @@ public class VMInfo {
 
     public MemoryMXBean getMemoryMXBean() {
         return memoryMXBean;
+    }
+
+    public MemoryPoolMXBean getOldPoolMXBean() {
+        return oldPoolMXBean;
     }
 
     public ThreadMXBean getThreadMXBean() {

@@ -91,7 +91,7 @@ import javax.management.remote.rmi.RMIConnector;
 import javax.management.remote.rmi.RMIServer;
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 import org.apache.log4j.Logger;
-
+import java.lang.management.MemoryPoolMXBean;
 import sun.rmi.server.UnicastRef2;
 import sun.rmi.transport.LiveRef;
 
@@ -141,6 +141,7 @@ public class ProxyClient {
     private ClassLoadingMXBean classLoadingMBean = null;
     private CompilationMXBean compilationMBean = null;
     private MemoryMXBean memoryMBean = null;
+    private MemoryPoolMXBean oldPoolMBean = null;
     private OperatingSystemMXBean operatingSystemMBean = null;
     private RuntimeMXBean runtimeMBean = null;
     private ThreadMXBean threadMBean = null;
@@ -634,7 +635,7 @@ public class ProxyClient {
      * Returns the list of domains in which any MBean is currently registered.
      */
     public String[] getDomains() throws IOException {
-            return server.getDomains();
+        return server.getDomains();
     }
 
     /**
@@ -644,36 +645,36 @@ public class ProxyClient {
      *
      */
     public Map<ObjectName, MBeanInfo> getMBeans(String domain) throws IOException {
-            ObjectName name = null;
-            if (domain != null) {
+        ObjectName name = null;
+        if (domain != null) {
+            try {
+                name = new ObjectName(domain + ":*");
+            } catch (MalformedObjectNameException e) {
+                // should not reach here
+                assert (false);
+            }
+        }
+        Set mbeans = server.queryNames(name, null);
+        Map<ObjectName, MBeanInfo> result
+                = new HashMap<ObjectName, MBeanInfo>(mbeans.size());
+        Iterator iterator = mbeans.iterator();
+        while (iterator.hasNext()) {
+            Object object = iterator.next();
+            if (object instanceof ObjectName) {
+                ObjectName o = (ObjectName) object;
                 try {
-                    name = new ObjectName(domain + ":*");
-                } catch (MalformedObjectNameException e) {
-                    // should not reach here
-                    assert (false);
+                    MBeanInfo info = server.getMBeanInfo(o);
+                    result.put(o, info);
+                } catch (IntrospectionException e) {
+                    // TODO: should log the error
+                } catch (InstanceNotFoundException e) {
+                    // TODO: should log the error
+                } catch (ReflectionException e) {
+                    // TODO: should log the error
                 }
             }
-            Set mbeans = server.queryNames(name, null);
-            Map<ObjectName, MBeanInfo> result
-                    = new HashMap<ObjectName, MBeanInfo>(mbeans.size());
-            Iterator iterator = mbeans.iterator();
-            while (iterator.hasNext()) {
-                Object object = iterator.next();
-                if (object instanceof ObjectName) {
-                    ObjectName o = (ObjectName) object;
-                    try {
-                        MBeanInfo info = server.getMBeanInfo(o);
-                        result.put(o, info);
-                    } catch (IntrospectionException e) {
-                        // TODO: should log the error
-                    } catch (InstanceNotFoundException e) {
-                        // TODO: should log the error
-                    } catch (ReflectionException e) {
-                        // TODO: should log the error
-                    }
-                }
-            }
-            return result;
+        }
+        return result;
     }
 
     /**
@@ -770,6 +771,15 @@ public class ProxyClient {
         return memoryMBean;
     }
 
+    public synchronized MemoryPoolMXBean getOldPoolMXBean() throws IOException {
+        if (hasPlatformMXBeans && oldPoolMBean == null) {
+            oldPoolMBean
+                    = newPlatformMXBeanProxy(server, MEMORY_POOL_MXBEAN_DOMAIN_TYPE + ",name=PS Old Gen",
+                            MemoryPoolMXBean.class);
+        }
+        return oldPoolMBean;
+    }
+
     public synchronized RuntimeMXBean getRuntimeMXBean() throws IOException {
         if (hasPlatformMXBeans && runtimeMBean == null) {
             runtimeMBean
@@ -814,9 +824,9 @@ public class ProxyClient {
     }
 
     public <T> T getMXBean(ObjectName objName, Class<T> interfaceClass) throws IOException {
-            return newPlatformMXBeanProxy(server,
-                    objName.toString(),
-                    interfaceClass);
+        return newPlatformMXBeanProxy(server,
+                objName.toString(),
+                interfaceClass);
 
     }
 
@@ -825,12 +835,12 @@ public class ProxyClient {
     // Otherwise, it finds deadlocks involving both monitors and
     // the concurrent locks.
     public long[] findDeadlockedThreads() throws IOException {
-            ThreadMXBean tm = getThreadMXBean();
-            if (supportsLockUsage && tm.isSynchronizerUsageSupported()) {
-                return tm.findDeadlockedThreads();
-            } else {
-                return tm.findMonitorDeadlockedThreads();
-            }
+        ThreadMXBean tm = getThreadMXBean();
+        if (supportsLockUsage && tm.isSynchronizerUsageSupported()) {
+            return tm.findDeadlockedThreads();
+        } else {
+            return tm.findMonitorDeadlockedThreads();
+        }
     }
 
     public synchronized void markAsDead() {
@@ -858,7 +868,7 @@ public class ProxyClient {
     }
 
     public boolean isRegistered(ObjectName name) throws IOException {
-            return server.isRegistered(name);
+        return server.isRegistered(name);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

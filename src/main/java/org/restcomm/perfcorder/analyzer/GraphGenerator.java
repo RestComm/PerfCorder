@@ -25,6 +25,8 @@ public class GraphGenerator {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PerfCorderAnalyzeApp.class.getName());
 
+    public static String GRAPHS_LOC = "./graphs";
+
     public static String generateGraph(CSVColumnMeasTarget target, List<String[]> readAll, PerfCorderAnalysis analysis) throws IOException {
         TimeSeries tSeries = new TimeSeries(target.getLabel());
         Second current = new Second(new Date(analysis.getStartTimeStamp()));
@@ -57,7 +59,6 @@ public class GraphGenerator {
                     current = (Second) current.next();
                 }
 
-
                 /**
                  * record start and end of stats markers
                  */
@@ -82,11 +83,11 @@ public class GraphGenerator {
         BufferedImage createBufferedImage = chart.createBufferedImage(320, 240);
         byte[] graph = ChartUtilities.encodeAsPNG(createBufferedImage, false, 9);
         UUID randomUUID = UUID.randomUUID();
-        File directory = new File("./graphs");
-        if (! directory.exists()){
+        File directory = new File(GRAPHS_LOC);
+        if (!directory.exists()) {
             directory.mkdir();
         }
-        String path = directory.getPath()+  File.separator + target.getLabel() + randomUUID + ".png";
+        String path = directory.getPath() + File.separator + target.getLabel() + randomUUID + ".png";
         FileOutputStream stream = new FileOutputStream(path);
         try {
             stream.write(graph);
@@ -97,7 +98,7 @@ public class GraphGenerator {
         return path;
     }
 
-    private static void addMarkers(JFreeChart chart, Second statsStartSecond,Second statsEndSecond) {
+    private static void addMarkers(JFreeChart chart, Second statsStartSecond, Second statsEndSecond) {
         XYPlot plot = chart.getXYPlot();
         if (statsStartSecond != null) {
             //final Second statsStartSecond = new Second(new Date(analysis.getStartTimeStamp() + statsStart));

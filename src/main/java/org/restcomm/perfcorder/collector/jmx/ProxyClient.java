@@ -773,9 +773,15 @@ public class ProxyClient {
 
     public synchronized MemoryPoolMXBean getOldPoolMXBean() throws IOException {
         if (hasPlatformMXBeans && oldPoolMBean == null) {
-            oldPoolMBean
-                    = newPlatformMXBeanProxy(server, MEMORY_POOL_MXBEAN_DOMAIN_TYPE + ",name=PS Old Gen",
-                            MemoryPoolMXBean.class);
+            try {
+                oldPoolMBean
+                        = newPlatformMXBeanProxy(server, MEMORY_POOL_MXBEAN_DOMAIN_TYPE + ",name=PS Old Gen",
+                                MemoryPoolMXBean.class);
+            } catch (Exception e) {
+                oldPoolMBean
+                        = newPlatformMXBeanProxy(server, MEMORY_POOL_MXBEAN_DOMAIN_TYPE + ",name=G1 Old Gen",
+                                MemoryPoolMXBean.class);
+            }
         }
         return oldPoolMBean;
     }

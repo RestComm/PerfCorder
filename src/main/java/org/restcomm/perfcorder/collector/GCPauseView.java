@@ -62,7 +62,7 @@ public class GCPauseView extends AbstractConsoleView {
                     MemoryUsage before = membefore.get(name);
                     memUsedBefore = memUsedBefore + before.getUsed();
                     memUsedAfter = memUsedAfter + memdetail.getUsed();
-                    if (name.equals("PS Old Gen")) {
+                    if (name.endsWith("Old Gen")) {
                         oldMemUsedAfter = memdetail.getUsed();
                     }
                 }

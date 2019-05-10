@@ -138,19 +138,60 @@
     </build>
     <!-- repositories -->
     <repositories>
+
         <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Maven Repository Group</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-            <layout>default</layout>
+            <id>cxs-group</id>
+            <url>http://cxsnexus.restcomm.com/nexus/content/repositories/cxs-group/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
+        
+        <repository>
+            <id>cxs-product-snapshots</id>
+            <url>http://cxsnexus.restcomm.com/nexus/content/repositories/product-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>        
     </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>cxs-group-plugin</id>
+            <url>http://cxs.restcomm.com:8055/repository/cxs-group/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    
+    <distributionManagement>
+        <repository>
+            <id>cxs-prod-releases</id>
+            <name>cxs-prod-releases</name>
+            <url>http://cxsnexus.restcomm.com/nexus/content/repositories/product-releases/</url>
+            
+        </repository>
+        <snapshotRepository>
+            <id>cxs-prod-snapshots</id>
+            <name>Restcomm Snapshots Repository</name>
+            <url>http://cxsnexus.restcomm.com/nexus/content/repositories/product-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>      
 </project>

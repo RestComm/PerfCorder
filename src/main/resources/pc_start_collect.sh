@@ -41,6 +41,7 @@ function prepareCollectionOutputDirs {
     mkdir -p ${SIP_COLLECTION_DIR}
     mkdir -p ${HTTP_COLLECTION_DIR}
     mkdir -p ${SMPP_COLLECTION_DIR}
+    mkdir -p ${XMPP_COLLECTION_DIR}
     mkdir -p ${DIAMETER_COLLECTION_DIR}
     mkdir -p ${MAP_COLLECTION_DIR}
     mkdir -p ${TCAP_COLLECTION_DIR}
@@ -57,8 +58,8 @@ function collectConfUsed {
 function collectJavaProcessInfo {
     echo Collect Java Process Info
 
-    set > ${META_COLLECTION_DIR}/envVars.txt  
-   
+    set > ${META_COLLECTION_DIR}/envVars.txt
+
     ps -f -p ${JAVA_PID} >${META_COLLECTION_DIR}\jvmoptions.txt
 
     $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.VMInfoPrinter ${JAVA_PID} > ${META_COLLECTION_DIR}/jvmdump.txt
@@ -107,7 +108,7 @@ function startJavaMeasCollection {
     echo $! > ${DATA_COLLECTION_DIR}/threads.pid
     if [[ -z ${THREAD_PREFIX_FILTER} ]]; then
         echo Thread prefix disabled
-    else 
+    else
         echo Thread prefix enabled
         $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH org.restcomm.perfcorder.collector.ThreadStatApp -d ${MEAS_INTERVAL_SECONDS} -f ${THREAD_PREFIX_FILTER} ${JAVA_PID} > ${JAVA_COLLECTION_DIR}/prefixThreads.csv &
         echo $! > ${DATA_COLLECTION_DIR}/prefixThreads.pid
@@ -117,7 +118,7 @@ function startJavaMeasCollection {
 function startNetworkCapture {
     if [[ -z ${PC_NETWORK_CAPTURE} ]]; then
         echo Network capture disabled
-    else 
+    else
         echo Network capture enabled
         #allow tshark to save in the file run by root
         touch ${SYS_COLLECTION_DIR}/net.pcap
@@ -133,7 +134,7 @@ function invokeExternalHook {
     else
         echo "Invoke External Hook at:$INVOKE_EXTERNAL_HOOK"
         bash $INVOKE_EXTERNAL_HOOK
-    fi  
+    fi
 }
 
 function startCollection {
@@ -187,7 +188,7 @@ function takeSnapshot {
 
     echo "Discarding old snapshot"
     find /path/to/your/dir/tree -atime +XXX -exec rm {}\;
- 
+
 
 
     echo "Resuming Collection"
@@ -285,7 +286,7 @@ fi
 
 if [[ -z ${PERFCORDER_HOME} ]]; then
     DIR=$( cd $(dirname $0) ; pwd -P )
-else 
+else
     DIR=$PERFCORDER_HOME
 fi
 
@@ -302,10 +303,11 @@ SYS_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/sys
 SIP_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/sip
 HTTP_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/http
 SMPP_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/smpp
+XMPP_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/xmpp
 MAP_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/map
 TCAP_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/tcap
 DIAMETER_COLLECTION_DIR=${PERIODIC_COLLECTION_DIR}/diameter
-    
+
 ANALYSIS_GENERATION_DIR=${OUTPUT_DIR}/analysis
 GRAPHS_DIR=${ANALYSIS_GENERATION_DIR}/graphs
 STATS_DIR=${ANALYSIS_GENERATION_DIR}/stats

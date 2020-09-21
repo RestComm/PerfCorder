@@ -10,10 +10,10 @@ def tag() {
     echo "Set release version to ${releaseVersion}"
 
     withCredentials([usernamePassword(credentialsId: 'c2cce724-a831-4ec8-82b1-73d28d1c367a', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-        sh('git fetch https://${GIT_USERNAME}:${GIT_PASSWORD}@bitbucket.org/telestax/retcomm-jmx-monitoring.git')
+        sh('git fetch https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/PerfCorder.git')
         sh("git commit -a -m \"New release candidate ${releaseVersion}\"")
         sh("git tag ${releaseVersion}")
-        sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@bitbucket.org/telestax/retcomm-jmx-monitoring.git --tags')
+        sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/PerfCorder.git --tags')
     }
 }
 
@@ -21,10 +21,10 @@ def version() {
     def newVersion = "${MAJOR_VERSION_NUMBER}"
     if (BRANCH_NAME != "master") {
         newVersion = "${MAJOR_VERSION_NUMBER}-${BRANCH_NAME}"
-    }   
+    }
     currentBuild.displayName = "#${BUILD_NUMBER}-${newVersion}"
     sh "mvn -B versions:set -DnewVersion=${newVersion} versions:commit"
-    
+
 }
 
 def isSnapshot() {
@@ -32,12 +32,12 @@ def isSnapshot() {
 }
 
 node("cxs-slave-master") {
-    properties([[$class: 'DatadogJobProperty', tagFile: '', tagProperties: ''], 
+    properties([[$class: 'DatadogJobProperty', tagFile: '', tagProperties: ''],
         parameters([
             string(defaultValue: '1.1.0-SNAPSHOT', description: 'Snapshots will skip Tag stage', name: 'MAJOR_VERSION_NUMBER', trim: false),
             string(defaultValue: 'regular', description: 'docs,release,docker', name: 'MVN_PROFILES', trim: false)
         ])
-    ]) 
+    ])
 
     if (isSnapshot()) {
         echo "SNAPSHOT detected, skip Tag stage"

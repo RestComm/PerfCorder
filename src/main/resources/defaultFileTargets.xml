@@ -453,7 +453,7 @@
             <column>-1</column>
         </csvTargets>
         <linesToSkip>0</linesToSkip>
-        <path>data/periodic/smpp/smpp.csv</path>
+        <path>data/periodic/smpp/smppp.csv</path>
         <separator>59</separator>
     </files>
 
@@ -472,7 +472,7 @@
             <column>-1</column>
         </csvTargets>
         <linesToSkip>0</linesToSkip>
-        <path>data/periodic/xmpp/xmpp.csv</path>
+        <path>data/periodic/xmpp/xmppp.csv</path>
         <separator>59</separator>
     </files>
 

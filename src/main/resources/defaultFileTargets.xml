@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><analysisFileTargetSet>  
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><analysisFileTargetSet>
     <files>
         <category>Sys</category>
         <csvTargets>
@@ -24,101 +24,101 @@
             <label>SysCpuWai</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>3</column>
-        </csvTargets>  
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysCpuHiq</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>4</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysCpuSiq</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>5</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysNetRecv</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>6</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysNetSend</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>7</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysDiskRead</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>8</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysDiskWrit</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>9</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysSysInt</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>10</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysSysCsw</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>11</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysTcpLis</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>12</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysTcpAct</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>13</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysTcpSyn</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>14</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysTcpTim</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>15</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysTcpClo</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>16</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysUdpLis</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>17</column>
-        </csvTargets>                          
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SysUdpAct</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>18</column>
-        </csvTargets>                          
+        </csvTargets>
         <linesToSkip>6</linesToSkip>
         <path>data/periodic/sys/dstat.csv</path>
         <separator>44</separator>
-    </files>    
+    </files>
     <files>
         <category>Java</category>
         <csvTargets>
@@ -138,7 +138,7 @@
             <label>JavaThreads</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>3</column>
-        </csvTargets>        
+        </csvTargets>
         <linesToSkip>1</linesToSkip>
         <path>data/periodic/java/jvmtop.txt</path>
         <separator>44</separator>
@@ -168,25 +168,25 @@
             <label>PrefixThreadsRUNNABLE</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>4</column>
-        </csvTargets> 
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>PrefixThreadsBLOCKED</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>5</column>
-        </csvTargets>                       
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>PrefixThreadsTERMINATED</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>6</column>
-        </csvTargets> 
-        
-                                   
+        </csvTargets>
+
+
         <linesToSkip>1</linesToSkip>
         <path>data/periodic/java/prefixThreads.csv</path>
         <separator>59</separator>
-    </files>      
+    </files>
     <files>
         <category>Threads</category>
         <csvTargets>
@@ -212,25 +212,25 @@
             <label>ThreadsRUNNABLE</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>4</column>
-        </csvTargets> 
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>ThreadsBLOCKED</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>5</column>
-        </csvTargets>                       
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>ThreadsTERMINATED</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>6</column>
-        </csvTargets> 
-        
-                                   
+        </csvTargets>
+
+
         <linesToSkip>1</linesToSkip>
         <path>data/periodic/java/threads.csv</path>
         <separator>59</separator>
-    </files>    
+    </files>
     <files>
         <category>SIP</category>
         <csvTargets>
@@ -238,56 +238,56 @@
             <label>SIPTotalCallCreated</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>TotalCallCreated</columnName>              
+            <columnName>TotalCallCreated</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPCurrentCall</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CurrentCall</columnName>             
+            <columnName>CurrentCall</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPSuccessCalls</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>SuccessfulCall(C)</columnName>             
+            <columnName>SuccessfulCall(C)</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPFailedCalls</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>FailedCall(P)</columnName> 
+            <columnName>FailedCall(P)</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SIPRetransmissions</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>Retransmissions(P)</columnName> 
+            <columnName>Retransmissions(P)</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
             <label>SIPResponseTime1</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>ResponseTime1(P)</columnName> 
+            <columnName>ResponseTime1(P)</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
             <label>SIPResponseTime2</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>ResponseTime2(P)</columnName> 
+            <columnName>ResponseTime2(P)</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
             <label>SIPCallLength</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CallLength(P)</columnName> 
+            <columnName>CallLength(P)</columnName>
         </csvTargets>
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/sip/sipp.csv</path>
@@ -300,21 +300,21 @@
             <label>DiameterInitSuccessfulCall</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-           <columnName>InitSuccessfulCall(P)</columnName>              
-        </csvTargets>        
+           <columnName>InitSuccessfulCall(P)</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>DiameterTrafficSuccessfulCall</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-           <columnName>TrafficSuccessfulCall(P)</columnName>              
+           <columnName>TrafficSuccessfulCall(P)</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>DiameterFailedCall</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>FailedCall(P)</columnName>            
+            <columnName>FailedCall(P)</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.SIPPTimeConverter</converterClass>
@@ -326,7 +326,7 @@
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/diameter/seagull-client-stat.csv</path>
         <separator>59</separator>
-    </files>    
+    </files>
     <files>
         <category>Java</category>
         <csvTargets>
@@ -381,7 +381,7 @@
         <path>data/periodic/java/histo.csv</path>
         <separator>44</separator>
     </files>
-    
+
     <files>
         <category>MAP</category>
         <csvTargets>
@@ -389,27 +389,27 @@
             <label>MAPCreatedScenario</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CreatedScenario</columnName> 
+            <columnName>CreatedScenario</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>MAPFailedScenario</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>FailedScenario</columnName> 
+            <columnName>FailedScenario</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>MAPCompletedScenario</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CompletedScenario</columnName> 
-        </csvTargets>                  
+            <columnName>CompletedScenario</columnName>
+        </csvTargets>
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/map/mapp.csv</path>
         <separator>59</separator>
-    </files>   
-    
+    </files>
+
     <files>
         <category>SMPP</category>
         <csvTargets>
@@ -417,34 +417,65 @@
             <label>SMPPCreatedScenario</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CreatedScenario</columnName> 
+            <columnName>CreatedScenario</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SMPPFailedScenario</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>FailedScenario</columnName> 
+            <columnName>FailedScenario</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SMPPCompletedScenario</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CompletedScenario</columnName> 
-        </csvTargets>      
+            <columnName>CompletedScenario</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>SMPPResponseTime1</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>ResponseTime1</columnName> 
-        </csvTargets>                            
+            <columnName>ResponseTime1</columnName>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SmppSampleCount</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>SMPPSendSampleCount</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+        </csvTargets>
         <linesToSkip>0</linesToSkip>
-        <path>data/periodic/smpp/smppp.csv</path>
+        <path>data/periodic/smpp/smpp.csv</path>
         <separator>59</separator>
     </files>
-    
+
+    <files>
+        <category>XMPP</category>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>XmppSampleCount</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+        </csvTargets>
+        <csvTargets>
+            <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
+            <label>XMPPRcvdSampleCount</label>
+            <auxTimestampColumn>-1</auxTimestampColumn>
+            <column>-1</column>
+        </csvTargets>
+        <linesToSkip>0</linesToSkip>
+        <path>data/periodic/xmpp/xmpp.csv</path>
+        <separator>59</separator>
+    </files>
+
     <files>
         <category>JMX</category>
         <csvTargets>
@@ -452,69 +483,69 @@
             <label>JMXRouterActivitiesMapped</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>ActivitiesMapped</columnName> 
+            <columnName>ActivitiesMapped</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXRouterAverageEventRoutingTime</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>AverageEventRoutingTime</columnName> 
+            <columnName>AverageEventRoutingTime</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXRouterExecutedTasks</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>ExecutedTasks</columnName> 
-        </csvTargets>      
+            <columnName>ExecutedTasks</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXRouterMiscTasksExecuted</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>MiscTasksExecuted</columnName> 
-        </csvTargets>     
-        
+            <columnName>MiscTasksExecuted</columnName>
+        </csvTargets>
+
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXRouterWorkingQueueSize</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>WorkingQueueSize</columnName> 
-        </csvTargets> 
+            <columnName>WorkingQueueSize</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXgetExecutedTasks0</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>getExecutedTasks0</columnName> 
-        </csvTargets>  
+            <columnName>getExecutedTasks0</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXgetExecutedTasks1</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>getExecutedTasks1</columnName> 
-        </csvTargets>  
+            <columnName>getExecutedTasks1</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXgetExecutedTasks2</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>getExecutedTasks2</columnName> 
-        </csvTargets>  
+            <columnName>getExecutedTasks2</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>JMXgetExecutedTasks3</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>getExecutedTasks3</columnName> 
-        </csvTargets>                                                                               
+            <columnName>getExecutedTasks3</columnName>
+        </csvTargets>
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/java/jmx2csv.csv</path>
         <separator>44</separator>
-    </files>  
+    </files>
     <files>
         <category>TCAP</category>
         <csvTargets>
@@ -522,36 +553,36 @@
             <label>TCAPCreatedIncomingDialogs</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CreatedIncomingDialogs</columnName> 
+            <columnName>CreatedIncomingDialogs</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>TCAPSuccessfulOutgoingDialogs</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>SuccessfulOutgoingDialogs</columnName> 
+            <columnName>SuccessfulOutgoingDialogs</columnName>
         </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>TCAPCreatedOutgoingDialogs</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>CreatedOutgoingDialogs</columnName> 
-        </csvTargets>      
+            <columnName>CreatedOutgoingDialogs</columnName>
+        </csvTargets>
         <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>TCAPSuccessfulIncomingDialogs1</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>SuccessfulIncomingDialogs1</columnName> 
+            <columnName>SuccessfulIncomingDialogs1</columnName>
         </csvTargets>
          <csvTargets>
             <converterClass>org.restcomm.perfcorder.analyzer.DefaultConverter</converterClass>
             <label>TCAPSuccessfulIncomingDialogs2</label>
             <auxTimestampColumn>-1</auxTimestampColumn>
             <column>-1</column>
-            <columnName>SuccessfulIncomingDialogs2</columnName> 
-        </csvTargets>                         
+            <columnName>SuccessfulIncomingDialogs2</columnName>
+        </csvTargets>
         <linesToSkip>0</linesToSkip>
         <path>data/periodic/tcap/tcap.csv</path>
         <separator>59</separator>
